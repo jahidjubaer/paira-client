@@ -6,6 +6,7 @@ import api from '../../api/axiosInstance.js'
 import apiError from '../../api/apiError.js'
 import Loader from '../../components/Loader.jsx'
 import BiField from '../../components/BiField.jsx'
+import ImageUrlField from '../../components/ImageUrlField.jsx'
 import ConfirmDialog from '../../components/ConfirmDialog.jsx'
 import { nestedFormData } from '../../utils/formData.js'
 
@@ -164,10 +165,7 @@ const ManageMedia = () => {
                 <span className="mb-1 block text-sm font-medium">{t('media.date')}</span>
                 <input name="publishedAt" type="date" defaultValue={toDateInput(editing.publishedAt)} className="input w-full" />
               </label>
-              <label className="block sm:col-span-2">
-                <span className="mb-1 block text-sm font-medium">{t('media.thumbnail')}</span>
-                <input name="thumbnail" type="url" maxLength={500} defaultValue={editing.thumbnail ?? ''} className="input w-full" />
-              </label>
+              <ImageUrlField name="thumbnail" label={t('media.thumbnail')} defaultValue={editing.thumbnail ?? ''} folder="archive" className="sm:col-span-2" />
               <label className="block sm:col-span-2">
                 <span className="mb-1 block text-sm font-medium">{t('media.tags')}</span>
                 <input name="tags" maxLength={400} defaultValue={(editing.tags ?? []).join(', ')} className="input w-full" />

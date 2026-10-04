@@ -872,6 +872,13 @@ const en = {
     tryAgain: 'Try again',
     amountReceived: 'Amount',
   },
+  upload: {
+    button: 'Upload',
+    done: 'Image uploaded',
+    failed: 'Upload failed, please try again',
+    tooLarge: 'Image is larger than 8 MB',
+    notImage: 'Only images can be uploaded',
+  },
   notFound: {
     title: 'Page not found',
     text: 'The page you are looking for does not exist or has been moved.',

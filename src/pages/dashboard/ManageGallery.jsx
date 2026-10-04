@@ -6,6 +6,7 @@ import api from '../../api/axiosInstance.js'
 import apiError from '../../api/apiError.js'
 import Loader from '../../components/Loader.jsx'
 import BiField from '../../components/BiField.jsx'
+import ImageUrlField from '../../components/ImageUrlField.jsx'
 import ConfirmDialog from '../../components/ConfirmDialog.jsx'
 import { nestedFormData } from '../../utils/formData.js'
 
@@ -22,6 +23,7 @@ const ManageGallery = () => {
   const [photosKey, setPhotosKey] = useState(0)
   const albumDialog = useRef(null)
   const deleteDialog = useRef(null)
+  const urlsBox = useRef(null)
 
   useEffect(() => {
     api
@@ -169,9 +171,10 @@ const ManageGallery = () => {
               <form onSubmit={addPhotos} className="mt-5 space-y-3 rounded-2xl bg-base-200 p-4">
                 <label className="block">
                   <span className="mb-1 block text-sm font-medium">{t('gallery.addPhotos')}</span>
-                  <textarea name="urls" rows={3} required placeholder="https://i.ibb.co/..." className="textarea w-full font-mono text-sm" />
+                  <textarea ref={urlsBox} name="urls" rows={3} required placeholder="https://i.ibb.co/..." className="textarea w-full font-mono text-sm" />
                   <span className="mt-1 block text-xs text-base-content/60">{t('gallery.addPhotosHint')}</span>
                 </label>
+                <ImageUrlField folder="gallery" onUploaded={(url) => (urlsBox.current.value = `${urlsBox.current.value.trim()}\n${url}`.trim())} />
                 <div className="flex flex-wrap items-end gap-3">
                   <label className="block flex-1">
                     <span className="mb-1 block text-sm font-medium">{t('gallery.credit')}</span>
@@ -218,10 +221,7 @@ const ManageGallery = () => {
             <form key={editing._id ?? 'new'} onSubmit={saveAlbum} className="mt-6 grid gap-4 sm:grid-cols-2">
               <BiField name="title" label={t('gallery.albumTitle')} value={editing.title} maxLength={150} />
               <BiField name="description" label={t('gallery.albumDescription')} value={editing.description} maxLength={1000} multiline rows={3} />
-              <label className="block sm:col-span-2">
-                <span className="mb-1 block text-sm font-medium">{t('gallery.cover')}</span>
-                <input name="cover" type="url" maxLength={500} defaultValue={editing.cover ?? ''} className="input w-full" />
-              </label>
+              <ImageUrlField name="cover" label={t('gallery.cover')} defaultValue={editing.cover ?? ''} folder="gallery" className="sm:col-span-2" />
               <label className="flex cursor-pointer items-center gap-3 sm:col-span-2">
                 <input name="isContest" type="checkbox" defaultChecked={editing.isContest} className="toggle toggle-accent" />
                 {t('gallery.isContest')}

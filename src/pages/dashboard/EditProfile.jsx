@@ -4,6 +4,7 @@ import useLanguage from '../../i18n/useLanguage.js'
 import useAuth from '../../context/useAuth.js'
 import api from '../../api/axiosInstance.js'
 import apiError from '../../api/apiError.js'
+import ImageUrlField from '../../components/ImageUrlField.jsx'
 
 const EditProfile = () => {
   const { t } = useLanguage()
@@ -15,7 +16,6 @@ const EditProfile = () => {
     { name: 'phone', label: t('auth.phone'), type: 'tel', maxLength: 20 },
     { name: 'institution', label: t('auth.institution'), maxLength: 150 },
     { name: 'address', label: t('auth.address'), maxLength: 250 },
-    { name: 'photo', label: t('dash.photo'), type: 'url', maxLength: 500 },
   ]
 
   const handleSubmit = async (e) => {
@@ -42,6 +42,7 @@ const EditProfile = () => {
             <input name={name} defaultValue={user[name] ?? ''} className="input w-full" {...props} />
           </label>
         ))}
+        <ImageUrlField name="photo" label={t('dash.photo')} defaultValue={user.photo ?? ''} folder="profiles" />
         <button type="submit" disabled={busy} className="btn btn-primary rounded-full px-8">
           {busy && <span className="loading loading-spinner loading-sm" />} {t('dash.save')}
         </button>

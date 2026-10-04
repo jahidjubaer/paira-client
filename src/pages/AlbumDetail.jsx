@@ -8,6 +8,7 @@ import api from '../api/axiosInstance.js'
 import apiError from '../api/apiError.js'
 import Loader from '../components/Loader.jsx'
 import Lightbox from '../components/Lightbox.jsx'
+import ImageUrlField from '../components/ImageUrlField.jsx'
 import ErrorPage from './ErrorPage.jsx'
 import { nestedFormData } from '../utils/formData.js'
 import usePageTitle from '../utils/usePageTitle.js'
@@ -58,10 +59,7 @@ const ContestPanel = ({ album }) => {
         <p className="mt-5 rounded-2xl bg-base-100 p-4 text-sm">{t('gallery.approvedOnly')}</p>
       ) : (
         <form onSubmit={handleSubmit} className="mt-5 grid gap-3 sm:grid-cols-[2fr_1.5fr_auto] sm:items-end">
-          <label className="block">
-            <span className="mb-1 block text-sm font-medium">{t('gallery.imageUrl')}</span>
-            <input name="imageUrl" type="url" required maxLength={500} placeholder="https://i.ibb.co/..." className="input w-full" />
-          </label>
+          <ImageUrlField name="imageUrl" label={t('gallery.imageUrl')} folder="contest" required />
           <label className="block">
             <span className="mb-1 block text-sm font-medium">{t('gallery.caption')}</span>
             <input name="caption.bn" maxLength={300} className="input w-full" />

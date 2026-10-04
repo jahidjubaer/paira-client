@@ -7,6 +7,7 @@ import api from '../../api/axiosInstance.js'
 import apiError from '../../api/apiError.js'
 import Loader from '../../components/Loader.jsx'
 import BiField from '../../components/BiField.jsx'
+import ImageUrlField from '../../components/ImageUrlField.jsx'
 import ConfirmDialog from '../../components/ConfirmDialog.jsx'
 import { eventCategories, eventCategory } from '../../data/eventCategories.js'
 import { fromLocalInput, nestedFormData, toLocalInput } from '../../utils/formData.js'
@@ -191,10 +192,7 @@ const ManageEvents = () => {
                   {eventCategories.map((c) => <option key={c.id} value={c.id}>{pick(c.name)}</option>)}
                 </select>
               </label>
-              <label className="block">
-                <span className="mb-1 block text-sm font-medium">{t('events.image')}</span>
-                <input name="image" type="url" maxLength={500} defaultValue={editing.image ?? ''} className="input w-full" />
-              </label>
+              <ImageUrlField name="image" label={t('events.image')} defaultValue={editing.image ?? ''} folder="events" />
               <BiField name="location" label={t('events.locationField')} value={editing.location} maxLength={200} />
               <BiField name="description" label={t('events.descriptionField')} value={editing.description} maxLength={5000} multiline rows={5} />
 

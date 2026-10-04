@@ -6,6 +6,7 @@ import useLanguage from '../../i18n/useLanguage.js'
 import api from '../../api/axiosInstance.js'
 import apiError from '../../api/apiError.js'
 import Loader from '../../components/Loader.jsx'
+import ImageUrlField from '../../components/ImageUrlField.jsx'
 import BookCover from '../../components/BookCover.jsx'
 import { bookCategories, bookLanguages, categoryName } from '../../data/bookCategories.js'
 
@@ -84,7 +85,6 @@ const ManageBooks = () => {
     { name: 'totalCopies', label: t('books.totalCopies'), type: 'number', min: 0, max: 1000, required: true },
     { name: 'shelf', label: t('books.shelf'), maxLength: 30 },
     { name: 'donatedBy', label: t('books.donatedBy'), maxLength: 100 },
-    { name: 'cover', label: t('borrow.cover'), type: 'url', maxLength: 500, wide: true },
     { name: 'readUrl', label: t('borrow.readUrl'), type: 'url', maxLength: 500, wide: true },
   ]
 
@@ -194,6 +194,7 @@ const ManageBooks = () => {
                   <input name={name} defaultValue={editing[name] ?? ''} className="input w-full" {...props} />
                 </label>
               ))}
+              <ImageUrlField name="cover" label={t('borrow.cover')} defaultValue={editing.cover ?? ''} folder="books" className="sm:col-span-2" />
               <label className="block">
                 <span className="mb-1 block text-sm font-medium">{t('books.category')}</span>
                 <select name="category" defaultValue={editing.category} className="select w-full">
