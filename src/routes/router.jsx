@@ -18,6 +18,7 @@ import Donate from '../pages/Donate.jsx'
 import Finance from '../pages/Finance.jsx'
 import Volunteer from '../pages/Volunteer.jsx'
 import VerifyMember from '../pages/VerifyMember.jsx'
+import Scholarship from '../pages/Scholarship.jsx'
 import ErrorPage from '../pages/ErrorPage.jsx'
 import PrivateRoute from './PrivateRoute.jsx'
 import AdminRoute from './AdminRoute.jsx'
@@ -50,6 +51,7 @@ const router = createBrowserRouter([
       { path: 'finance', element: <Finance /> },
       { path: 'volunteer', element: <Volunteer /> },
       { path: 'member/:memberNo', element: <VerifyMember /> },
+      { path: 'scholarship', element: <Scholarship /> },
     ],
   },
   {
@@ -72,6 +74,7 @@ const router = createBrowserRouter([
           { path: 'loans', lazy: lazyPage(() => import('../pages/dashboard/Loans.jsx')) },
           { path: 'reservations', lazy: lazyPage(() => import('../pages/dashboard/Reservations.jsx')) },
           { path: 'reminders', lazy: lazyPage(() => import('../pages/dashboard/Reminders.jsx')) },
+          { path: 'scholarships', lazy: lazyPage(() => import('../pages/dashboard/Scholarships.jsx')) },
           { path: 'events', lazy: lazyPage(() => import('../pages/dashboard/ManageEvents.jsx')) },
           { path: 'events/:id/registrations', lazy: lazyPage(() => import('../pages/dashboard/EventRegistrations.jsx')) },
           { path: 'events/:id/certificate', lazy: lazyPage(() => import('../pages/dashboard/Certificate.jsx')) },
