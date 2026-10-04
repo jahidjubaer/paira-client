@@ -12,6 +12,8 @@ import Books from '../pages/Books.jsx'
 import BookDetail from '../pages/BookDetail.jsx'
 import Events from '../pages/Events.jsx'
 import EventDetail from '../pages/EventDetail.jsx'
+import Gallery from '../pages/Gallery.jsx'
+import AlbumDetail from '../pages/AlbumDetail.jsx'
 import ComingSoon from '../pages/ComingSoon.jsx'
 import ErrorPage from '../pages/ErrorPage.jsx'
 import PrivateRoute from './PrivateRoute.jsx'
@@ -42,7 +44,8 @@ const router = createBrowserRouter([
       { path: 'books/:id', element: <BookDetail /> },
       { path: 'events', element: <Events /> },
       { path: 'events/:id', element: <EventDetail /> },
-      placeholder('gallery'),
+      { path: 'gallery', element: <Gallery /> },
+      { path: 'gallery/:id', element: <AlbumDetail /> },
       placeholder('donate'),
     ],
   },
@@ -63,6 +66,8 @@ const router = createBrowserRouter([
           { path: 'loans', lazy: lazyPage(() => import('../pages/dashboard/Loans.jsx')) },
           { path: 'events', lazy: lazyPage(() => import('../pages/dashboard/ManageEvents.jsx')) },
           { path: 'notices', lazy: lazyPage(() => import('../pages/dashboard/ManageNotices.jsx')) },
+          { path: 'gallery', lazy: lazyPage(() => import('../pages/dashboard/ManageGallery.jsx')) },
+          { path: 'photo-review', lazy: lazyPage(() => import('../pages/dashboard/PhotoReview.jsx')) },
           { path: 'messages', lazy: lazyPage(() => import('../pages/dashboard/Messages.jsx')) },
         ],
       },
