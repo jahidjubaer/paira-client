@@ -3,20 +3,20 @@ import { FaEnvelope, FaFacebook, FaInstagram, FaLinkedin, FaLocationDot, FaPhone
 import useLanguage from '../i18n/useLanguage.js'
 import Logo from './Logo.jsx'
 import { mainLinks, moreLinks } from './navLinks.js'
+import { contactInfo, socialLinks } from '../data/site.js'
 
-// TODO: replace with real contact info and social links from the owner
 const socials = [
-  { href: '#', label: 'Facebook', icon: FaFacebook },
-  { href: '#', label: 'YouTube', icon: FaYoutube },
-  { href: '#', label: 'Instagram', icon: FaInstagram },
-  { href: '#', label: 'LinkedIn', icon: FaLinkedin },
-  { href: '#', label: 'WhatsApp', icon: FaWhatsapp },
+  { href: socialLinks.facebook, label: 'Facebook', icon: FaFacebook },
+  { href: socialLinks.youtube, label: 'YouTube', icon: FaYoutube },
+  { href: socialLinks.instagram, label: 'Instagram', icon: FaInstagram },
+  { href: socialLinks.linkedin, label: 'LinkedIn', icon: FaLinkedin },
+  { href: socialLinks.whatsapp, label: 'WhatsApp', icon: FaWhatsapp },
 ]
 
 const year = new Date().getFullYear()
 
 const Footer = () => {
-  const { t } = useLanguage()
+  const { t, pick } = useLanguage()
 
   return (
     <footer className="bg-neutral text-neutral-content">
@@ -41,9 +41,9 @@ const Footer = () => {
         <div>
           <h3 className="footer-title">{t('footer.contact')}</h3>
           <ul className="space-y-3 opacity-80">
-            <li className="flex items-center gap-2"><FaLocationDot /> {t('footer.address')}</li>
-            <li className="flex items-center gap-2"><FaPhone /> +880 1XXX-XXXXXX</li>
-            <li className="flex items-center gap-2"><FaEnvelope /> info@paira.org</li>
+            <li className="flex items-center gap-2"><FaLocationDot /> {pick(contactInfo.address)}</li>
+            <li className="flex items-center gap-2"><FaPhone /> {contactInfo.phone}</li>
+            <li className="flex items-center gap-2"><FaEnvelope /> {contactInfo.email}</li>
           </ul>
           <h3 className="footer-title mt-6">{t('footer.follow')}</h3>
           <div className="flex gap-2">

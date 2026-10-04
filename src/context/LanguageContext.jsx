@@ -36,8 +36,11 @@ const LanguageProvider = ({ children }) => {
   // pick({ bn: '...', en: '...' }) for bilingual data coming from the database
   const pick = (value) => (value && typeof value === 'object' ? value[lang] || value.bn || value.en : value)
 
+  // num(12) -> '১২' in Bangla, '12' in English
+  const num = (n) => (lang === 'bn' ? String(n).replace(/\d/g, (d) => '০১২৩৪৫৬৭৮৯'[d]) : String(n))
+
   return (
-    <LanguageContext.Provider value={{ lang, setLang, toggleLang, t, pick }}>
+    <LanguageContext.Provider value={{ lang, setLang, toggleLang, t, pick, num }}>
       {children}
     </LanguageContext.Provider>
   )
