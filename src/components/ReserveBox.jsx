@@ -10,7 +10,7 @@ import apiError from '../api/apiError.js'
 // Book page: reserve / hold a copy, or show the member's existing reservation
 const ReserveBox = ({ book, queue }) => {
   const { t, num, date } = useLanguage()
-  const { user, isAdmin } = useAuth()
+  const { user, isStaff } = useAuth()
   const [mine, setMine] = useState(null)
   const [busy, setBusy] = useState(false)
 
@@ -72,7 +72,7 @@ const ReserveBox = ({ book, queue }) => {
         </div>
       ) : !user ? (
         <Link to="/login" state={{ from: `/books/${book._id}` }} className="btn btn-outline rounded-full"><FaBookmark /> {t('res.loginToReserve')}</Link>
-      ) : user.status !== 'approved' && !isAdmin ? (
+      ) : user.status !== 'approved' && !isStaff ? (
         <p className="text-sm text-base-content/60">{t('res.approvedOnly')}</p>
       ) : (
         <div className="flex flex-wrap items-center gap-4">

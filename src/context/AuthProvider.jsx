@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import api from '../api/axiosInstance.js'
 import { AuthContext } from './authContext.js'
+import { canAccess, STAFF_ROLES } from '../utils/roles.js'
 
 const TOKEN_KEY = 'paira-token'
 
@@ -57,9 +58,12 @@ const AuthProvider = ({ children }) => {
   }
 
   const isAdmin = user?.role === 'admin'
+  const isStaff = STAFF_ROLES.includes(user?.role)
+  // can('library' | 'content' | 'admin') — which dashboard areas this user manages
+  const can = (area) => Boolean(user) && (area === 'admin' ? isAdmin : canAccess(user.role, area))
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading, login, register, logout, refreshUser, isAdmin }}>
+    <AuthContext.Provider value={{ user, setUser, loading, login, register, logout, refreshUser, isAdmin, isStaff, can }}>
       {children}
     </AuthContext.Provider>
   )

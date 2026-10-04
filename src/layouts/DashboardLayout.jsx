@@ -18,23 +18,42 @@ const memberLinks = [
   { to: '/dashboard/password', key: 'changePassword', icon: FaKey },
 ]
 
-const adminLinks = [
-  { to: '/dashboard/members', key: 'members', icon: FaUsers },
-  { to: '/dashboard/loans', key: 'loans', icon: FaArrowRightArrowLeft },
-  { to: '/dashboard/reservations', key: 'reservations', icon: FaBookmark },
-  { to: '/dashboard/reminders', key: 'reminders', icon: FaBell },
-  { to: '/dashboard/books', key: 'books', icon: FaBook },
-  { to: '/dashboard/events', key: 'events', icon: FaCalendarDays },
-  { to: '/dashboard/notices', key: 'notices', icon: FaClipboardList },
-  { to: '/dashboard/gallery', key: 'gallery', icon: FaImages },
-  { to: '/dashboard/photo-review', key: 'photoReview', icon: FaCamera },
-  { to: '/dashboard/media', key: 'media', icon: FaMicrophoneLines },
-  { to: '/dashboard/reviews', key: 'reviews', icon: FaStar },
-  { to: '/dashboard/scholarships', key: 'scholarships', icon: FaGraduationCap },
-  { to: '/dashboard/donations', key: 'donations', icon: FaHandHoldingHeart },
-  { to: '/dashboard/finance', key: 'finance', icon: FaChartPie },
-  { to: '/dashboard/volunteers', key: 'volunteers', icon: FaHandshake },
-  { to: '/dashboard/messages', key: 'messages', icon: FaEnvelope },
+// Staff menu, grouped by the area each role manages (see utils/roles.js)
+const staffSections = [
+  {
+    area: 'library',
+    title: 'dash.libraryArea',
+    links: [
+      { to: '/dashboard/loans', key: 'loans', icon: FaArrowRightArrowLeft },
+      { to: '/dashboard/reservations', key: 'reservations', icon: FaBookmark },
+      { to: '/dashboard/books', key: 'books', icon: FaBook },
+      { to: '/dashboard/members', key: 'members', icon: FaUsers },
+      { to: '/dashboard/reminders', key: 'reminders', icon: FaBell },
+    ],
+  },
+  {
+    area: 'content',
+    title: 'dash.contentArea',
+    links: [
+      { to: '/dashboard/events', key: 'events', icon: FaCalendarDays },
+      { to: '/dashboard/notices', key: 'notices', icon: FaClipboardList },
+      { to: '/dashboard/gallery', key: 'gallery', icon: FaImages },
+      { to: '/dashboard/photo-review', key: 'photoReview', icon: FaCamera },
+      { to: '/dashboard/media', key: 'media', icon: FaMicrophoneLines },
+      { to: '/dashboard/reviews', key: 'reviews', icon: FaStar },
+    ],
+  },
+  {
+    area: 'admin',
+    title: 'dash.adminArea',
+    links: [
+      { to: '/dashboard/scholarships', key: 'scholarships', icon: FaGraduationCap },
+      { to: '/dashboard/donations', key: 'donations', icon: FaHandHoldingHeart },
+      { to: '/dashboard/finance', key: 'finance', icon: FaChartPie },
+      { to: '/dashboard/volunteers', key: 'volunteers', icon: FaHandshake },
+      { to: '/dashboard/messages', key: 'messages', icon: FaEnvelope },
+    ],
+  },
 ]
 
 const closeDrawer = () => {
@@ -44,7 +63,7 @@ const closeDrawer = () => {
 
 const DashboardLayout = () => {
   const { t } = useLanguage()
-  const { user, logout, isAdmin } = useAuth()
+  const { user, logout, can } = useAuth()
   const navigate = useNavigate()
   usePageTitle(t('nav.dashboard'))
 
@@ -89,12 +108,14 @@ const DashboardLayout = () => {
         <aside className="flex min-h-full w-72 flex-col gap-6 bg-base-100 p-5">
           <Logo />
           <ul className="menu w-full gap-1 p-0">{renderLinks(memberLinks)}</ul>
-          {isAdmin && (
-            <ul className="menu w-full gap-1 p-0">
-              <li className="menu-title">{t('dash.adminArea')}</li>
-              {renderLinks(adminLinks)}
-            </ul>
-          )}
+          {staffSections
+            .filter((section) => can(section.area))
+            .map((section) => (
+              <ul key={section.area} className="menu w-full gap-1 p-0">
+                <li className="menu-title">{t(section.title)}</li>
+                {renderLinks(section.links)}
+              </ul>
+            ))}
           <ul className="menu mt-auto w-full gap-1 p-0">
             <li>
               <Link to="/" className="rounded-xl"><FaArrowLeft /> {t('dash.backToSite')}</Link>

@@ -217,6 +217,8 @@ const bn = {
   },
   role: {
     member: 'সদস্য',
+    librarian: 'লাইব্রেরিয়ান',
+    editor: 'সম্পাদক',
     admin: 'অ্যাডমিন',
   },
   dash: {
@@ -241,6 +243,8 @@ const bn = {
     editProfile: 'প্রোফাইল সম্পাদনা',
     changePassword: 'পাসওয়ার্ড পরিবর্তন',
     adminArea: 'অ্যাডমিন',
+    libraryArea: 'পাঠাগার',
+    contentArea: 'কনটেন্ট',
     members: 'সদস্য ব্যবস্থাপনা',
     messages: 'বার্তা',
     backToSite: 'ওয়েবসাইটে ফিরুন',

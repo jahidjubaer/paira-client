@@ -15,9 +15,9 @@ const statusBox = {
 
 const Overview = () => {
   const { t, pick, date } = useLanguage()
-  const { user, isAdmin } = useAuth()
+  const { user, isStaff } = useAuth()
   // Admins don't need the membership status notice
-  const box = isAdmin ? null : statusBox[user.status]
+  const box = isStaff ? null : statusBox[user.status]
 
   const rows = [
     [t('auth.email'), user.email],
@@ -30,7 +30,7 @@ const Overview = () => {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      {isAdmin && <AdminOverview />}
+      {isStaff && <AdminOverview />}
 
       {box && (
         <div role="alert" className={`alert alert-soft ${box.className} rounded-2xl`}>
@@ -42,7 +42,7 @@ const Overview = () => {
         </div>
       )}
 
-      {(user.status === 'approved' || isAdmin) && <MyBooksSummary />}
+      {(user.status === 'approved' || isStaff) && <MyBooksSummary />}
 
       <div className="overflow-hidden rounded-[2rem] bg-base-100 shadow-sm">
         <div className="relative h-28 bg-gradient-to-r from-primary to-neutral" />
@@ -61,7 +61,7 @@ const Overview = () => {
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <span className="badge badge-primary">{pick(memberTypeName(user.memberType))}</span>
             <StatusBadge status={user.status} />
-            {user.role === 'admin' && <span className="badge badge-neutral">{t('role.admin')}</span>}
+            {user.role !== 'member' && <span className="badge badge-neutral">{t(`role.${user.role}`)}</span>}
           </div>
 
           <dl className="mt-8 grid gap-x-8 gap-y-5 sm:grid-cols-2">

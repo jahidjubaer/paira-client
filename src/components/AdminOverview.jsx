@@ -41,12 +41,14 @@ const AdminOverview = () => {
   }, [])
 
   if (stats === false) return null
+  // The server only sends the numbers this staff role may see
+  const visible = stats ? tiles.filter((tile) => (tile.field ?? tile.key) in stats) : tiles.slice(0, 4)
 
   return (
     <section>
       <h2 className="mb-4 text-2xl font-bold">{t('overview.title')}</h2>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-        {tiles.map(({ key, to, icon: Icon, alert, field, money: isMoney }) => {
+        {visible.map(({ key, to, icon: Icon, alert, field, money: isMoney }) => {
           const value = stats?.[field ?? key] ?? 0
           const hot = alert && value > 0
           return (

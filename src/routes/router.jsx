@@ -74,7 +74,7 @@ const router = createBrowserRouter([
       { path: 'card', lazy: lazyPage(() => import('../pages/dashboard/MyCard.jsx')) },
       { path: 'reading', lazy: lazyPage(() => import('../pages/dashboard/ReadingChallenge.jsx')) },
       {
-        element: <AdminRoute><Outlet /></AdminRoute>,
+        element: <AdminRoute area="library"><Outlet /></AdminRoute>,
         children: [
           { path: 'members', lazy: lazyPage(() => import('../pages/dashboard/ManageMembers.jsx')) },
           { path: 'members/:id/card', lazy: lazyPage(() => import('../pages/dashboard/MyCard.jsx')) },
@@ -83,7 +83,11 @@ const router = createBrowserRouter([
           { path: 'loans', lazy: lazyPage(() => import('../pages/dashboard/Loans.jsx')) },
           { path: 'reservations', lazy: lazyPage(() => import('../pages/dashboard/Reservations.jsx')) },
           { path: 'reminders', lazy: lazyPage(() => import('../pages/dashboard/Reminders.jsx')) },
-          { path: 'scholarships', lazy: lazyPage(() => import('../pages/dashboard/Scholarships.jsx')) },
+        ],
+      },
+      {
+        element: <AdminRoute area="content"><Outlet /></AdminRoute>,
+        children: [
           { path: 'media', lazy: lazyPage(() => import('../pages/dashboard/ManageMedia.jsx')) },
           { path: 'reviews', lazy: lazyPage(() => import('../pages/dashboard/ReviewModeration.jsx')) },
           { path: 'events', lazy: lazyPage(() => import('../pages/dashboard/ManageEvents.jsx')) },
@@ -92,6 +96,12 @@ const router = createBrowserRouter([
           { path: 'notices', lazy: lazyPage(() => import('../pages/dashboard/ManageNotices.jsx')) },
           { path: 'gallery', lazy: lazyPage(() => import('../pages/dashboard/ManageGallery.jsx')) },
           { path: 'photo-review', lazy: lazyPage(() => import('../pages/dashboard/PhotoReview.jsx')) },
+        ],
+      },
+      {
+        element: <AdminRoute><Outlet /></AdminRoute>,
+        children: [
+          { path: 'scholarships', lazy: lazyPage(() => import('../pages/dashboard/Scholarships.jsx')) },
           { path: 'donations', lazy: lazyPage(() => import('../pages/dashboard/Donations.jsx')) },
           { path: 'finance', lazy: lazyPage(() => import('../pages/dashboard/FinanceReports.jsx')) },
           { path: 'volunteers', lazy: lazyPage(() => import('../pages/dashboard/Volunteers.jsx')) },

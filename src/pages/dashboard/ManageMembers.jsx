@@ -14,7 +14,7 @@ const statusTabs = ['', 'pending', 'approved', 'rejected']
 
 const ManageMembers = () => {
   const { t, pick, num, date } = useLanguage()
-  const { user: me } = useAuth()
+  const { user: me, isAdmin } = useAuth()
   const [status, setStatus] = useState('pending')
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
@@ -137,6 +137,7 @@ const ManageMembers = () => {
                       <select
                         value={u.memberType}
                         onChange={(e) => update(u._id, { memberType: e.target.value })}
+                        disabled={!isAdmin}
                         className="select select-sm w-44"
                         aria-label={t('dash.type')}
                       >
@@ -147,13 +148,12 @@ const ManageMembers = () => {
                     <td>
                       <select
                         value={u.role}
-                        disabled={isMe}
+                        disabled={isMe || !isAdmin}
                         onChange={(e) => update(u._id, { role: e.target.value })}
                         className="select select-sm w-28"
                         aria-label={t('dash.role')}
                       >
-                        <option value="member">{t('role.member')}</option>
-                        <option value="admin">{t('role.admin')}</option>
+                        {['member', 'librarian', 'editor', 'admin'].map((r) => <option key={r} value={r}>{t(`role.${r}`)}</option>)}
                       </select>
                     </td>
                     <td>
@@ -163,17 +163,17 @@ const ManageMembers = () => {
                             <FaIdCard />
                           </Link>
                         )}
-                        {u.status !== 'approved' && (
+                        {isAdmin && u.status !== 'approved' && (
                           <button onClick={() => update(u._id, { status: 'approved' })} className="btn btn-sm btn-success btn-soft" title={t('dash.approve')}>
                             <FaCheck /> <span className="hidden xl:inline">{t('dash.approve')}</span>
                           </button>
                         )}
-                        {u.status !== 'rejected' && !isMe && (
+                        {isAdmin && u.status !== 'rejected' && !isMe && (
                           <button onClick={() => update(u._id, { status: 'rejected' })} className="btn btn-sm btn-warning btn-soft" title={t('dash.reject')}>
                             <FaXmark /> <span className="hidden xl:inline">{t('dash.reject')}</span>
                           </button>
                         )}
-                        {!isMe && (
+                        {isAdmin && !isMe && (
                           <button onClick={() => askDelete(u)} className="btn btn-sm btn-error btn-ghost" aria-label={t('dash.delete')}>
                             <FaTrash />
                           </button>

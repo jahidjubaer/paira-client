@@ -217,6 +217,8 @@ const en = {
   },
   role: {
     member: 'Member',
+    librarian: 'Librarian',
+    editor: 'Editor',
     admin: 'Admin',
   },
   dash: {
@@ -241,6 +243,8 @@ const en = {
     editProfile: 'Edit Profile',
     changePassword: 'Change Password',
     adminArea: 'Admin',
+    libraryArea: 'Library',
+    contentArea: 'Content',
     members: 'Manage Members',
     messages: 'Messages',
     backToSite: 'Back to website',
