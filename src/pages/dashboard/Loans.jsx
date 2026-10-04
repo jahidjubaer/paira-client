@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import { FaArrowRotateRight, FaCheck, FaQrcode, FaTriangleExclamation } from 'react-icons/fa6'
+import { FaArrowRotateRight, FaBell, FaCheck, FaQrcode, FaTriangleExclamation } from 'react-icons/fa6'
 import useLanguage from '../../i18n/useLanguage.js'
 import api from '../../api/axiosInstance.js'
 import apiError from '../../api/apiError.js'
@@ -49,6 +49,17 @@ const Loans = () => {
     setLoading(true)
     apply()
     setReloadKey((k) => k + 1)
+  }
+
+  const remind = async (loan) => {
+    try {
+      const { data } = await api.post(`/borrows/${loan._id}/remind`)
+      const sent = data.result.email === 'sent' || data.result.sms === 'sent'
+      if (sent) toast.success(t('remind.remindSent'))
+      else toast(t('remind.remindSkipped'))
+    } catch (err) {
+      toast.error(apiError(err, t))
+    }
   }
 
   // A scanned member card: find that approved member and select them
@@ -209,6 +220,9 @@ const Loans = () => {
                         <div className="flex justify-end gap-1">
                           <button onClick={() => act(b, 'return')} className="btn btn-sm btn-success btn-soft" title={t('borrow.return')}>
                             <FaCheck /> <span className="hidden lg:inline">{t('borrow.return')}</span>
+                          </button>
+                          <button onClick={() => remind(b)} className="btn btn-sm btn-ghost" title={t('remind.remindOne')} aria-label={t('remind.remindOne')}>
+                            <FaBell />
                           </button>
                           <button onClick={() => act(b, 'renew')} className="btn btn-sm btn-ghost" title={t('borrow.renew')}>
                             <FaArrowRotateRight />
