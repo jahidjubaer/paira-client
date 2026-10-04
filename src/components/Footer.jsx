@@ -1,5 +1,5 @@
 import { Link } from 'react-router'
-import { FaEnvelope, FaFacebook, FaInstagram, FaLinkedin, FaLocationDot, FaPhone, FaWhatsapp, FaYoutube } from 'react-icons/fa6'
+import { FaArrowRight, FaEnvelope, FaFacebook, FaInstagram, FaLinkedin, FaLocationDot, FaPhone, FaWhatsapp, FaYoutube } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
 import Logo from './Logo.jsx'
 import { mainLinks, moreLinks } from './navLinks.js'
@@ -16,47 +16,64 @@ const socials = [
 const year = new Date().getFullYear()
 
 const Footer = () => {
-  const { t, pick } = useLanguage()
+  const { t, pick, num } = useLanguage()
 
   return (
-    <footer className="bg-neutral text-neutral-content">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="space-y-4 lg:col-span-2">
-          <Logo light />
-          <p className="max-w-md opacity-80">{t('footer.about')}</p>
-          <p className="italic text-secondary">"{t('site.slogan')}"</p>
+    <footer className="relative overflow-hidden bg-neutral text-neutral-content">
+      <div className="pointer-events-none absolute -top-40 right-0 size-96 rounded-full bg-primary/30 blur-3xl" />
+
+      <div className="relative mx-auto max-w-7xl px-4 pt-16">
+        {/* Top: slogan + CTA */}
+        <div className="flex flex-col items-start justify-between gap-6 border-b border-neutral-content/10 pb-12 md:flex-row md:items-end">
+          <p className="max-w-2xl font-display text-3xl leading-tight font-bold sm:text-4xl">“{t('site.slogan')}”</p>
+          <Link to="/register" className="btn btn-secondary rounded-full px-6">
+            {t('nav.register')} <FaArrowRight />
+          </Link>
         </div>
 
-        <div>
-          <h3 className="footer-title">{t('footer.quickLinks')}</h3>
-          <ul className="grid grid-cols-2 gap-2 sm:grid-cols-1">
-            {[...mainLinks.slice(1), ...moreLinks].map((link) => (
-              <li key={link.to}>
-                <Link to={link.to} className="link link-hover opacity-80">{t(`nav.${link.key}`)}</Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* Columns */}
+        <div className="grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr]">
+          <div className="space-y-5">
+            <Logo light />
+            <p className="max-w-sm text-neutral-content/70">{t('footer.about')}</p>
+            <div className="flex gap-2">
+              {socials.map(({ href, label, icon: Icon }) => (
+                <a key={label} href={href} aria-label={label} className="grid size-10 place-items-center rounded-full bg-neutral-content/10 transition hover:bg-secondary hover:text-secondary-content">
+                  <Icon className="size-4" />
+                </a>
+              ))}
+            </div>
+          </div>
 
-        <div>
-          <h3 className="footer-title">{t('footer.contact')}</h3>
-          <ul className="space-y-3 opacity-80">
-            <li className="flex items-center gap-2"><FaLocationDot /> {pick(contactInfo.address)}</li>
-            <li className="flex items-center gap-2"><FaPhone /> {contactInfo.phone}</li>
-            <li className="flex items-center gap-2"><FaEnvelope /> {contactInfo.email}</li>
-          </ul>
-          <h3 className="footer-title mt-6">{t('footer.follow')}</h3>
-          <div className="flex gap-2">
-            {socials.map(({ href, label, icon: Icon }) => (
-              <a key={label} href={href} aria-label={label} className="btn btn-circle btn-sm btn-ghost">
-                <Icon className="size-5" />
-              </a>
-            ))}
+          <div>
+            <h3 className="mb-4 font-display text-lg font-bold">{t('footer.quickLinks')}</h3>
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-2">
+              {[...mainLinks.slice(1), ...moreLinks].map((link) => (
+                <li key={link.to}>
+                  <Link to={link.to} className="text-neutral-content/70 transition hover:text-secondary">{t(`nav.${link.key}`)}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="mb-4 font-display text-lg font-bold">{t('footer.contact')}</h3>
+            <ul className="space-y-3 text-neutral-content/70">
+              <li className="flex items-center gap-3"><FaLocationDot className="text-secondary" /> {pick(contactInfo.address)}</li>
+              <li className="flex items-center gap-3"><FaPhone className="text-secondary" /> {contactInfo.phone}</li>
+              <li className="flex items-center gap-3"><FaEnvelope className="text-secondary" /> {contactInfo.email}</li>
+            </ul>
           </div>
         </div>
+
+        {/* Giant wordmark */}
+        <p aria-hidden="true" className="pointer-events-none -mb-4 font-display text-[22vw] leading-none font-extrabold text-neutral-content/[0.04] select-none sm:-mb-8 lg:text-[16rem]">
+          {t('site.name')}
+        </p>
       </div>
-      <div className="border-t border-neutral-content/10 py-4 text-center text-sm opacity-70">
-        © {year} {t('site.name')} — {t('footer.rights')}
+
+      <div className="relative border-t border-neutral-content/10 py-5 text-center text-sm text-neutral-content/60">
+        © {num(year)} {t('site.name')} — {t('footer.rights')}
       </div>
     </footer>
   )
