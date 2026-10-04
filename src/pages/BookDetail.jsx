@@ -8,6 +8,7 @@ import BookCover from '../components/BookCover.jsx'
 import Loader from '../components/Loader.jsx'
 import ErrorPage from './ErrorPage.jsx'
 import { categoryName, languageName } from '../data/bookCategories.js'
+import usePageTitle from '../utils/usePageTitle.js'
 
 const BookDetail = () => {
   const { id } = useParams()
@@ -15,6 +16,7 @@ const BookDetail = () => {
   const { user } = useAuth()
   const [book, setBook] = useState(null)
   const [state, setState] = useState('loading')
+  usePageTitle(book?.title ?? t('books.title'))
 
   useEffect(() => {
     let active = true

@@ -2,9 +2,11 @@ import { Link } from 'react-router'
 import { FaArrowLeft } from 'react-icons/fa6'
 import { GiDove } from 'react-icons/gi'
 import useLanguage from '../i18n/useLanguage.js'
+import usePageTitle from '../utils/usePageTitle.js'
 
 const ErrorPage = () => {
   const { t, num } = useLanguage()
+  usePageTitle(t('notFound.title'))
   return (
     <section className="relative grid min-h-screen place-items-center overflow-hidden bg-neutral px-4 text-center text-neutral-content">
       <div className="pointer-events-none absolute top-1/4 left-1/2 size-[30rem] -translate-x-1/2 rounded-full bg-primary/40 blur-3xl" />

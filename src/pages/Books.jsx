@@ -5,6 +5,8 @@ import useLanguage from '../i18n/useLanguage.js'
 import api from '../api/axiosInstance.js'
 import BookCard from '../components/BookCard.jsx'
 import { bookCategories, bookLanguages } from '../data/bookCategories.js'
+import TopReaders from '../components/TopReaders.jsx'
+import usePageTitle from '../utils/usePageTitle.js'
 
 const Skeleton = () => (
   <div>
@@ -17,6 +19,7 @@ const Skeleton = () => (
 const Books = () => {
   const { t, pick, num } = useLanguage()
   const [params, setParams] = useSearchParams()
+  usePageTitle(t('books.title'))
   const [data, setData] = useState({ books: [], total: 0, pages: 1 })
   const [stats, setStats] = useState(null)
   const [state, setState] = useState('loading') // loading | ready | error
@@ -171,6 +174,10 @@ const Books = () => {
             </div>
           </div>
         )}
+
+        <div className="mt-20">
+          <TopReaders />
+        </div>
       </div>
     </>
   )

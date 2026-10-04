@@ -1,6 +1,8 @@
 import { GiDove } from 'react-icons/gi'
+import usePageTitle from '../utils/usePageTitle.js'
 
 const PageHeader = ({ eyebrow, title, subtitle }) => {
+  usePageTitle(title)
   return (
     <section className="relative overflow-hidden bg-neutral text-neutral-content">
       <div className="pointer-events-none absolute -top-32 -left-20 size-96 rounded-full bg-primary/50 blur-3xl" />

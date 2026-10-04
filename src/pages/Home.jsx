@@ -17,6 +17,7 @@ import { subCommittees } from '../data/organization.js'
 import { clubs, weeklyActivities, yearlyPrograms } from '../data/programs.js'
 import { memberTypes } from '../data/policies.js'
 import HomeEvents from '../components/HomeEvents.jsx'
+import usePageTitle from '../utils/usePageTitle.js'
 
 // Bento layout: the first two features are tall, the last two are wide
 const features = [
@@ -30,6 +31,7 @@ const features = [
 
 const Home = () => {
   const { t, pick, num } = useLanguage()
+  usePageTitle(null)
 
   const stats = [
     { value: yearlyPrograms.length, label: t('home.statPrograms') },

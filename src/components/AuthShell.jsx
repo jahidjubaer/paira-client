@@ -1,10 +1,12 @@
 import { FaCheck } from 'react-icons/fa6'
 import { GiDove } from 'react-icons/gi'
 import useLanguage from '../i18n/useLanguage.js'
+import usePageTitle from '../utils/usePageTitle.js'
 
 // Two-column frame for the login and register pages
 const AuthShell = ({ title, text, children }) => {
   const { t } = useLanguage()
+  usePageTitle(title)
   return (
     <section className="mx-auto grid max-w-6xl gap-8 px-4 py-12 lg:grid-cols-[1fr_1.2fr] lg:py-16">
       <aside className="relative hidden overflow-hidden rounded-[2.5rem] bg-neutral p-10 text-neutral-content lg:flex lg:flex-col lg:justify-between">

@@ -4,6 +4,8 @@ import useLanguage from '../../i18n/useLanguage.js'
 import useAuth from '../../context/useAuth.js'
 import StatusBadge from '../../components/StatusBadge.jsx'
 import memberTypeName from '../../data/memberTypeName.js'
+import AdminOverview from '../../components/AdminOverview.jsx'
+import MyBooksSummary from '../../components/MyBooksSummary.jsx'
 
 const statusBox = {
   pending: { icon: FaClock, className: 'alert-warning', title: 'dash.pendingTitle', text: 'dash.pendingText' },
@@ -13,8 +15,9 @@ const statusBox = {
 
 const Overview = () => {
   const { t, pick, date } = useLanguage()
-  const { user } = useAuth()
-  const box = statusBox[user.status]
+  const { user, isAdmin } = useAuth()
+  // Admins don't need the membership status notice
+  const box = isAdmin ? null : statusBox[user.status]
 
   const rows = [
     [t('auth.email'), user.email],
@@ -26,7 +29,9 @@ const Overview = () => {
   ]
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6">
+    <div className="mx-auto max-w-5xl space-y-6">
+      {isAdmin && <AdminOverview />}
+
       {box && (
         <div role="alert" className={`alert alert-soft ${box.className} rounded-2xl`}>
           <box.icon className="size-5" />
@@ -36,6 +41,8 @@ const Overview = () => {
           </div>
         </div>
       )}
+
+      {(user.status === 'approved' || isAdmin) && <MyBooksSummary />}
 
       <div className="overflow-hidden rounded-[2rem] bg-base-100 shadow-sm">
         <div className="relative h-28 bg-gradient-to-r from-primary to-neutral" />

@@ -6,6 +6,7 @@ import useAuth from '../context/useAuth.js'
 import Logo from '../components/Logo.jsx'
 import LanguageToggle from '../components/LanguageToggle.jsx'
 import ScrollToTop from '../components/ScrollToTop.jsx'
+import usePageTitle from '../utils/usePageTitle.js'
 
 const memberLinks = [
   { to: '/dashboard', key: 'overview', icon: FaUser, end: true },
@@ -37,6 +38,7 @@ const DashboardLayout = () => {
   const { t } = useLanguage()
   const { user, logout, isAdmin } = useAuth()
   const navigate = useNavigate()
+  usePageTitle(t('nav.dashboard'))
 
   const handleLogout = () => {
     logout()

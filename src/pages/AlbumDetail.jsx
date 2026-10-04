@@ -10,6 +10,7 @@ import Loader from '../components/Loader.jsx'
 import Lightbox from '../components/Lightbox.jsx'
 import ErrorPage from './ErrorPage.jsx'
 import { nestedFormData } from '../utils/formData.js'
+import usePageTitle from '../utils/usePageTitle.js'
 
 const statusStyle = { pending: 'badge-warning', approved: 'badge-success', rejected: 'badge-error' }
 
@@ -96,6 +97,7 @@ const AlbumDetail = () => {
   const [data, setData] = useState(null)
   const [state, setState] = useState('loading')
   const [open, setOpen] = useState(null)
+  usePageTitle(data ? pick(data.album.title) : t('nav.gallery'))
 
   useEffect(() => {
     let active = true

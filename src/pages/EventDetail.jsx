@@ -6,6 +6,7 @@ import api from '../api/axiosInstance.js'
 import Loader from '../components/Loader.jsx'
 import ErrorPage from './ErrorPage.jsx'
 import { eventCategory } from '../data/eventCategories.js'
+import usePageTitle from '../utils/usePageTitle.js'
 
 const HOUR = 60 * 60 * 1000
 
@@ -18,6 +19,7 @@ const EventDetail = () => {
   const [event, setEvent] = useState(null)
   const [state, setState] = useState('loading')
   const [now, setNow] = useState(0)
+  usePageTitle(event ? pick(event.title) : t('nav.events'))
 
   useEffect(() => {
     let active = true
