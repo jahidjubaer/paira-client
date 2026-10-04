@@ -16,6 +16,7 @@ import { vision } from '../data/about.js'
 import { subCommittees } from '../data/organization.js'
 import { clubs, weeklyActivities, yearlyPrograms } from '../data/programs.js'
 import { memberTypes } from '../data/policies.js'
+import HomeEvents from '../components/HomeEvents.jsx'
 
 // Bento layout: the first two features are tall, the last two are wide
 const features = [
@@ -151,6 +152,9 @@ const Home = () => {
           ))}
         </div>
       </section>
+
+      {/* ---------- Upcoming events + notices (from the API) ---------- */}
+      <HomeEvents />
 
       {/* ---------- Weekly schedule ---------- */}
       <section className="bg-base-200 py-24">

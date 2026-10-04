@@ -10,6 +10,8 @@ import Login from '../pages/Login.jsx'
 import Register from '../pages/Register.jsx'
 import Books from '../pages/Books.jsx'
 import BookDetail from '../pages/BookDetail.jsx'
+import Events from '../pages/Events.jsx'
+import EventDetail from '../pages/EventDetail.jsx'
 import ComingSoon from '../pages/ComingSoon.jsx'
 import ErrorPage from '../pages/ErrorPage.jsx'
 import PrivateRoute from './PrivateRoute.jsx'
@@ -38,7 +40,8 @@ const router = createBrowserRouter([
       { path: 'register', element: <Register /> },
       { path: 'books', element: <Books /> },
       { path: 'books/:id', element: <BookDetail /> },
-      placeholder('events'),
+      { path: 'events', element: <Events /> },
+      { path: 'events/:id', element: <EventDetail /> },
       placeholder('gallery'),
       placeholder('donate'),
     ],
@@ -58,6 +61,8 @@ const router = createBrowserRouter([
           { path: 'members', lazy: lazyPage(() => import('../pages/dashboard/ManageMembers.jsx')) },
           { path: 'books', lazy: lazyPage(() => import('../pages/dashboard/ManageBooks.jsx')) },
           { path: 'loans', lazy: lazyPage(() => import('../pages/dashboard/Loans.jsx')) },
+          { path: 'events', lazy: lazyPage(() => import('../pages/dashboard/ManageEvents.jsx')) },
+          { path: 'notices', lazy: lazyPage(() => import('../pages/dashboard/ManageNotices.jsx')) },
           { path: 'messages', lazy: lazyPage(() => import('../pages/dashboard/Messages.jsx')) },
         ],
       },
