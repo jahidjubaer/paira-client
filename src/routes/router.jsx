@@ -19,6 +19,8 @@ import Finance from '../pages/Finance.jsx'
 import Volunteer from '../pages/Volunteer.jsx'
 import VerifyMember from '../pages/VerifyMember.jsx'
 import Scholarship from '../pages/Scholarship.jsx'
+import MediaList from '../pages/MediaList.jsx'
+import MediaDetail from '../pages/MediaDetail.jsx'
 import ErrorPage from '../pages/ErrorPage.jsx'
 import PrivateRoute from './PrivateRoute.jsx'
 import AdminRoute from './AdminRoute.jsx'
@@ -52,6 +54,10 @@ const router = createBrowserRouter([
       { path: 'volunteer', element: <Volunteer /> },
       { path: 'member/:memberNo', element: <VerifyMember /> },
       { path: 'scholarship', element: <Scholarship /> },
+      { path: 'archive', element: <MediaList key="archive" collection="archive" /> },
+      { path: 'archive/:id', element: <MediaDetail collection="archive" /> },
+      { path: 'podcast', element: <MediaList key="podcast" collection="podcast" /> },
+      { path: 'podcast/:id', element: <MediaDetail collection="podcast" /> },
     ],
   },
   {
@@ -75,6 +81,7 @@ const router = createBrowserRouter([
           { path: 'reservations', lazy: lazyPage(() => import('../pages/dashboard/Reservations.jsx')) },
           { path: 'reminders', lazy: lazyPage(() => import('../pages/dashboard/Reminders.jsx')) },
           { path: 'scholarships', lazy: lazyPage(() => import('../pages/dashboard/Scholarships.jsx')) },
+          { path: 'media', lazy: lazyPage(() => import('../pages/dashboard/ManageMedia.jsx')) },
           { path: 'events', lazy: lazyPage(() => import('../pages/dashboard/ManageEvents.jsx')) },
           { path: 'events/:id/registrations', lazy: lazyPage(() => import('../pages/dashboard/EventRegistrations.jsx')) },
           { path: 'events/:id/certificate', lazy: lazyPage(() => import('../pages/dashboard/Certificate.jsx')) },

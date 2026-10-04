@@ -11,6 +11,8 @@ export const mainLinks = [
 export const moreLinks = [
   { to: '/organization', key: 'organization' },
   { to: '/policies', key: 'policies' },
+  { to: '/archive', key: 'archive' },
+  { to: '/podcast', key: 'podcast' },
   { to: '/scholarship', key: 'scholarship' },
   { to: '/volunteer', key: 'volunteer' },
   { to: '/donate', key: 'donate' },
