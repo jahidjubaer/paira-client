@@ -10,6 +10,7 @@ import SectionTitle from '../components/SectionTitle.jsx'
 import CopyButton from '../components/CopyButton.jsx'
 import { fundName, funds, paymentMethods } from '../data/funds.js'
 import { paymentInfo } from '../data/site.js'
+import OnlineDonation from '../components/OnlineDonation.jsx'
 
 const Donate = () => {
   const { t, pick, num, date, money } = useLanguage()
@@ -17,6 +18,12 @@ const Donate = () => {
   const [fund, setFund] = useState('scholarship')
   const [method, setMethod] = useState('bkash')
   const [sending, setSending] = useState(false)
+  const [payEnabled, setPayEnabled] = useState(false)
+  const [mode, setMode] = useState('online')
+
+  useEffect(() => {
+    api.get('/payments/config').then(({ data }) => setPayEnabled(data.enabled)).catch(() => {})
+  }, [])
 
   useEffect(() => {
     api.get('/donations/public').then(({ data }) => setStats(data)).catch(() => setStats({ donors: [], funds: {} }))
@@ -110,58 +117,73 @@ const Donate = () => {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="h-fit rounded-[2rem] bg-base-100 p-6 shadow-sm sm:p-8">
-            <h2 className="text-2xl font-bold">{t('donate.formTitle')}</h2>
-            <p className="mt-1 text-sm text-base-content/60">{t('donate.formText')}</p>
+          <div className="h-fit space-y-4">
+            {payEnabled && (
+              <div role="tablist" className="tabs tabs-box w-fit">
+                {['online', 'report'].map((m) => (
+                  <button key={m} type="button" role="tab" className={`tab ${mode === m ? 'tab-active' : ''}`} onClick={() => setMode(m)}>
+                    {t(m === 'online' ? 'pay.online' : 'pay.report')}
+                  </button>
+                ))}
+              </div>
+            )}
+            {payEnabled && mode === 'online' ? (
+              <OnlineDonation fund={fund} setFund={setFund} />
+            ) : (
+            <form onSubmit={handleSubmit} className="rounded-[2rem] bg-base-100 p-6 shadow-sm sm:p-8">
+              <h2 className="text-2xl font-bold">{t('donate.formTitle')}</h2>
+              <p className="mt-1 text-sm text-base-content/60">{t('donate.formText')}</p>
 
-            <div className="mt-6 grid gap-4 sm:grid-cols-2">
-              <label className="block sm:col-span-2">
-                <span className="mb-1 block text-sm font-medium">{t('donate.fund')}</span>
-                <select value={fund} onChange={(e) => setFund(e.target.value)} className="select w-full">
-                  {funds.map((f) => <option key={f.id} value={f.id}>{pick(f.name)}</option>)}
-                </select>
-              </label>
-              <label className="block">
-                <span className="mb-1 block text-sm font-medium">{t('donate.amount')}</span>
-                <input name="amount" type="number" min="1" required inputMode="numeric" className="input w-full" />
-              </label>
-              <label className="block">
-                <span className="mb-1 block text-sm font-medium">{t('donate.method')}</span>
-                <select value={method} onChange={(e) => setMethod(e.target.value)} className="select w-full">
-                  {paymentMethods.map((m) => <option key={m.id} value={m.id}>{pick(m.name)}</option>)}
-                </select>
-              </label>
-              {method !== 'cash' && (
+              <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 <label className="block sm:col-span-2">
-                  <span className="mb-1 block text-sm font-medium">{t('donate.transactionId')}</span>
-                  <input name="transactionId" required maxLength={60} className="input w-full font-mono" />
+                  <span className="mb-1 block text-sm font-medium">{t('donate.fund')}</span>
+                  <select value={fund} onChange={(e) => setFund(e.target.value)} className="select w-full">
+                    {funds.map((f) => <option key={f.id} value={f.id}>{pick(f.name)}</option>)}
+                  </select>
                 </label>
-              )}
-              <label className="block">
-                <span className="mb-1 block text-sm font-medium">{t('donate.name')}</span>
-                <input name="donorName" required maxLength={100} autoComplete="name" className="input w-full" />
-              </label>
-              <label className="block">
-                <span className="mb-1 block text-sm font-medium">{t('donate.phone')}</span>
-                <input name="phone" type="tel" maxLength={20} autoComplete="tel" className="input w-full" />
-              </label>
-              <label className="block sm:col-span-2">
-                <span className="mb-1 block text-sm font-medium">{t('donate.email')}</span>
-                <input name="email" type="email" maxLength={150} autoComplete="email" className="input w-full" />
-              </label>
-              <label className="block sm:col-span-2">
-                <span className="mb-1 block text-sm font-medium">{t('donate.note')}</span>
-                <textarea name="note" rows={2} maxLength={500} className="textarea w-full" />
-              </label>
-              <label className="flex cursor-pointer items-center gap-3 sm:col-span-2">
-                <input name="isAnonymous" type="checkbox" className="checkbox checkbox-primary checkbox-sm" />
-                <span className="text-sm">{t('donate.anonymous')}</span>
-              </label>
-            </div>
-            <button disabled={sending} className="btn btn-accent btn-lg mt-6 w-full rounded-full">
-              {sending ? <span className="loading loading-spinner" /> : <FaHandHoldingHeart />} {t('donate.submit')}
-            </button>
-          </form>
+                <label className="block">
+                  <span className="mb-1 block text-sm font-medium">{t('donate.amount')}</span>
+                  <input name="amount" type="number" min="1" required inputMode="numeric" className="input w-full" />
+                </label>
+                <label className="block">
+                  <span className="mb-1 block text-sm font-medium">{t('donate.method')}</span>
+                  <select value={method} onChange={(e) => setMethod(e.target.value)} className="select w-full">
+                    {paymentMethods.filter((m) => m.id !== 'online').map((m) => <option key={m.id} value={m.id}>{pick(m.name)}</option>)}
+                  </select>
+                </label>
+                {method !== 'cash' && (
+                  <label className="block sm:col-span-2">
+                    <span className="mb-1 block text-sm font-medium">{t('donate.transactionId')}</span>
+                    <input name="transactionId" required maxLength={60} className="input w-full font-mono" />
+                  </label>
+                )}
+                <label className="block">
+                  <span className="mb-1 block text-sm font-medium">{t('donate.name')}</span>
+                  <input name="donorName" required maxLength={100} autoComplete="name" className="input w-full" />
+                </label>
+                <label className="block">
+                  <span className="mb-1 block text-sm font-medium">{t('donate.phone')}</span>
+                  <input name="phone" type="tel" maxLength={20} autoComplete="tel" className="input w-full" />
+                </label>
+                <label className="block sm:col-span-2">
+                  <span className="mb-1 block text-sm font-medium">{t('donate.email')}</span>
+                  <input name="email" type="email" maxLength={150} autoComplete="email" className="input w-full" />
+                </label>
+                <label className="block sm:col-span-2">
+                  <span className="mb-1 block text-sm font-medium">{t('donate.note')}</span>
+                  <textarea name="note" rows={2} maxLength={500} className="textarea w-full" />
+                </label>
+                <label className="flex cursor-pointer items-center gap-3 sm:col-span-2">
+                  <input name="isAnonymous" type="checkbox" className="checkbox checkbox-primary checkbox-sm" />
+                  <span className="text-sm">{t('donate.anonymous')}</span>
+                </label>
+              </div>
+              <button disabled={sending} className="btn btn-accent btn-lg mt-6 w-full rounded-full">
+                {sending ? <span className="loading loading-spinner" /> : <FaHandHoldingHeart />} {t('donate.submit')}
+              </button>
+            </form>
+            )}
+          </div>
         </div>
       </section>
 

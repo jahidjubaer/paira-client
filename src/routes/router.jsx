@@ -15,6 +15,7 @@ import EventDetail from '../pages/EventDetail.jsx'
 import Gallery from '../pages/Gallery.jsx'
 import AlbumDetail from '../pages/AlbumDetail.jsx'
 import Donate from '../pages/Donate.jsx'
+import DonateResult from '../pages/DonateResult.jsx'
 import Finance from '../pages/Finance.jsx'
 import Volunteer from '../pages/Volunteer.jsx'
 import VerifyMember from '../pages/VerifyMember.jsx'
@@ -50,6 +51,7 @@ const router = createBrowserRouter([
       { path: 'gallery', element: <Gallery /> },
       { path: 'gallery/:id', element: <AlbumDetail /> },
       { path: 'donate', element: <Donate /> },
+      { path: 'donate/result', element: <DonateResult /> },
       { path: 'finance', element: <Finance /> },
       { path: 'volunteer', element: <Volunteer /> },
       { path: 'member/:memberNo', element: <VerifyMember /> },

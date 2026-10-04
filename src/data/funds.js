@@ -32,6 +32,7 @@ export const paymentMethods = [
   { id: 'rocket', name: { bn: 'রকেট', en: 'Rocket' } },
   { id: 'bank', name: { bn: 'ব্যাংক', en: 'Bank' } },
   { id: 'cash', name: { bn: 'নগদ টাকা (হাতে)', en: 'Cash (in person)' } },
+  { id: 'online', name: { bn: 'অনলাইন (SSLCommerz)', en: 'Online (SSLCommerz)' } },
   { id: 'other', name: { bn: 'অন্যান্য', en: 'Other' } },
 ]
 
