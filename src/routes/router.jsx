@@ -8,6 +8,8 @@ import Policies from '../pages/Policies.jsx'
 import Contact from '../pages/Contact.jsx'
 import Login from '../pages/Login.jsx'
 import Register from '../pages/Register.jsx'
+import Books from '../pages/Books.jsx'
+import BookDetail from '../pages/BookDetail.jsx'
 import ComingSoon from '../pages/ComingSoon.jsx'
 import ErrorPage from '../pages/ErrorPage.jsx'
 import PrivateRoute from './PrivateRoute.jsx'
@@ -34,7 +36,8 @@ const router = createBrowserRouter([
       { path: 'contact', element: <Contact /> },
       { path: 'login', element: <Login /> },
       { path: 'register', element: <Register /> },
-      placeholder('books'),
+      { path: 'books', element: <Books /> },
+      { path: 'books/:id', element: <BookDetail /> },
       placeholder('events'),
       placeholder('gallery'),
       placeholder('donate'),
@@ -48,10 +51,13 @@ const router = createBrowserRouter([
       { index: true, lazy: lazyPage(() => import('../pages/dashboard/Overview.jsx')) },
       { path: 'profile', lazy: lazyPage(() => import('../pages/dashboard/EditProfile.jsx')) },
       { path: 'password', lazy: lazyPage(() => import('../pages/dashboard/ChangePassword.jsx')) },
+      { path: 'my-books', lazy: lazyPage(() => import('../pages/dashboard/MyBooks.jsx')) },
       {
         element: <AdminRoute><Outlet /></AdminRoute>,
         children: [
           { path: 'members', lazy: lazyPage(() => import('../pages/dashboard/ManageMembers.jsx')) },
+          { path: 'books', lazy: lazyPage(() => import('../pages/dashboard/ManageBooks.jsx')) },
+          { path: 'loans', lazy: lazyPage(() => import('../pages/dashboard/Loans.jsx')) },
           { path: 'messages', lazy: lazyPage(() => import('../pages/dashboard/Messages.jsx')) },
         ],
       },

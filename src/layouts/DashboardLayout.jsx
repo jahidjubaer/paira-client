@@ -1,6 +1,6 @@
 import { Link, NavLink, Outlet, useNavigate } from 'react-router'
 import toast from 'react-hot-toast'
-import { FaArrowLeft, FaBars, FaEnvelope, FaKey, FaRightFromBracket, FaUser, FaUserPen, FaUsers } from 'react-icons/fa6'
+import { FaArrowLeft, FaArrowRightArrowLeft, FaBars, FaBook, FaBookOpen, FaEnvelope, FaKey, FaRightFromBracket, FaUser, FaUserPen, FaUsers } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
 import useAuth from '../context/useAuth.js'
 import Logo from '../components/Logo.jsx'
@@ -9,12 +9,15 @@ import ScrollToTop from '../components/ScrollToTop.jsx'
 
 const memberLinks = [
   { to: '/dashboard', key: 'overview', icon: FaUser, end: true },
+  { to: '/dashboard/my-books', key: 'myBooks', icon: FaBookOpen },
   { to: '/dashboard/profile', key: 'editProfile', icon: FaUserPen },
   { to: '/dashboard/password', key: 'changePassword', icon: FaKey },
 ]
 
 const adminLinks = [
   { to: '/dashboard/members', key: 'members', icon: FaUsers },
+  { to: '/dashboard/loans', key: 'loans', icon: FaArrowRightArrowLeft },
+  { to: '/dashboard/books', key: 'books', icon: FaBook },
   { to: '/dashboard/messages', key: 'messages', icon: FaEnvelope },
 ]
 
