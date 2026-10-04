@@ -919,6 +919,16 @@ const en = {
     generated: 'Generated on',
     none: 'None',
   },
+  isbn: {
+    lookup: 'Look up by ISBN',
+    scan: 'Scan barcode',
+    scanTitle: 'Hold the barcode on the back of the book in front of the camera',
+    hint: 'Type the ISBN and press Enter, or scan the barcode — title, author, publisher, year and cover are filled in (works for most English books).',
+    invalid: 'Not a valid ISBN',
+    notFound: 'No details found online — please type them in',
+    found: 'Found',
+    nothingToFill: 'Found, but all fields are already filled',
+  },
   notFound: {
     title: 'Page not found',
     text: 'The page you are looking for does not exist or has been moved.',

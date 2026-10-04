@@ -7,6 +7,7 @@ import api from '../../api/axiosInstance.js'
 import apiError from '../../api/apiError.js'
 import Loader from '../../components/Loader.jsx'
 import ImageUrlField from '../../components/ImageUrlField.jsx'
+import IsbnField from '../../components/IsbnField.jsx'
 import BookCover from '../../components/BookCover.jsx'
 import { bookCategories, bookLanguages, categoryName } from '../../data/bookCategories.js'
 
@@ -81,7 +82,6 @@ const ManageBooks = () => {
     { name: 'author', label: t('books.author'), required: true, maxLength: 150 },
     { name: 'publisher', label: t('books.publisher'), maxLength: 150 },
     { name: 'publishedYear', label: t('books.year'), type: 'number', min: 1000, max: 3000 },
-    { name: 'isbn', label: t('books.isbn'), maxLength: 20 },
     { name: 'totalCopies', label: t('books.totalCopies'), type: 'number', min: 0, max: 1000, required: true },
     { name: 'shelf', label: t('books.shelf'), maxLength: 30 },
     { name: 'donatedBy', label: t('books.donatedBy'), maxLength: 100 },
@@ -188,6 +188,9 @@ const ManageBooks = () => {
           <h3 className="text-2xl font-bold">{editing?._id ? t('borrow.editBook') : t('borrow.addBook')}</h3>
           {editing && (
             <form key={editing._id ?? 'new'} onSubmit={handleSave} className="mt-6 grid gap-4 sm:grid-cols-2">
+              <div className="sm:col-span-2">
+                <IsbnField defaultValue={editing.isbn ?? ''} />
+              </div>
               {textFields.map(({ name, label, wide, ...props }) => (
                 <label key={name} className={`block ${wide ? 'sm:col-span-2' : ''}`}>
                   <span className="mb-1 block text-sm font-medium">{label}</span>
