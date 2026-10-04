@@ -37,6 +37,7 @@ const bn = {
   },
   common: {
     backHome: 'হোমে ফিরে যান',
+    offline: 'আপনি এখন অফলাইনে আছেন — ইন্টারনেট ফিরলে নতুন তথ্য দেখা যাবে।',
     language: 'English',
   },
   home: {

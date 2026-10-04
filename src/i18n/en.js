@@ -37,6 +37,7 @@ const en = {
   },
   common: {
     backHome: 'Back to Home',
+    offline: 'You are offline — new information will load when the internet is back.',
     language: 'বাংলা',
   },
   home: {
