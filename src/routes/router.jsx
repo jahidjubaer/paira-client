@@ -17,6 +17,7 @@ import AlbumDetail from '../pages/AlbumDetail.jsx'
 import Donate from '../pages/Donate.jsx'
 import Finance from '../pages/Finance.jsx'
 import Volunteer from '../pages/Volunteer.jsx'
+import VerifyMember from '../pages/VerifyMember.jsx'
 import ErrorPage from '../pages/ErrorPage.jsx'
 import PrivateRoute from './PrivateRoute.jsx'
 import AdminRoute from './AdminRoute.jsx'
@@ -48,6 +49,7 @@ const router = createBrowserRouter([
       { path: 'donate', element: <Donate /> },
       { path: 'finance', element: <Finance /> },
       { path: 'volunteer', element: <Volunteer /> },
+      { path: 'member/:memberNo', element: <VerifyMember /> },
     ],
   },
   {
@@ -59,10 +61,12 @@ const router = createBrowserRouter([
       { path: 'profile', lazy: lazyPage(() => import('../pages/dashboard/EditProfile.jsx')) },
       { path: 'password', lazy: lazyPage(() => import('../pages/dashboard/ChangePassword.jsx')) },
       { path: 'my-books', lazy: lazyPage(() => import('../pages/dashboard/MyBooks.jsx')) },
+      { path: 'card', lazy: lazyPage(() => import('../pages/dashboard/MyCard.jsx')) },
       {
         element: <AdminRoute><Outlet /></AdminRoute>,
         children: [
           { path: 'members', lazy: lazyPage(() => import('../pages/dashboard/ManageMembers.jsx')) },
+          { path: 'members/:id/card', lazy: lazyPage(() => import('../pages/dashboard/MyCard.jsx')) },
           { path: 'books', lazy: lazyPage(() => import('../pages/dashboard/ManageBooks.jsx')) },
           { path: 'books/import', lazy: lazyPage(() => import('../pages/dashboard/ImportBooks.jsx')) },
           { path: 'loans', lazy: lazyPage(() => import('../pages/dashboard/Loans.jsx')) },

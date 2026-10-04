@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import { FaCheck, FaMagnifyingGlass, FaTrash, FaXmark } from 'react-icons/fa6'
+import { Link } from 'react-router'
+import { FaCheck, FaIdCard, FaMagnifyingGlass, FaTrash, FaXmark } from 'react-icons/fa6'
 import useLanguage from '../../i18n/useLanguage.js'
 import useAuth from '../../context/useAuth.js'
 import api from '../../api/axiosInstance.js'
@@ -128,7 +129,7 @@ const ManageMembers = () => {
                 return (
                   <tr key={u._id} className="hover:bg-base-200/50">
                     <td>
-                      <p className="font-semibold">{u.name}</p>
+                      <p className="font-semibold">{u.name} {u.memberNo && <span className="ml-1 font-mono text-xs text-base-content/50">{u.memberNo}</span>}</p>
                       <p className="text-xs text-base-content/60">{u.email}{u.phone && ` · ${u.phone}`}</p>
                       <p className="text-xs text-base-content/50">{date(u.createdAt)}{u.institution && ` · ${u.institution}`}</p>
                     </td>
@@ -157,6 +158,11 @@ const ManageMembers = () => {
                     </td>
                     <td>
                       <div className="flex justify-end gap-1">
+                        {u.memberNo && (
+                          <Link to={`/dashboard/members/${u._id}/card`} className="btn btn-sm btn-ghost" title={t('card.memberCard')} aria-label={t('card.memberCard')}>
+                            <FaIdCard />
+                          </Link>
+                        )}
                         {u.status !== 'approved' && (
                           <button onClick={() => update(u._id, { status: 'approved' })} className="btn btn-sm btn-success btn-soft" title={t('dash.approve')}>
                             <FaCheck /> <span className="hidden xl:inline">{t('dash.approve')}</span>

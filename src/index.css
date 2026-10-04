@@ -140,6 +140,34 @@
   }
 }
 
+/* Printing: when a page has a .print-area (member card, certificate), print only that */
+@media print {
+  @page {
+    margin: 12mm;
+  }
+  body:has(.print-area) * {
+    visibility: hidden;
+  }
+  body:has(.print-area) .print-area,
+  body:has(.print-area) .print-area * {
+    visibility: visible;
+  }
+  .print-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  /* Same layout as on screen (448px wide), scaled to a real ID card: 85.6mm ≈ 323.5px */
+  .member-card {
+    width: 448px;
+    max-width: none;
+    zoom: 0.722;
+    box-shadow: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import { FaArrowRotateRight, FaCheck, FaTriangleExclamation } from 'react-icons/fa6'
+import { FaArrowRotateRight, FaCheck, FaQrcode, FaTriangleExclamation } from 'react-icons/fa6'
 import useLanguage from '../../i18n/useLanguage.js'
 import api from '../../api/axiosInstance.js'
 import apiError from '../../api/apiError.js'
@@ -8,6 +8,8 @@ import Loader from '../../components/Loader.jsx'
 import LoanStatus from '../../components/LoanStatus.jsx'
 import SearchPicker from '../../components/SearchPicker.jsx'
 import daysUntil from '../../utils/daysUntil.js'
+import ScanDialog from '../../components/ScanDialog.jsx'
+import { memberNoFromText } from '../../utils/memberNo.js'
 
 const tabs = ['borrowed', 'overdue', 'returned', 'lost']
 
@@ -27,6 +29,7 @@ const Loans = () => {
   const [member, setMember] = useState(null)
   const [book, setBook] = useState(null)
   const [issuing, setIssuing] = useState(false)
+  const [scanning, setScanning] = useState(false)
   const [lostLoan, setLostLoan] = useState(null)
   const lostDialog = useRef(null)
 
@@ -46,6 +49,20 @@ const Loans = () => {
     setLoading(true)
     apply()
     setReloadKey((k) => k + 1)
+  }
+
+  // A scanned member card: find that approved member and select them
+  const handleScan = async (text) => {
+    setScanning(false)
+    const memberNo = memberNoFromText(text)
+    const found = memberNo && (await fetchMembers(memberNo).catch(() => []))
+    const match = found?.find((u) => u.memberNo === memberNo)
+    if (match) {
+      setMember(match)
+      toast.success(`${t('card.scanned')}: ${match.name}`)
+    } else {
+      toast.error(t('card.notFound'))
+    }
   }
 
   const handleIssue = async (e) => {
@@ -84,7 +101,7 @@ const Loans = () => {
     (u) => (
       <>
         <p className="truncate font-medium">{u.name}</p>
-        <p className="truncate text-xs text-base-content/60">{u.email}{u.phone && ` · ${u.phone}`}</p>
+        <p className="truncate text-xs text-base-content/60">{u.memberNo && `${u.memberNo} · `}{u.email}{u.phone && ` · ${u.phone}`}</p>
       </>
     ),
     [],
@@ -108,7 +125,14 @@ const Loans = () => {
       <form onSubmit={handleIssue} className="rounded-[2rem] bg-base-100 p-6 shadow-sm">
         <h2 className="text-xl font-bold">{t('borrow.issueBook')}</h2>
         <div className="mt-4 grid gap-4 md:grid-cols-2">
-          <SearchPicker label={t('borrow.member')} placeholder={t('borrow.searchMember')} fetcher={fetchMembers} renderItem={memberLabel} value={member} onChange={setMember} />
+          <div className="flex items-end gap-2">
+            <div className="min-w-0 flex-1">
+              <SearchPicker label={t('borrow.member')} placeholder={t('borrow.searchMember')} fetcher={fetchMembers} renderItem={memberLabel} value={member} onChange={setMember} />
+            </div>
+            <button type="button" onClick={() => setScanning(true)} className="btn btn-outline" title={t('card.scan')} aria-label={t('card.scan')}>
+              <FaQrcode />
+            </button>
+          </div>
           <SearchPicker label={t('borrow.book')} placeholder={t('borrow.searchBook')} fetcher={fetchBooks} renderItem={bookLabel} value={book} onChange={setBook} />
           <label className="block">
             <span className="mb-1 block text-sm font-medium">{t('borrow.due')}</span>
@@ -217,6 +241,8 @@ const Loans = () => {
           <button className="btn btn-sm join-item" disabled={page >= result.pages} onClick={() => refetch(() => setPage((p) => p + 1))}>{t('dash.next')}</button>
         </div>
       )}
+
+      <ScanDialog open={scanning} onClose={() => setScanning(false)} onResult={handleScan} formats={['qr_code']} />
 
       <dialog ref={lostDialog} className="modal">
         <form

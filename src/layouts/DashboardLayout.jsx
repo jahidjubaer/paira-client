@@ -1,6 +1,6 @@
 import { Link, NavLink, Outlet, useNavigate } from 'react-router'
 import toast from 'react-hot-toast'
-import { FaArrowLeft, FaArrowRightArrowLeft, FaBars, FaBook, FaBookOpen, FaCalendarDays, FaCamera, FaChartPie, FaHandHoldingHeart, FaHandshake, FaImages, FaClipboardList, FaEnvelope, FaKey, FaRightFromBracket, FaUser, FaUserPen, FaUsers } from 'react-icons/fa6'
+import { FaArrowLeft, FaArrowRightArrowLeft, FaBars, FaBook, FaBookOpen, FaCalendarDays, FaCamera, FaChartPie, FaHandHoldingHeart, FaHandshake, FaIdCard, FaImages, FaClipboardList, FaEnvelope, FaKey, FaRightFromBracket, FaUser, FaUserPen, FaUsers } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
 import useAuth from '../context/useAuth.js'
 import Logo from '../components/Logo.jsx'
@@ -12,6 +12,7 @@ import usePageTitle from '../utils/usePageTitle.js'
 const memberLinks = [
   { to: '/dashboard', key: 'overview', icon: FaUser, end: true },
   { to: '/dashboard/my-books', key: 'myBooks', icon: FaBookOpen },
+  { to: '/dashboard/card', key: 'card', icon: FaIdCard },
   { to: '/dashboard/profile', key: 'editProfile', icon: FaUserPen },
   { to: '/dashboard/password', key: 'changePassword', icon: FaKey },
 ]
