@@ -10,6 +10,7 @@ import ErrorPage from './ErrorPage.jsx'
 import { categoryName, languageName } from '../data/bookCategories.js'
 import usePageTitle from '../utils/usePageTitle.js'
 import ReserveBox from '../components/ReserveBox.jsx'
+import BookReviews from '../components/BookReviews.jsx'
 
 const BookDetail = () => {
   const { id } = useParams()
@@ -93,6 +94,8 @@ const BookDetail = () => {
               </div>
             ))}
           </dl>
+
+          <BookReviews bookId={book._id} />
 
           <div className="mt-10 max-w-2xl rounded-[2rem] bg-neutral p-6 text-neutral-content sm:p-8">
             <h2 className="text-2xl font-bold">{t('books.howToBorrow')}</h2>

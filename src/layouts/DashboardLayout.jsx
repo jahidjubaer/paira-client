@@ -1,6 +1,6 @@
 import { Link, NavLink, Outlet, useNavigate } from 'react-router'
 import toast from 'react-hot-toast'
-import { FaArrowLeft, FaArrowRightArrowLeft, FaBars, FaBell, FaBook, FaBookmark, FaBookOpen, FaCalendarDays, FaCamera, FaChartPie, FaHandHoldingHeart, FaHandshake, FaIdCard, FaImages, FaClipboardList, FaEnvelope, FaGraduationCap, FaKey, FaMicrophoneLines, FaRightFromBracket, FaUser, FaUserPen, FaUsers } from 'react-icons/fa6'
+import { FaArrowLeft, FaArrowRightArrowLeft, FaBars, FaBell, FaBook, FaBookmark, FaBookOpen, FaCalendarDays, FaCamera, FaChartPie, FaHandHoldingHeart, FaHandshake, FaIdCard, FaImages, FaClipboardList, FaEnvelope, FaGraduationCap, FaKey, FaMicrophoneLines, FaRightFromBracket, FaStar, FaTrophy, FaUser, FaUserPen, FaUsers } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
 import useAuth from '../context/useAuth.js'
 import Logo from '../components/Logo.jsx'
@@ -13,6 +13,7 @@ const memberLinks = [
   { to: '/dashboard', key: 'overview', icon: FaUser, end: true },
   { to: '/dashboard/my-books', key: 'myBooks', icon: FaBookOpen },
   { to: '/dashboard/card', key: 'card', icon: FaIdCard },
+  { to: '/dashboard/reading', key: 'reading', icon: FaTrophy },
   { to: '/dashboard/profile', key: 'editProfile', icon: FaUserPen },
   { to: '/dashboard/password', key: 'changePassword', icon: FaKey },
 ]
@@ -28,6 +29,7 @@ const adminLinks = [
   { to: '/dashboard/gallery', key: 'gallery', icon: FaImages },
   { to: '/dashboard/photo-review', key: 'photoReview', icon: FaCamera },
   { to: '/dashboard/media', key: 'media', icon: FaMicrophoneLines },
+  { to: '/dashboard/reviews', key: 'reviews', icon: FaStar },
   { to: '/dashboard/scholarships', key: 'scholarships', icon: FaGraduationCap },
   { to: '/dashboard/donations', key: 'donations', icon: FaHandHoldingHeart },
   { to: '/dashboard/finance', key: 'finance', icon: FaChartPie },

@@ -70,6 +70,7 @@ const router = createBrowserRouter([
       { path: 'password', lazy: lazyPage(() => import('../pages/dashboard/ChangePassword.jsx')) },
       { path: 'my-books', lazy: lazyPage(() => import('../pages/dashboard/MyBooks.jsx')) },
       { path: 'card', lazy: lazyPage(() => import('../pages/dashboard/MyCard.jsx')) },
+      { path: 'reading', lazy: lazyPage(() => import('../pages/dashboard/ReadingChallenge.jsx')) },
       {
         element: <AdminRoute><Outlet /></AdminRoute>,
         children: [
@@ -82,6 +83,7 @@ const router = createBrowserRouter([
           { path: 'reminders', lazy: lazyPage(() => import('../pages/dashboard/Reminders.jsx')) },
           { path: 'scholarships', lazy: lazyPage(() => import('../pages/dashboard/Scholarships.jsx')) },
           { path: 'media', lazy: lazyPage(() => import('../pages/dashboard/ManageMedia.jsx')) },
+          { path: 'reviews', lazy: lazyPage(() => import('../pages/dashboard/ReviewModeration.jsx')) },
           { path: 'events', lazy: lazyPage(() => import('../pages/dashboard/ManageEvents.jsx')) },
           { path: 'events/:id/registrations', lazy: lazyPage(() => import('../pages/dashboard/EventRegistrations.jsx')) },
           { path: 'events/:id/certificate', lazy: lazyPage(() => import('../pages/dashboard/Certificate.jsx')) },
