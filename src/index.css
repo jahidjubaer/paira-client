@@ -140,6 +140,11 @@
   }
 }
 
+@page certificate {
+  size: A4 landscape;
+  margin: 0;
+}
+
 /* Printing: when a page has a .print-area (member card, certificate), print only that */
 @media print {
   @page {
@@ -158,6 +163,15 @@
     left: 0;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+  }
+  /* Certificates print on their own A4 landscape page, edge to edge */
+  .certificate {
+    page: certificate;
+    width: 297mm;
+    height: 210mm;
+    aspect-ratio: auto;
+    border-radius: 0;
+    box-shadow: none;
   }
   /* Same layout as on screen (448px wide), scaled to a real ID card: 85.6mm ≈ 323.5px */
   .member-card {

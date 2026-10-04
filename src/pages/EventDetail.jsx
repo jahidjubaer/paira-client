@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router'
-import { FaArrowLeft, FaCalendarPlus, FaClock, FaLocationDot } from 'react-icons/fa6'
+import { FaArrowLeft, FaCalendarPlus, FaClock, FaLocationDot, FaTrophy } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
 import api from '../api/axiosInstance.js'
 import Loader from '../components/Loader.jsx'
 import ErrorPage from './ErrorPage.jsx'
 import { eventCategory } from '../data/eventCategories.js'
 import usePageTitle from '../utils/usePageTitle.js'
+import EventRegistration from '../components/EventRegistration.jsx'
 
 const HOUR = 60 * 60 * 1000
 
@@ -19,6 +20,7 @@ const EventDetail = () => {
   const [event, setEvent] = useState(null)
   const [state, setState] = useState('loading')
   const [now, setNow] = useState(0)
+  const [registered, setRegistered] = useState(0)
   usePageTitle(event ? pick(event.title) : t('nav.events'))
 
   useEffect(() => {
@@ -28,6 +30,7 @@ const EventDetail = () => {
       .then(({ data }) => {
         if (!active) return
         setEvent(data.event)
+        setRegistered(data.registered ?? 0)
         setNow(Date.now())
         setState('ready')
       })
@@ -81,35 +84,55 @@ const EventDetail = () => {
       </header>
 
       <div className="mx-auto grid max-w-5xl gap-8 px-4 py-12 lg:grid-cols-[1fr_20rem]">
-        <div className="text-lg leading-relaxed whitespace-pre-line">{description}</div>
+        <div>
+          <div className="text-lg leading-relaxed whitespace-pre-line">{description}</div>
 
-        <aside className="h-fit space-y-5 rounded-[2rem] bg-base-200 p-6">
-          <div className="flex gap-3">
-            <FaClock className="mt-1 shrink-0 text-primary" />
-            <div>
-              <p className="text-sm text-base-content/60">{t('events.when')}</p>
-              <p className="font-semibold">{date(start, fullDate)}</p>
-              <p className="text-sm">
-                {date(start, time)}
-                {event.endsAt && ` – ${end.toDateString() === start.toDateString() ? date(end, time) : date(end, { ...fullDate, ...time })}`}
-              </p>
-            </div>
-          </div>
-          {location && (
+          {event.results?.length > 0 && (
+            <section className="mt-10 rounded-[2rem] bg-secondary/20 p-6 sm:p-8">
+              <h2 className="flex items-center gap-2 text-2xl font-bold"><FaTrophy className="text-accent" /> {t('reg.results')}</h2>
+              <ol className="mt-5 space-y-2">
+                {event.results.map((r, i) => (
+                  <li key={i} className="flex items-center gap-4 rounded-2xl bg-base-100 px-4 py-3">
+                    <span className="min-w-12 font-display text-xl font-bold text-accent">{r.position}</span>
+                    <span className="flex-1 font-semibold">{r.name}</span>
+                    {r.detail && <span className="text-sm text-base-content/60">{r.detail}</span>}
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )}
+        </div>
+
+        <div className="space-y-5">
+          <aside className="h-fit space-y-5 rounded-[2rem] bg-base-200 p-6">
             <div className="flex gap-3">
-              <FaLocationDot className="mt-1 shrink-0 text-primary" />
+              <FaClock className="mt-1 shrink-0 text-primary" />
               <div>
-                <p className="text-sm text-base-content/60">{t('events.where')}</p>
-                <p className="font-semibold">{location}</p>
+                <p className="text-sm text-base-content/60">{t('events.when')}</p>
+                <p className="font-semibold">{date(start, fullDate)}</p>
+                <p className="text-sm">
+                  {date(start, time)}
+                  {event.endsAt && ` – ${end.toDateString() === start.toDateString() ? date(end, time) : date(end, { ...fullDate, ...time })}`}
+                </p>
               </div>
             </div>
-          )}
-          {end >= now && (
-            <a href={calendarUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary w-full rounded-full">
-              <FaCalendarPlus /> {t('events.addToCalendar')}
-            </a>
-          )}
-        </aside>
+            {location && (
+              <div className="flex gap-3">
+                <FaLocationDot className="mt-1 shrink-0 text-primary" />
+                <div>
+                  <p className="text-sm text-base-content/60">{t('events.where')}</p>
+                  <p className="font-semibold">{location}</p>
+                </div>
+              </div>
+            )}
+            {end >= now && (
+              <a href={calendarUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary w-full rounded-full">
+                <FaCalendarPlus /> {t('events.addToCalendar')}
+              </a>
+            )}
+          </aside>
+          <EventRegistration event={event} registered={registered} now={now} onRegistered={() => setRegistered((n) => n + 1)} />
+        </div>
       </div>
     </article>
   )

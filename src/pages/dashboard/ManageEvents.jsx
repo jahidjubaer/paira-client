@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router'
 import toast from 'react-hot-toast'
-import { FaPen, FaPlus, FaTrash } from 'react-icons/fa6'
+import { FaPen, FaPlus, FaTrash, FaUsers, FaXmark } from 'react-icons/fa6'
 import useLanguage from '../../i18n/useLanguage.js'
 import api from '../../api/axiosInstance.js'
 import apiError from '../../api/apiError.js'
@@ -20,6 +21,7 @@ const ManageEvents = () => {
   const [editing, setEditing] = useState(null)
   const [toDelete, setToDelete] = useState(null)
   const [saving, setSaving] = useState(false)
+  const [results, setResults] = useState([])
   const formDialog = useRef(null)
   const deleteDialog = useRef(null)
 
@@ -43,6 +45,7 @@ const ManageEvents = () => {
 
   const openForm = (event) => {
     setEditing(event)
+    setResults((event.results ?? []).map((r) => ({ ...r })))
     formDialog.current?.showModal()
   }
 
@@ -51,6 +54,12 @@ const ManageEvents = () => {
     const data = nestedFormData(e.currentTarget)
     data.startsAt = fromLocalInput(data.startsAt)
     data.endsAt = fromLocalInput(data.endsAt)
+    data.registration = {
+      open: data.registration?.open === 'on',
+      capacity: Number(data.registration?.capacity) || 0,
+      deadline: fromLocalInput(data.registration?.deadline),
+    }
+    data.results = results.filter((r) => r.name.trim())
     setSaving(true)
     try {
       if (editing._id) await api.patch(`/events/${editing._id}`, data)
@@ -128,6 +137,11 @@ const ManageEvents = () => {
                   <td>{pick(eventCategory(ev.category).name)}</td>
                   <td>
                     <div className="flex justify-end gap-1">
+                      {ev.registration?.open && (
+                        <Link to={`/dashboard/events/${ev._id}/registrations`} className="btn btn-sm btn-ghost" title={t('reg.manage')} aria-label={t('reg.manage')}>
+                          <FaUsers />
+                        </Link>
+                      )}
                       <button onClick={() => openForm(ev)} className="btn btn-sm btn-ghost" aria-label={t('events.editEvent')}><FaPen /></button>
                       <button
                         onClick={() => {
@@ -183,6 +197,43 @@ const ManageEvents = () => {
               </label>
               <BiField name="location" label={t('events.locationField')} value={editing.location} maxLength={200} />
               <BiField name="description" label={t('events.descriptionField')} value={editing.description} maxLength={5000} multiline rows={5} />
+
+              {/* Online registration */}
+              <fieldset className="grid gap-3 rounded-2xl bg-base-200 p-4 sm:col-span-2 sm:grid-cols-2">
+                <label className="flex cursor-pointer items-center gap-3 sm:col-span-2">
+                  <input name="registration.open" type="checkbox" defaultChecked={editing.registration?.open} className="toggle toggle-primary" />
+                  <span className="font-medium">{t('reg.allowRegistration')}</span>
+                </label>
+                <label className="block">
+                  <span className="mb-1 block text-sm">{t('reg.capacity')}</span>
+                  <input name="registration.capacity" type="number" min="0" defaultValue={editing.registration?.capacity ?? 0} className="input input-sm w-full" />
+                </label>
+                <label className="block">
+                  <span className="mb-1 block text-sm">{t('reg.deadlineField')}</span>
+                  <input name="registration.deadline" type="datetime-local" defaultValue={toLocalInput(editing.registration?.deadline)} className="input input-sm w-full" />
+                </label>
+              </fieldset>
+
+              {/* Results */}
+              <fieldset className="rounded-2xl bg-base-200 p-4 sm:col-span-2">
+                <legend className="mb-2 text-sm font-medium">{t('reg.resultsField')}</legend>
+                <div className="space-y-2">
+                  {results.map((r, i) => {
+                    const set = (key, value) => setResults((list) => list.map((x, j) => (j === i ? { ...x, [key]: value } : x)))
+                    return (
+                      <div key={i} className="flex gap-2">
+                        <input value={r.position} onChange={(e) => set('position', e.target.value)} maxLength={30} placeholder={t('reg.position')} className="input input-sm w-20" />
+                        <input value={r.name} onChange={(e) => set('name', e.target.value)} maxLength={100} placeholder={t('reg.winner')} className="input input-sm flex-1" />
+                        <input value={r.detail} onChange={(e) => set('detail', e.target.value)} maxLength={150} placeholder={t('reg.detail')} className="input input-sm flex-1" />
+                        <button type="button" onClick={() => setResults((list) => list.filter((_, j) => j !== i))} className="btn btn-sm btn-ghost btn-square" aria-label={t('dash.delete')}><FaXmark /></button>
+                      </div>
+                    )
+                  })}
+                </div>
+                <button type="button" onClick={() => setResults((list) => [...list, { position: '', name: '', detail: '' }])} className="btn btn-ghost btn-xs mt-2 rounded-full">
+                  <FaPlus /> {t('reg.addRow')}
+                </button>
+              </fieldset>
               <div className="modal-action sm:col-span-2">
                 <button type="button" className="btn rounded-full" onClick={() => formDialog.current?.close()}>{t('dash.cancel')}</button>
                 <button type="submit" disabled={saving} className="btn btn-primary rounded-full px-8">
