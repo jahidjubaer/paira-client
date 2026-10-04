@@ -1,6 +1,6 @@
 import { Link, NavLink, Outlet, useNavigate } from 'react-router'
 import toast from 'react-hot-toast'
-import { FaArrowLeft, FaArrowRightArrowLeft, FaBars, FaBell, FaBook, FaBookmark, FaBookOpen, FaCalendarDays, FaCamera, FaChartPie, FaHandHoldingHeart, FaHandshake, FaIdCard, FaImages, FaClipboardList, FaEnvelope, FaGraduationCap, FaKey, FaMicrophoneLines, FaRightFromBracket, FaStar, FaTrophy, FaUser, FaUserPen, FaUsers } from 'react-icons/fa6'
+import { FaArrowLeft, FaArrowRightArrowLeft, FaBars, FaBell, FaBook, FaBookmark, FaBookOpen, FaCalendarDays, FaCamera, FaChartPie, FaHandHoldingHeart, FaHandshake, FaIdCard, FaImages, FaClipboardList, FaEnvelope, FaFileLines, FaGraduationCap, FaKey, FaMicrophoneLines, FaRightFromBracket, FaStar, FaTrophy, FaUser, FaUserPen, FaUsers } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
 import useAuth from '../context/useAuth.js'
 import Logo from '../components/Logo.jsx'
@@ -20,6 +20,11 @@ const memberLinks = [
 
 // Staff menu, grouped by the area each role manages (see utils/roles.js)
 const staffSections = [
+  {
+    area: 'staff',
+    title: 'dash.staffArea',
+    links: [{ to: '/dashboard/reports', key: 'reports', icon: FaFileLines }],
+  },
   {
     area: 'library',
     title: 'dash.libraryArea',

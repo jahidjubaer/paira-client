@@ -74,6 +74,10 @@ const router = createBrowserRouter([
       { path: 'card', lazy: lazyPage(() => import('../pages/dashboard/MyCard.jsx')) },
       { path: 'reading', lazy: lazyPage(() => import('../pages/dashboard/ReadingChallenge.jsx')) },
       {
+        element: <AdminRoute area="staff"><Outlet /></AdminRoute>,
+        children: [{ path: 'reports', lazy: lazyPage(() => import('../pages/dashboard/Reports.jsx')) }],
+      },
+      {
         element: <AdminRoute area="library"><Outlet /></AdminRoute>,
         children: [
           { path: 'members', lazy: lazyPage(() => import('../pages/dashboard/ManageMembers.jsx')) },
@@ -106,6 +110,7 @@ const router = createBrowserRouter([
           { path: 'finance', lazy: lazyPage(() => import('../pages/dashboard/FinanceReports.jsx')) },
           { path: 'volunteers', lazy: lazyPage(() => import('../pages/dashboard/Volunteers.jsx')) },
           { path: 'messages', lazy: lazyPage(() => import('../pages/dashboard/Messages.jsx')) },
+          { path: 'reports/annual', lazy: lazyPage(() => import('../pages/dashboard/AnnualReport.jsx')) },
         ],
       },
     ],

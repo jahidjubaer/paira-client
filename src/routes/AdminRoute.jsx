@@ -2,7 +2,7 @@ import { Navigate } from 'react-router'
 import useAuth from '../context/useAuth.js'
 import Loader from '../components/Loader.jsx'
 
-// Guards dashboard pages by area: area="library" | "content" | "admin" (admin-only when omitted)
+// Guards dashboard pages by area: "library" | "content" | "staff" (any staff role) | "admin" (default)
 const AdminRoute = ({ area = 'admin', children }) => {
   const { user, loading, can } = useAuth()
 

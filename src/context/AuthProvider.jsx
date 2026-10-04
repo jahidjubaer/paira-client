@@ -59,8 +59,8 @@ const AuthProvider = ({ children }) => {
 
   const isAdmin = user?.role === 'admin'
   const isStaff = STAFF_ROLES.includes(user?.role)
-  // can('library' | 'content' | 'admin') — which dashboard areas this user manages
-  const can = (area) => Boolean(user) && (area === 'admin' ? isAdmin : canAccess(user.role, area))
+  // can('library' | 'content' | 'staff' | 'admin') — which dashboard areas this user manages
+  const can = (area) => Boolean(user) && (area === 'admin' ? isAdmin : area === 'staff' ? isStaff : canAccess(user.role, area))
 
   return (
     <AuthContext.Provider value={{ user, setUser, loading, login, register, logout, refreshUser, isAdmin, isStaff, can }}>
