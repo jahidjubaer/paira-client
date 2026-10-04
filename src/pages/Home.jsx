@@ -204,7 +204,7 @@ const Home = () => {
             <Link to="/donate" className="btn btn-accent btn-lg rounded-full px-8">
               <FaHandHoldingHeart /> {t('home.donate')}
             </Link>
-            <Link to="/contact" className="btn btn-ghost btn-lg rounded-full text-neutral-content hover:bg-neutral-content/10">
+            <Link to="/volunteer" className="btn btn-ghost btn-lg rounded-full text-neutral-content hover:bg-neutral-content/10">
               {t('home.volunteer')}
             </Link>
           </div>

@@ -43,8 +43,11 @@ const LanguageProvider = ({ children }) => {
   const date = (value, options = { day: 'numeric', month: 'long', year: 'numeric' }) =>
     value ? new Intl.DateTimeFormat(lang === 'bn' ? 'bn-BD' : 'en-GB', options).format(new Date(value)) : ''
 
+  // money(150000) -> '৳১,৫০,০০০' / '৳1,50,000' (Bangladeshi lakh grouping)
+  const money = (n) => `৳${new Intl.NumberFormat(lang === 'bn' ? 'bn-BD' : 'en-IN', { maximumFractionDigits: 0 }).format(n ?? 0)}`
+
   return (
-    <LanguageContext.Provider value={{ lang, setLang, toggleLang, t, pick, num, date }}>
+    <LanguageContext.Provider value={{ lang, setLang, toggleLang, t, pick, num, date, money }}>
       {children}
     </LanguageContext.Provider>
   )

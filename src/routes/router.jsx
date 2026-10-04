@@ -14,7 +14,9 @@ import Events from '../pages/Events.jsx'
 import EventDetail from '../pages/EventDetail.jsx'
 import Gallery from '../pages/Gallery.jsx'
 import AlbumDetail from '../pages/AlbumDetail.jsx'
-import ComingSoon from '../pages/ComingSoon.jsx'
+import Donate from '../pages/Donate.jsx'
+import Finance from '../pages/Finance.jsx'
+import Volunteer from '../pages/Volunteer.jsx'
 import ErrorPage from '../pages/ErrorPage.jsx'
 import PrivateRoute from './PrivateRoute.jsx'
 import AdminRoute from './AdminRoute.jsx'
@@ -22,9 +24,6 @@ import DashboardShell from '../layouts/DashboardShell.jsx'
 
 // Dashboard pages are loaded only when opened
 const lazyPage = (load) => async () => ({ Component: (await load()).default })
-
-// Pages built in later tasks show a "coming soon" screen for now
-const placeholder = (path) => ({ path, element: <ComingSoon key={path} titleKey={`nav.${path}`} /> })
 
 const router = createBrowserRouter([
   {
@@ -46,7 +45,9 @@ const router = createBrowserRouter([
       { path: 'events/:id', element: <EventDetail /> },
       { path: 'gallery', element: <Gallery /> },
       { path: 'gallery/:id', element: <AlbumDetail /> },
-      placeholder('donate'),
+      { path: 'donate', element: <Donate /> },
+      { path: 'finance', element: <Finance /> },
+      { path: 'volunteer', element: <Volunteer /> },
     ],
   },
   {
@@ -68,6 +69,9 @@ const router = createBrowserRouter([
           { path: 'notices', lazy: lazyPage(() => import('../pages/dashboard/ManageNotices.jsx')) },
           { path: 'gallery', lazy: lazyPage(() => import('../pages/dashboard/ManageGallery.jsx')) },
           { path: 'photo-review', lazy: lazyPage(() => import('../pages/dashboard/PhotoReview.jsx')) },
+          { path: 'donations', lazy: lazyPage(() => import('../pages/dashboard/Donations.jsx')) },
+          { path: 'finance', lazy: lazyPage(() => import('../pages/dashboard/FinanceReports.jsx')) },
+          { path: 'volunteers', lazy: lazyPage(() => import('../pages/dashboard/Volunteers.jsx')) },
           { path: 'messages', lazy: lazyPage(() => import('../pages/dashboard/Messages.jsx')) },
         ],
       },
