@@ -1,6 +1,6 @@
 import { Link, NavLink, Outlet, useNavigate } from 'react-router'
 import toast from 'react-hot-toast'
-import { FaArrowLeft, FaArrowRightArrowLeft, FaBars, FaBook, FaBookOpen, FaCalendarDays, FaCamera, FaChartPie, FaHandHoldingHeart, FaHandshake, FaIdCard, FaImages, FaClipboardList, FaEnvelope, FaKey, FaRightFromBracket, FaUser, FaUserPen, FaUsers } from 'react-icons/fa6'
+import { FaArrowLeft, FaArrowRightArrowLeft, FaBars, FaBook, FaBookmark, FaBookOpen, FaCalendarDays, FaCamera, FaChartPie, FaHandHoldingHeart, FaHandshake, FaIdCard, FaImages, FaClipboardList, FaEnvelope, FaKey, FaRightFromBracket, FaUser, FaUserPen, FaUsers } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
 import useAuth from '../context/useAuth.js'
 import Logo from '../components/Logo.jsx'
@@ -20,6 +20,7 @@ const memberLinks = [
 const adminLinks = [
   { to: '/dashboard/members', key: 'members', icon: FaUsers },
   { to: '/dashboard/loans', key: 'loans', icon: FaArrowRightArrowLeft },
+  { to: '/dashboard/reservations', key: 'reservations', icon: FaBookmark },
   { to: '/dashboard/books', key: 'books', icon: FaBook },
   { to: '/dashboard/events', key: 'events', icon: FaCalendarDays },
   { to: '/dashboard/notices', key: 'notices', icon: FaClipboardList },

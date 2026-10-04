@@ -7,6 +7,7 @@ import BookCover from '../../components/BookCover.jsx'
 import Loader from '../../components/Loader.jsx'
 import LoanStatus from '../../components/LoanStatus.jsx'
 import daysUntil from '../../utils/daysUntil.js'
+import MyReservations from '../../components/MyReservations.jsx'
 
 const MyBooks = () => {
   const { t, num, date } = useLanguage()
@@ -67,6 +68,8 @@ const MyBooks = () => {
           </div>
         )}
       </section>
+
+      <MyReservations />
 
       {past.length > 0 && (
         <section>

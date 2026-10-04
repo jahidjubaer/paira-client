@@ -70,6 +70,7 @@ const router = createBrowserRouter([
           { path: 'books', lazy: lazyPage(() => import('../pages/dashboard/ManageBooks.jsx')) },
           { path: 'books/import', lazy: lazyPage(() => import('../pages/dashboard/ImportBooks.jsx')) },
           { path: 'loans', lazy: lazyPage(() => import('../pages/dashboard/Loans.jsx')) },
+          { path: 'reservations', lazy: lazyPage(() => import('../pages/dashboard/Reservations.jsx')) },
           { path: 'events', lazy: lazyPage(() => import('../pages/dashboard/ManageEvents.jsx')) },
           { path: 'events/:id/registrations', lazy: lazyPage(() => import('../pages/dashboard/EventRegistrations.jsx')) },
           { path: 'events/:id/certificate', lazy: lazyPage(() => import('../pages/dashboard/Certificate.jsx')) },

@@ -9,12 +9,14 @@ import Loader from '../components/Loader.jsx'
 import ErrorPage from './ErrorPage.jsx'
 import { categoryName, languageName } from '../data/bookCategories.js'
 import usePageTitle from '../utils/usePageTitle.js'
+import ReserveBox from '../components/ReserveBox.jsx'
 
 const BookDetail = () => {
   const { id } = useParams()
   const { t, pick, num } = useLanguage()
   const { user } = useAuth()
   const [book, setBook] = useState(null)
+  const [queue, setQueue] = useState(null)
   const [state, setState] = useState('loading')
   usePageTitle(book?.title ?? t('books.title'))
 
@@ -25,6 +27,7 @@ const BookDetail = () => {
       .then(({ data }) => {
         if (!active) return
         setBook(data.book)
+        setQueue(data.queue ?? null)
         setState('ready')
       })
       .catch(() => active && setState('error'))
@@ -68,6 +71,8 @@ const BookDetail = () => {
             <span className={`size-2 rounded-full ${available ? 'bg-success' : 'bg-base-content/40'}`} />
             {available ? t('books.available') : t('books.unavailable')} · {num(book.availableCopies)}/{num(book.totalCopies)} {t('books.copies')}
           </div>
+
+          <ReserveBox book={book} queue={queue} />
 
           {book.readUrl && (
             <div className="mt-6 flex max-w-2xl flex-wrap items-center gap-4 rounded-[1.5rem] bg-primary/10 p-5">

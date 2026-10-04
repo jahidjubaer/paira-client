@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 import {
   FaBook,
+  FaBookmark,
   FaCalendarDays,
   FaCamera,
   FaClock,
@@ -19,6 +20,7 @@ import api from '../api/axiosInstance.js'
 const tiles = [
   { key: 'pendingMembers', to: '/dashboard/members', icon: FaUserClock, alert: true },
   { key: 'overdueLoans', to: '/dashboard/loans', icon: FaClock, alert: true },
+  { key: 'readyHolds', to: '/dashboard/reservations', icon: FaBookmark, alert: true },
   { key: 'pendingDonations', to: '/dashboard/donations', icon: FaHandHoldingHeart, alert: true },
   { key: 'unreadMessages', to: '/dashboard/messages', icon: FaEnvelope, alert: true },
   { key: 'pendingPhotos', to: '/dashboard/photo-review', icon: FaCamera, alert: true },
