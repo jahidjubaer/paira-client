@@ -11,16 +11,47 @@
   --color-base-content: oklch(25% 0.03 60);
   --color-primary: oklch(45% 0.12 160);
   --color-primary-content: oklch(98% 0.01 160);
-  --color-secondary: oklch(65% 0.15 60);
-  --color-secondary-content: oklch(20% 0.03 60);
-  --color-accent: oklch(55% 0.16 25);
-  --color-accent-content: oklch(98% 0.01 25);
-  --color-neutral: oklch(30% 0.03 160);
+  --color-secondary: oklch(80% 0.14 75);
+  --color-secondary-content: oklch(25% 0.05 60);
+  --color-accent: oklch(52% 0.16 35);
+  --color-accent-content: oklch(98% 0.01 35);
+  --color-neutral: oklch(27% 0.04 165);
   --color-neutral-content: oklch(95% 0.01 160);
-  --radius-box: 1rem;
-  --radius-field: 0.5rem;
+  --radius-box: 1.25rem;
+  --radius-field: 0.75rem;
+  --radius-selector: 2rem;
 }
 
 @theme {
-  --font-sans: "Hind Siliguri", ui-sans-serif, system-ui, sans-serif;
+  /* Latin glyphs come from the first font; Bangla falls through to the Bangla font */
+  --font-sans: "Plus Jakarta Sans", "Hind Siliguri", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque", "Anek Bangla", ui-sans-serif, system-ui, sans-serif;
+
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+}
+
+@layer base {
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+  :lang(bn) h1, :lang(bn) h2, :lang(bn) h3, :lang(bn) h4 {
+    letter-spacing: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee, .animate-float {
+    animation: none;
+  }
 }

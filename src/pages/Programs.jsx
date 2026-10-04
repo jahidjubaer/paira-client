@@ -68,7 +68,7 @@ const Programs = () => {
                   <span className="block size-3 rounded-full bg-primary" />
                 </div>
                 <div className="timeline-end mb-6 ml-2">
-                  <p className="text-sm font-semibold text-secondary">{pick(e.when)}</p>
+                  <p className="text-sm font-semibold text-accent">{pick(e.when)}</p>
                   <h3 className="text-lg font-bold">{pick(e.title)}</h3>
                   <p className="opacity-80">{pick(e.text)}</p>
                 </div>
@@ -171,7 +171,7 @@ const Programs = () => {
         {/* Events link */}
         <section className="flex flex-col items-center gap-3 rounded-box bg-secondary/15 p-8 text-center sm:flex-row sm:justify-between sm:text-left">
           <p className="flex items-center gap-3 text-lg">
-            <FaCalendarDays className="text-secondary" /> {t('programs.upcoming')}
+            <FaCalendarDays className="text-accent" /> {t('programs.upcoming')}
           </p>
           <Link to="/events" className="btn btn-primary">
             {t('programs.seeEvents')} <FaArrowRight />

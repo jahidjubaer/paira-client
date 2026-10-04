@@ -135,21 +135,21 @@ const Organization = () => {
           <div className="grid gap-6 md:grid-cols-3">
             <div className="card bg-base-200">
               <div className="card-body">
-                <FaCoins className="size-7 text-secondary" />
+                <FaCoins className="size-7 text-accent" />
                 <h3 className="card-title">{t('org.incomeSources')}</h3>
                 <CheckList items={incomeSources} />
               </div>
             </div>
             <div className="card bg-base-200">
               <div className="card-body">
-                <FaBuildingColumns className="size-7 text-secondary" />
+                <FaBuildingColumns className="size-7 text-accent" />
                 <h3 className="card-title">{t('org.bankAccount')}</h3>
                 <p>{pick(bankRule)}</p>
               </div>
             </div>
             <div className="card bg-base-200">
               <div className="card-body">
-                <FaUsers className="size-7 text-secondary" />
+                <FaUsers className="size-7 text-accent" />
                 <h3 className="card-title">{t('org.transparency')}</h3>
                 <CheckList items={transparency} />
               </div>

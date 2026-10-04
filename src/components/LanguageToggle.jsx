@@ -4,9 +4,9 @@ import useLanguage from '../i18n/useLanguage.js'
 const LanguageToggle = () => {
   const { t, toggleLang } = useLanguage()
   return (
-    <button onClick={toggleLang} className="btn btn-sm btn-outline btn-primary" aria-label="Change language">
+    <button onClick={toggleLang} className="btn btn-sm btn-ghost rounded-full" aria-label="Change language">
       <MdTranslate className="size-4" />
-      {t('common.language')}
+      <span className="hidden sm:inline">{t('common.language')}</span>
     </button>
   )
 }

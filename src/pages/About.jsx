@@ -17,7 +17,7 @@ const About = () => {
         <section className="grid gap-6 md:grid-cols-2">
           <div className="card bg-base-200">
             <div className="card-body">
-              <FaFeatherPointed className="size-8 text-secondary" />
+              <FaFeatherPointed className="size-8 text-accent" />
               <h2 className="card-title text-2xl">{t('about.origin')}</h2>
               <p className="leading-relaxed">{pick(nameOrigin)}</p>
             </div>
@@ -74,7 +74,7 @@ const About = () => {
 
         {/* Heritage */}
         <section className="grid items-center gap-6 rounded-box bg-secondary/15 p-8 md:grid-cols-[auto_1fr]">
-          <FaLandmark className="size-16 text-secondary" />
+          <FaLandmark className="size-16 text-accent" />
           <div>
             <h2 className="text-2xl font-bold">{t('about.heritage')}</h2>
             <p className="mt-2 leading-relaxed">{pick(heritage)}</p>

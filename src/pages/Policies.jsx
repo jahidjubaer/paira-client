@@ -74,7 +74,7 @@ const Policies = () => {
           </div>
           <div className="card bg-secondary/20">
             <div className="card-body">
-              <FaAward className="size-8 text-secondary" />
+              <FaAward className="size-8 text-accent" />
               <h2 className="card-title text-2xl">{t('policies.awards')}</h2>
               <p>{pick(awards)}</p>
             </div>

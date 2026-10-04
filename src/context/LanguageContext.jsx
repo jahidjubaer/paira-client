@@ -39,8 +39,12 @@ const LanguageProvider = ({ children }) => {
   // num(12) -> '১২' in Bangla, '12' in English
   const num = (n) => (lang === 'bn' ? String(n).replace(/\d/g, (d) => '০১২৩৪৫৬৭৮৯'[d]) : String(n))
 
+  // date('2026-10-05') -> '৫ অক্টোবর, ২০২৬' / '5 October 2026'
+  const date = (value, options = { day: 'numeric', month: 'long', year: 'numeric' }) =>
+    value ? new Intl.DateTimeFormat(lang === 'bn' ? 'bn-BD' : 'en-GB', options).format(new Date(value)) : ''
+
   return (
-    <LanguageContext.Provider value={{ lang, setLang, toggleLang, t, pick, num }}>
+    <LanguageContext.Provider value={{ lang, setLang, toggleLang, t, pick, num, date }}>
       {children}
     </LanguageContext.Provider>
   )

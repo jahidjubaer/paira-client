@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router'
+import { createBrowserRouter, Outlet } from 'react-router'
 import MainLayout from '../layouts/MainLayout.jsx'
 import Home from '../pages/Home.jsx'
 import About from '../pages/About.jsx'
@@ -6,8 +6,16 @@ import Organization from '../pages/Organization.jsx'
 import Programs from '../pages/Programs.jsx'
 import Policies from '../pages/Policies.jsx'
 import Contact from '../pages/Contact.jsx'
+import Login from '../pages/Login.jsx'
+import Register from '../pages/Register.jsx'
 import ComingSoon from '../pages/ComingSoon.jsx'
 import ErrorPage from '../pages/ErrorPage.jsx'
+import PrivateRoute from './PrivateRoute.jsx'
+import AdminRoute from './AdminRoute.jsx'
+import DashboardShell from '../layouts/DashboardShell.jsx'
+
+// Dashboard pages are loaded only when opened
+const lazyPage = (load) => async () => ({ Component: (await load()).default })
 
 // Pages built in later tasks show a "coming soon" screen for now
 const placeholder = (path) => ({ path, element: <ComingSoon key={path} titleKey={`nav.${path}`} /> })
@@ -24,12 +32,29 @@ const router = createBrowserRouter([
       { path: 'programs', element: <Programs /> },
       { path: 'policies', element: <Policies /> },
       { path: 'contact', element: <Contact /> },
+      { path: 'login', element: <Login /> },
+      { path: 'register', element: <Register /> },
       placeholder('books'),
       placeholder('events'),
       placeholder('gallery'),
       placeholder('donate'),
-      placeholder('login'),
-      placeholder('register'),
+    ],
+  },
+  {
+    path: '/dashboard',
+    element: <PrivateRoute><DashboardShell /></PrivateRoute>,
+    errorElement: <ErrorPage />,
+    children: [
+      { index: true, lazy: lazyPage(() => import('../pages/dashboard/Overview.jsx')) },
+      { path: 'profile', lazy: lazyPage(() => import('../pages/dashboard/EditProfile.jsx')) },
+      { path: 'password', lazy: lazyPage(() => import('../pages/dashboard/ChangePassword.jsx')) },
+      {
+        element: <AdminRoute><Outlet /></AdminRoute>,
+        children: [
+          { path: 'members', lazy: lazyPage(() => import('../pages/dashboard/ManageMembers.jsx')) },
+          { path: 'messages', lazy: lazyPage(() => import('../pages/dashboard/Messages.jsx')) },
+        ],
+      },
     ],
   },
 ])

@@ -1,0 +1,91 @@
+import { Link, NavLink, Outlet, useNavigate } from 'react-router'
+import toast from 'react-hot-toast'
+import { FaArrowLeft, FaBars, FaEnvelope, FaKey, FaRightFromBracket, FaUser, FaUserPen, FaUsers } from 'react-icons/fa6'
+import useLanguage from '../i18n/useLanguage.js'
+import useAuth from '../context/useAuth.js'
+import Logo from '../components/Logo.jsx'
+import LanguageToggle from '../components/LanguageToggle.jsx'
+import ScrollToTop from '../components/ScrollToTop.jsx'
+
+const memberLinks = [
+  { to: '/dashboard', key: 'overview', icon: FaUser, end: true },
+  { to: '/dashboard/profile', key: 'editProfile', icon: FaUserPen },
+  { to: '/dashboard/password', key: 'changePassword', icon: FaKey },
+]
+
+const adminLinks = [
+  { to: '/dashboard/members', key: 'members', icon: FaUsers },
+  { to: '/dashboard/messages', key: 'messages', icon: FaEnvelope },
+]
+
+const closeDrawer = () => {
+  const toggle = document.getElementById('dash-drawer')
+  if (toggle) toggle.checked = false
+}
+
+const DashboardLayout = () => {
+  const { t } = useLanguage()
+  const { user, logout, isAdmin } = useAuth()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    toast.success(t('auth.loggedOut'))
+    navigate('/')
+  }
+
+  const renderLinks = (links) =>
+    links.map(({ to, key, icon: Icon, end }) => (
+      <li key={to}>
+        <NavLink to={to} end={end} onClick={closeDrawer} className={({ isActive }) => `rounded-xl ${isActive ? 'menu-active' : ''}`}>
+          <Icon /> {t(`dash.${key}`)}
+        </NavLink>
+      </li>
+    ))
+
+  return (
+    <div className="drawer lg:drawer-open">
+      <ScrollToTop />
+      <input id="dash-drawer" type="checkbox" className="drawer-toggle" />
+
+      <div className="drawer-content flex min-h-screen flex-col bg-base-200">
+        <header className="sticky top-0 z-30 flex items-center gap-2 border-b border-base-300 bg-base-100/80 px-4 py-3 backdrop-blur">
+          <label htmlFor="dash-drawer" className="btn btn-ghost btn-square lg:hidden" aria-label="Open menu">
+            <FaBars className="size-5" />
+          </label>
+          <p className="flex-1 truncate font-display text-lg font-semibold">
+            {t('dash.hello')}, {user?.name}
+          </p>
+          <LanguageToggle />
+        </header>
+        <main className="flex-1 p-4 sm:p-8">
+          <Outlet />
+        </main>
+      </div>
+
+      <div className="drawer-side z-40">
+        <label htmlFor="dash-drawer" className="drawer-overlay" aria-label="Close menu" />
+        <aside className="flex min-h-full w-72 flex-col gap-6 bg-base-100 p-5">
+          <Logo />
+          <ul className="menu w-full gap-1 p-0">{renderLinks(memberLinks)}</ul>
+          {isAdmin && (
+            <ul className="menu w-full gap-1 p-0">
+              <li className="menu-title">{t('dash.adminArea')}</li>
+              {renderLinks(adminLinks)}
+            </ul>
+          )}
+          <ul className="menu mt-auto w-full gap-1 p-0">
+            <li>
+              <Link to="/" className="rounded-xl"><FaArrowLeft /> {t('dash.backToSite')}</Link>
+            </li>
+            <li>
+              <button onClick={handleLogout} className="rounded-xl text-error"><FaRightFromBracket /> {t('nav.logout')}</button>
+            </li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  )
+}
+
+export default DashboardLayout
