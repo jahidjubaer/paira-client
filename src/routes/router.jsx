@@ -64,6 +64,7 @@ const router = createBrowserRouter([
         children: [
           { path: 'members', lazy: lazyPage(() => import('../pages/dashboard/ManageMembers.jsx')) },
           { path: 'books', lazy: lazyPage(() => import('../pages/dashboard/ManageBooks.jsx')) },
+          { path: 'books/import', lazy: lazyPage(() => import('../pages/dashboard/ImportBooks.jsx')) },
           { path: 'loans', lazy: lazyPage(() => import('../pages/dashboard/Loans.jsx')) },
           { path: 'events', lazy: lazyPage(() => import('../pages/dashboard/ManageEvents.jsx')) },
           { path: 'notices', lazy: lazyPage(() => import('../pages/dashboard/ManageNotices.jsx')) },

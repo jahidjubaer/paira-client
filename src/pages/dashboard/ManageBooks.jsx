@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import { FaMagnifyingGlass, FaPen, FaPlus, FaTrash } from 'react-icons/fa6'
+import { Link } from 'react-router'
+import { FaFileCsv, FaMagnifyingGlass, FaPen, FaPlus, FaTrash } from 'react-icons/fa6'
 import useLanguage from '../../i18n/useLanguage.js'
 import api from '../../api/axiosInstance.js'
 import apiError from '../../api/apiError.js'
@@ -106,6 +107,9 @@ const ManageBooks = () => {
             <input name="q" placeholder={t('books.search')} className="input join-item w-60" />
             <button className="btn join-item" aria-label={t('books.searchBtn')}><FaMagnifyingGlass /></button>
           </form>
+          <Link to="/dashboard/books/import" className="btn btn-outline rounded-full">
+            <FaFileCsv /> {t('import.open')}
+          </Link>
           <button onClick={() => openForm(emptyBook)} className="btn btn-primary rounded-full">
             <FaPlus /> {t('borrow.addBook')}
           </button>
