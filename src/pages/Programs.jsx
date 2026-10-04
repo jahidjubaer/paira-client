@@ -4,7 +4,18 @@ import useLanguage from '../i18n/useLanguage.js'
 import PageHeader from '../components/PageHeader.jsx'
 import SectionTitle from '../components/SectionTitle.jsx'
 import CheckList from '../components/CheckList.jsx'
-import { clubs, eidCultural, eidSports, outreach, podcast, yearlyPrograms } from '../data/programs.js'
+import {
+  calendarEvents,
+  clubs,
+  eidCultural,
+  eidSports,
+  monthlyActivities,
+  outreach,
+  podcast,
+  specialInitiatives,
+  weeklyActivities,
+  yearlyPrograms,
+} from '../data/programs.js'
 
 const Programs = () => {
   const { t, pick, num } = useLanguage()
@@ -14,6 +25,74 @@ const Programs = () => {
       <PageHeader title={t('nav.programs')} subtitle={t('programs.subtitle')} />
 
       <div className="mx-auto max-w-6xl space-y-16 px-4 py-14">
+        {/* Weekly */}
+        <section>
+          <SectionTitle title={t('programs.weekly')} subtitle={t('programs.weeklyText')} />
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {weeklyActivities.map((a, i) => (
+              <div key={i} className="card border border-base-300">
+                <div className="card-body">
+                  <span className="badge badge-secondary">{pick(a.day)}</span>
+                  <h3 className="card-title">{pick(a.title)}</h3>
+                  <p className="text-sm opacity-80">{pick(a.text)}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Monthly */}
+        <section>
+          <SectionTitle title={t('programs.monthly')} subtitle={t('programs.monthlyText')} />
+          <div className="grid gap-4 sm:grid-cols-2">
+            {monthlyActivities.map((a, i) => (
+              <div key={i} className="flex gap-4 rounded-box bg-base-200 p-5">
+                <FaCalendarDays className="mt-1 size-5 shrink-0 text-primary" />
+                <div>
+                  <h3 className="font-semibold">{pick(a.title)}</h3>
+                  <p className="text-sm opacity-80">{pick(a.text)}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Yearly calendar */}
+        <section>
+          <SectionTitle title={t('programs.calendar')} subtitle={t('programs.calendarText')} />
+          <ul className="timeline timeline-vertical timeline-compact">
+            {calendarEvents.map((e, i) => (
+              <li key={i}>
+                {i > 0 && <hr className="bg-primary/30" />}
+                <div className="timeline-middle">
+                  <span className="block size-3 rounded-full bg-primary" />
+                </div>
+                <div className="timeline-end mb-6 ml-2">
+                  <p className="text-sm font-semibold text-secondary">{pick(e.when)}</p>
+                  <h3 className="text-lg font-bold">{pick(e.title)}</h3>
+                  <p className="opacity-80">{pick(e.text)}</p>
+                </div>
+                {i < calendarEvents.length - 1 && <hr className="bg-primary/30" />}
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {/* Special initiatives */}
+        <section>
+          <SectionTitle title={t('programs.special')} subtitle={t('programs.specialText')} />
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {specialInitiatives.map((s, i) => (
+              <div key={i} className="card border-t-4 border-primary bg-base-200">
+                <div className="card-body">
+                  <h3 className="card-title">{pick(s.title)}</h3>
+                  <p className="opacity-80">{pick(s.text)}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* Yearly programs */}
         <section>
           <SectionTitle title={t('programs.yearly')} />
