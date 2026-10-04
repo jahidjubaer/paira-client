@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+/* Light theme */
 @plugin "daisyui/theme" {
   name: "paira";
   default: true;
@@ -22,6 +23,28 @@
   --radius-selector: 2rem;
 }
 
+/* Dark theme: deep green night, same gold and terracotta accents */
+@plugin "daisyui/theme" {
+  name: "paira-dark";
+  prefersdark: true;
+  color-scheme: dark;
+  --color-base-100: oklch(19% 0.02 165);
+  --color-base-200: oklch(23% 0.025 165);
+  --color-base-300: oklch(30% 0.03 165);
+  --color-base-content: oklch(93% 0.015 90);
+  --color-primary: oklch(72% 0.13 160);
+  --color-primary-content: oklch(18% 0.03 160);
+  --color-secondary: oklch(82% 0.14 75);
+  --color-secondary-content: oklch(22% 0.05 60);
+  --color-accent: oklch(70% 0.15 35);
+  --color-accent-content: oklch(18% 0.03 35);
+  --color-neutral: oklch(14% 0.02 165);
+  --color-neutral-content: oklch(94% 0.01 160);
+  --radius-box: 1.25rem;
+  --radius-field: 0.75rem;
+  --radius-selector: 2rem;
+}
+
 @theme {
   /* Latin glyphs come from the first font; Bangla falls through to the Bangla font */
   --font-sans: "Plus Jakarta Sans", "Hind Siliguri", ui-sans-serif, system-ui, sans-serif;
@@ -29,6 +52,7 @@
 
   --animate-marquee: marquee 40s linear infinite;
   --animate-float: float 6s ease-in-out infinite;
+  --animate-page: page-in 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 
   @keyframes marquee {
     from { transform: translateX(0); }
@@ -38,20 +62,89 @@
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
   }
+  @keyframes page-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+  }
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   h1, h2, h3, h4 {
     font-family: var(--font-display);
     letter-spacing: -0.02em;
+    text-wrap: balance;
   }
   :lang(bn) h1, :lang(bn) h2, :lang(bn) h3, :lang(bn) h4 {
     letter-spacing: 0;
   }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    background: var(--color-secondary);
+    color: var(--color-secondary-content);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+  /* Slim, themed scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklch, var(--color-base-content) 25%, transparent) transparent;
+  }
+}
+
+@layer utilities {
+  /* Fine film-grain texture for dark panels */
+  .grain {
+    position: relative;
+    isolation: isolate;
+  }
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.08;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  /* Soft dotted pattern for light sections */
+  .dots {
+    background-image: radial-gradient(color-mix(in oklch, var(--color-base-content) 12%, transparent) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+  .text-gradient {
+    background: linear-gradient(100deg, var(--color-primary), var(--color-accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* Scroll reveal: sections fade up as they enter the screen (see useReveal.js).
+   Only active once JS has marked <html> as ready, so content never stays hidden without JS. */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-ready [data-reveal] {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .reveal-ready [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-marquee, .animate-float {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-marquee, .animate-float, .animate-page {
     animation: none;
   }
 }

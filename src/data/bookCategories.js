@@ -3,6 +3,7 @@ export const bookCategories = [
   { id: 'novel', name: { bn: 'উপন্যাস', en: 'Novel' } },
   { id: 'story', name: { bn: 'গল্প', en: 'Stories' } },
   { id: 'poetry', name: { bn: 'কবিতা', en: 'Poetry' } },
+  { id: 'drama', name: { bn: 'নাটক', en: 'Drama' } },
   { id: 'history', name: { bn: 'ইতিহাস', en: 'History' } },
   { id: 'liberation-war', name: { bn: 'মুক্তিযুদ্ধ', en: 'Liberation War' } },
   { id: 'science', name: { bn: 'বিজ্ঞান', en: 'Science' } },

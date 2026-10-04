@@ -27,7 +27,7 @@ const Programs = () => {
       <PageHeader eyebrow={t('programs.eyebrow')} title={t('nav.programs')} subtitle={t('programs.subtitle')} />
 
       {/* Quick jump */}
-      <nav className="sticky top-16 z-30 border-b border-base-300 bg-base-100/85 backdrop-blur">
+      <nav className="sticky top-14 z-30 border-b border-base-300 bg-base-100/85 backdrop-blur">
         <div className="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4 py-3">
           {['weekly', 'monthly', 'calendar', 'special', 'eid'].map((id) => (
             <a key={id} href={`#${id}`} className="shrink-0 rounded-full border border-base-300 px-4 py-1.5 text-sm font-medium whitespace-nowrap hover:border-primary hover:text-primary">

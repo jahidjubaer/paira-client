@@ -4,7 +4,7 @@ import usePageTitle from '../utils/usePageTitle.js'
 const PageHeader = ({ eyebrow, title, subtitle }) => {
   usePageTitle(title)
   return (
-    <section className="relative overflow-hidden bg-neutral text-neutral-content">
+    <section className="grain relative overflow-hidden bg-neutral text-neutral-content">
       <div className="pointer-events-none absolute -top-32 -left-20 size-96 rounded-full bg-primary/50 blur-3xl" />
       <div className="pointer-events-none absolute -right-10 -bottom-40 size-80 rounded-full bg-secondary/20 blur-3xl" />
       <GiDove className="pointer-events-none absolute right-6 bottom-4 size-40 text-neutral-content/5 sm:right-16 sm:size-56" />

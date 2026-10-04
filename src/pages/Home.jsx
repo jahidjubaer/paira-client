@@ -17,6 +17,7 @@ import { subCommittees } from '../data/organization.js'
 import { clubs, weeklyActivities, yearlyPrograms } from '../data/programs.js'
 import { memberTypes } from '../data/policies.js'
 import HomeEvents from '../components/HomeEvents.jsx'
+import NewBooksShelf from '../components/NewBooksShelf.jsx'
 import usePageTitle from '../utils/usePageTitle.js'
 
 // Bento layout: the first two features are tall, the last two are wide
@@ -42,7 +43,7 @@ const Home = () => {
   return (
     <>
       {/* ---------- Hero ---------- */}
-      <section className="relative overflow-hidden">
+      <section className="dots relative overflow-hidden">
         <div className="pointer-events-none absolute -top-40 -left-40 size-[32rem] rounded-full bg-secondary/25 blur-3xl" />
         <div className="pointer-events-none absolute top-40 -right-40 size-[28rem] rounded-full bg-primary/15 blur-3xl" />
 
@@ -54,7 +55,7 @@ const Home = () => {
 
             <h1 className="mt-6 text-5xl leading-[1.05] font-extrabold sm:text-6xl xl:text-7xl">
               <span className="block">{t('home.heroTitle1')}</span>
-              <span className="relative inline-block text-primary">
+              <span className="text-gradient relative inline-block pb-1">
                 {t('home.heroTitle2')}
                 <svg className="absolute -bottom-3 left-0 h-3 w-full text-secondary" viewBox="0 0 300 12" preserveAspectRatio="none" aria-hidden="true">
                   <path d="M2 9 C 80 2, 200 2, 298 7" stroke="currentColor" strokeWidth="5" fill="none" strokeLinecap="round" />
@@ -158,6 +159,9 @@ const Home = () => {
       {/* ---------- Upcoming events + notices (from the API) ---------- */}
       <HomeEvents />
 
+      {/* ---------- Newest books (from the API) ---------- */}
+      <NewBooksShelf />
+
       {/* ---------- Weekly schedule ---------- */}
       <section className="bg-base-200 py-24">
         <div className="mx-auto max-w-7xl px-4">
@@ -196,7 +200,7 @@ const Home = () => {
 
       {/* ---------- CTA ---------- */}
       <section className="px-4 pb-24">
-        <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[2.5rem] bg-neutral px-6 py-16 text-center text-neutral-content sm:px-12 sm:py-20">
+        <div className="grain relative mx-auto max-w-7xl overflow-hidden rounded-[2.5rem] bg-neutral px-6 py-16 text-center text-neutral-content sm:px-12 sm:py-20">
           <div className="pointer-events-none absolute -top-24 left-1/2 size-96 -translate-x-1/2 rounded-full bg-primary/40 blur-3xl" />
           <GiDove className="relative mx-auto size-14 text-secondary" />
           <h2 className="relative mt-6 text-4xl font-bold sm:text-5xl">{t('home.ctaTitle')}</h2>

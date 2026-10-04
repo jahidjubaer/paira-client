@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router'
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa6'
+import { FaArrowLeft, FaArrowRight, FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
 import useAuth from '../context/useAuth.js'
 import api from '../api/axiosInstance.js'
@@ -68,6 +68,15 @@ const BookDetail = () => {
             <span className={`size-2 rounded-full ${available ? 'bg-success' : 'bg-base-content/40'}`} />
             {available ? t('books.available') : t('books.unavailable')} · {num(book.availableCopies)}/{num(book.totalCopies)} {t('books.copies')}
           </div>
+
+          {book.readUrl && (
+            <div className="mt-6 flex max-w-2xl flex-wrap items-center gap-4 rounded-[1.5rem] bg-primary/10 p-5">
+              <p className="flex-1 text-sm">{t('books.readOnlineNote')}</p>
+              <a href={book.readUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary rounded-full">
+                {t('books.readOnline')} <FaArrowUpRightFromSquare className="size-3" />
+              </a>
+            </div>
+          )}
 
           {book.description && <p className="mt-8 max-w-2xl leading-relaxed whitespace-pre-line">{book.description}</p>}
 

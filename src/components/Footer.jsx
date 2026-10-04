@@ -19,7 +19,7 @@ const Footer = () => {
   const { t, pick, num } = useLanguage()
 
   return (
-    <footer className="relative overflow-hidden bg-neutral text-neutral-content">
+    <footer className="grain relative overflow-hidden bg-neutral text-neutral-content">
       <div className="pointer-events-none absolute -top-40 right-0 size-96 rounded-full bg-primary/30 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl px-4 pt-16">

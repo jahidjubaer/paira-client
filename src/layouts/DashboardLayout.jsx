@@ -5,6 +5,7 @@ import useLanguage from '../i18n/useLanguage.js'
 import useAuth from '../context/useAuth.js'
 import Logo from '../components/Logo.jsx'
 import LanguageToggle from '../components/LanguageToggle.jsx'
+import ThemeToggle from '../components/ThemeToggle.jsx'
 import ScrollToTop from '../components/ScrollToTop.jsx'
 import usePageTitle from '../utils/usePageTitle.js'
 
@@ -68,6 +69,7 @@ const DashboardLayout = () => {
           <p className="flex-1 truncate font-display text-lg font-semibold">
             {t('dash.hello')}, {user?.name}
           </p>
+          <ThemeToggle />
           <LanguageToggle />
         </header>
         <main className="flex-1 p-4 sm:p-8">

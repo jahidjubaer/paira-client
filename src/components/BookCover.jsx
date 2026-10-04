@@ -23,7 +23,7 @@ const BookCover = ({ book, className = '' }) => {
         alt={book.title}
         loading="lazy"
         onError={() => setBroken(true)}
-        className={`aspect-[2/3] w-full rounded-2xl object-cover shadow-md ${className}`}
+        className={`aspect-[2/3] w-full rounded-2xl object-cover shadow-md shadow-black/20 ${className}`}
       />
     )
   }
@@ -34,9 +34,12 @@ const BookCover = ({ book, className = '' }) => {
       role="img"
       aria-label={book.title}
     >
-      <span className="absolute inset-y-0 left-2 w-px bg-current opacity-20" />
-      <GiDove className="size-5 opacity-60" />
-      <div>
+      {/* Spine shadow + soft gloss so the cover reads as a real book */}
+      <span className="absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-black/25 to-transparent" />
+      <span className="absolute inset-y-0 left-3 w-px bg-current opacity-20" />
+      <span className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/10" />
+      <GiDove className="relative size-5 opacity-60" />
+      <div className="relative">
         <p className="line-clamp-4 font-display text-lg leading-tight font-bold">{book.title}</p>
         <p className="mt-2 line-clamp-2 text-xs opacity-80">{book.author}</p>
       </div>

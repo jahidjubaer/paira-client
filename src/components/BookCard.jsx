@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import { FaGlobe } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
 import BookCover from './BookCover.jsx'
 import { categoryName } from '../data/bookCategories.js'
@@ -9,8 +10,13 @@ const BookCard = ({ book }) => {
 
   return (
     <Link to={`/books/${book._id}`} className="group block">
-      <div className="transition duration-300 group-hover:-translate-y-1.5 group-hover:rotate-[-1deg]">
+      <div className="relative transition duration-300 group-hover:-translate-y-1.5 group-hover:rotate-[-1deg]">
         <BookCover book={book} />
+        {book.readUrl && (
+          <span className="absolute top-2 right-2 grid size-7 place-items-center rounded-full bg-base-100/90 text-primary shadow" title={t('books.freeToRead')}>
+            <FaGlobe className="size-3.5" />
+          </span>
+        )}
       </div>
       <div className="mt-3 space-y-1">
         <p className="text-xs font-medium text-base-content/50">{pick(categoryName(book.category))}</p>

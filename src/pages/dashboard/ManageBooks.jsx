@@ -84,6 +84,7 @@ const ManageBooks = () => {
     { name: 'shelf', label: t('books.shelf'), maxLength: 30 },
     { name: 'donatedBy', label: t('books.donatedBy'), maxLength: 100 },
     { name: 'cover', label: t('borrow.cover'), type: 'url', maxLength: 500, wide: true },
+    { name: 'readUrl', label: t('borrow.readUrl'), type: 'url', maxLength: 500, wide: true },
   ]
 
   return (
