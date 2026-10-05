@@ -5,7 +5,7 @@ import { GiDove } from 'react-icons/gi'
 import useLanguage from '../i18n/useLanguage.js'
 import PageHeader from '../components/PageHeader.jsx'
 import api from '../api/axiosInstance.js'
-import { contactInfo, socialLinks } from '../data/site.js'
+import { contactInfo, openingHours, socialLinks } from '../data/site.js'
 
 const socials = [
   { href: socialLinks.facebook, label: 'Facebook', icon: FaFacebook },
@@ -67,6 +67,15 @@ const Contact = () => {
               </li>
             ))}
           </ul>
+          <div className="relative mt-8 rounded-2xl bg-primary-content/10 p-5">
+            <p className="text-sm text-primary-content/60">{t('contact.hours')}</p>
+            {openingHours.map((h) => (
+              <p key={h.days.en} className="mt-1 flex flex-wrap justify-between gap-x-4">
+                <span className="font-semibold">{pick(h.days)}</span>
+                <span>{pick(h.time)}</span>
+              </p>
+            ))}
+          </div>
           <div className="relative mt-auto pt-10">
             <p className="text-sm text-primary-content/60">{t('footer.follow')}</p>
             <div className="mt-3 flex gap-2">

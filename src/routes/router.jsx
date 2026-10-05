@@ -21,6 +21,7 @@ import VerifyMember from '../pages/VerifyMember.jsx'
 import Scholarship from '../pages/Scholarship.jsx'
 import MediaList from '../pages/MediaList.jsx'
 import MediaDetail from '../pages/MediaDetail.jsx'
+import Faq from '../pages/Faq.jsx'
 import ErrorPage from '../pages/ErrorPage.jsx'
 import PrivateRoute from './PrivateRoute.jsx'
 import AdminRoute from './AdminRoute.jsx'
@@ -54,6 +55,7 @@ const router = createBrowserRouter([
       { path: 'volunteer', element: <Volunteer /> },
       { path: 'member/:memberNo', element: <VerifyMember /> },
       { path: 'scholarship', element: <Scholarship /> },
+      { path: 'faq', element: <Faq /> },
       { path: 'archive', element: <MediaList key="archive" collection="archive" /> },
       { path: 'archive/:id', element: <MediaDetail collection="archive" /> },
       { path: 'podcast', element: <MediaList key="podcast" collection="podcast" /> },

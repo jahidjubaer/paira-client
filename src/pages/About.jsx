@@ -4,6 +4,7 @@ import useLanguage from '../i18n/useLanguage.js'
 import PageHeader from '../components/PageHeader.jsx'
 import SectionTitle from '../components/SectionTitle.jsx'
 import { dissolution, heritage, missions, nameOrigin, objectives, principles, vision } from '../data/about.js'
+import AreaSection from '../components/AreaSection.jsx'
 
 // One icon per core principle, in the same order as data/about.js
 const principleIcons = [GiDove, FaPeopleGroup, FaEye, FaUserCheck, FaHandshake, FaHeart]
@@ -74,6 +75,9 @@ const About = () => {
           })}
         </div>
       </section>
+
+      {/* Our area */}
+      <AreaSection />
 
       {/* Heritage */}
       <section className="px-4 pb-20">

@@ -17,5 +17,6 @@ export const moreLinks = [
   { to: '/volunteer', key: 'volunteer' },
   { to: '/donate', key: 'donate' },
   { to: '/finance', key: 'finance' },
+  { to: '/faq', key: 'faq' },
   { to: '/contact', key: 'contact' },
 ]

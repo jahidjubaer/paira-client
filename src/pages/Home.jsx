@@ -18,6 +18,7 @@ import { clubs, weeklyActivities, yearlyPrograms } from '../data/programs.js'
 import { memberTypes } from '../data/policies.js'
 import HomeEvents from '../components/HomeEvents.jsx'
 import NewBooksShelf from '../components/NewBooksShelf.jsx'
+import { HomeNumbers, HomePhotos, HomeVoices } from '../components/HomeHighlights.jsx'
 import usePageTitle from '../utils/usePageTitle.js'
 
 // Bento layout: the first two features are tall, the last two are wide
@@ -122,6 +123,9 @@ const Home = () => {
         </div>
       </section>
 
+      {/* ---------- Live numbers (from the API) ---------- */}
+      <HomeNumbers />
+
       {/* ---------- Bento: vision + what we do ---------- */}
       <section className="mx-auto max-w-7xl px-4 py-24">
         <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
@@ -197,6 +201,10 @@ const Home = () => {
           ))}
         </div>
       </section>
+
+      {/* ---------- Reader reviews + photos (from the API) ---------- */}
+      <HomeVoices />
+      <HomePhotos />
 
       {/* ---------- CTA ---------- */}
       <section className="px-4 pb-24">

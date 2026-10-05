@@ -5,6 +5,12 @@ export const contactInfo = {
   email: 'info@paira.org',
 }
 
+// Opening hours (sample — update to the committee's decision)
+export const openingHours = [
+  { days: { bn: 'শনি – বৃহস্পতিবার', en: 'Saturday – Thursday' }, time: { bn: 'বিকেল ৩টা – সন্ধ্যা ৭টা', en: '3 PM – 7 PM' } },
+  { days: { bn: 'শুক্রবার', en: 'Friday' }, time: { bn: 'সকাল ১০টা – দুপুর ১২টা (পাঠচক্র)', en: '10 AM – 12 PM (reading circle)' } },
+]
+
 export const socialLinks = {
   facebook: '#',
   youtube: '#',

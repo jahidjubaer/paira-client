@@ -3,7 +3,7 @@ import { FaArrowRight, FaEnvelope, FaFacebook, FaInstagram, FaLinkedin, FaLocati
 import useLanguage from '../i18n/useLanguage.js'
 import Logo from './Logo.jsx'
 import { mainLinks, moreLinks } from './navLinks.js'
-import { contactInfo, socialLinks } from '../data/site.js'
+import { contactInfo, openingHours, socialLinks } from '../data/site.js'
 
 const socials = [
   { href: socialLinks.facebook, label: 'Facebook', icon: FaFacebook },
@@ -62,6 +62,12 @@ const Footer = () => {
               <li className="flex items-center gap-3"><FaLocationDot className="text-secondary" /> {pick(contactInfo.address)}</li>
               <li className="flex items-center gap-3"><FaPhone className="text-secondary" /> {contactInfo.phone}</li>
               <li className="flex items-center gap-3"><FaEnvelope className="text-secondary" /> {contactInfo.email}</li>
+            </ul>
+            <h3 className="mt-6 mb-2 font-display text-lg font-bold">{t('home.hoursTitle')}</h3>
+            <ul className="space-y-1 text-sm text-neutral-content/70">
+              {openingHours.map((h) => (
+                <li key={h.days.en}><span className="font-medium text-neutral-content">{pick(h.days)}:</span> {pick(h.time)}</li>
+              ))}
             </ul>
           </div>
         </div>
