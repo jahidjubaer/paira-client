@@ -54,7 +54,7 @@ const Loans = () => {
   const remind = async (loan) => {
     try {
       const { data } = await api.post(`/borrows/${loan._id}/remind`)
-      const sent = data.result.email === 'sent' || data.result.sms === 'sent'
+      const sent = data.result.email === 'sent'
       if (sent) toast.success(t('remind.remindSent'))
       else toast(t('remind.remindSkipped'))
     } catch (err) {

@@ -33,7 +33,7 @@ const Reminders = () => {
     try {
       const { data } = await api.post('/reminders/run')
       const s = data.summary
-      toast.success(`${t('remind.sentSummary')}: ${num(s.dueSoon + s.overdue)} (${t('remind.emailSent')} ${num(s.emailSent)}, ${t('remind.smsSent')} ${num(s.smsSent)})`)
+      toast.success(`${t('remind.sentSummary')}: ${num(s.dueSoon + s.overdue)} (${t('remind.emailSent')} ${num(s.emailSent)})`)
       setReloadKey((k) => k + 1)
     } catch (err) {
       toast.error(apiError(err, t))
@@ -43,7 +43,6 @@ const Reminders = () => {
   }
 
   if (!data) return <Loader />
-  const anyChannel = data.email || data.sms
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
@@ -59,12 +58,11 @@ const Reminders = () => {
 
       <section className="rounded-[2rem] bg-base-100 p-6 shadow-sm">
         <h2 className="mb-4 text-xl font-bold">{t('remind.channels')}</h2>
-        <div className="grid gap-3 sm:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-2">
           <Channel label={t('remind.email')} on={data.email} />
-          <Channel label={t('remind.sms')} on={data.sms} />
           <Channel label={t('remind.daily')} on={data.cron} />
         </div>
-        {(!anyChannel || !data.cron) && <p className="mt-4 rounded-2xl bg-info/10 p-4 text-sm">{t('remind.setupHint')}</p>}
+        {(!data.email || !data.cron) && <p className="mt-4 rounded-2xl bg-info/10 p-4 text-sm">{t('remind.setupHint')}</p>}
       </section>
 
       <section className="overflow-x-auto rounded-[2rem] bg-base-100 p-6 shadow-sm">
@@ -79,7 +77,6 @@ const Reminders = () => {
                 <th>{t('remind.dueSoon')}</th>
                 <th>{t('remind.overdue')}</th>
                 <th>{t('remind.emailSent')}</th>
-                <th>{t('remind.smsSent')}</th>
                 <th>{t('remind.failed')}</th>
               </tr>
             </thead>
@@ -93,7 +90,6 @@ const Reminders = () => {
                   <td>{num(r.dueSoon)}</td>
                   <td>{num(r.overdue)}</td>
                   <td>{num(r.emailSent)}</td>
-                  <td>{num(r.smsSent)}</td>
                   <td className={r.failed ? 'text-error' : ''}>{num(r.failed)}</td>
                 </tr>
               ))}
