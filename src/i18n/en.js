@@ -36,6 +36,18 @@ const en = {
     address: 'Takerghat, Bangladesh',
     rights: 'All rights reserved.',
   },
+  install: {
+    title: 'Install the Paira app',
+    text: 'Open it with one tap from your home screen — fast, and it works offline.',
+    button: 'Install',
+    later: 'Not now',
+    iosBefore: 'In Safari, tap',
+    iosAfter: 'Share, then “Add to Home Screen”.',
+  },
+  update: {
+    text: 'A new version of the site is out.',
+    refresh: 'Refresh',
+  },
   search: {
     title: 'Search',
     placeholder: 'Search books, events, notices or pages…',

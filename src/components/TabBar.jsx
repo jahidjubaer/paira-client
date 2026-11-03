@@ -7,6 +7,8 @@ const useHideOnScroll = () => {
   const [hidden, setHidden] = useState(false)
 
   useEffect(() => {
+    // In the installed app the bar stays, like a native app's
+    if (window.matchMedia('(display-mode: standalone)').matches) return
     let last = window.scrollY
     const onScroll = () => {
       const y = window.scrollY

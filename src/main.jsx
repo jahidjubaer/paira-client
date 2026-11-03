@@ -8,6 +8,7 @@ import LanguageProvider from './context/LanguageContext.jsx'
 import AuthProvider from './context/AuthProvider.jsx'
 import SiteSettingsProvider from './context/SiteSettingsProvider.jsx'
 import OfflineBanner from './components/OfflineBanner.jsx'
+import UpdateNotice from './components/UpdateNotice.jsx'
 import { initTheme } from './utils/theme.js'
 
 initTheme()
@@ -19,6 +20,7 @@ createRoot(document.getElementById('root')).render(
         <SiteSettingsProvider>
           <RouterProvider router={router} />
           <OfflineBanner />
+          <UpdateNotice />
           <Toaster position="top-center" toastOptions={{
               style: {
                 borderRadius: '999px',

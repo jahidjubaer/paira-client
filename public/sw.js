@@ -2,7 +2,8 @@
 // - Pages: network first, fall back to the cached app shell when offline
 // - Built JS/CSS (/assets, hashed names): cache first
 // - Images, icons, fonts: show cached copy, refresh in the background
-// - API calls and other sites' requests are never cached
+// - API calls, /version.json and other sites' requests are never cached
+// 'paira-v1' is replaced with a per-build name by vite.config.js (buildStamp)
 const VERSION = 'paira-v1'
 const SHELL = ['/', '/index.html', '/manifest.webmanifest', '/favicon.svg', '/hero-takerghat.svg', '/icons/icon-192.png']
 
@@ -25,7 +26,7 @@ self.addEventListener('fetch', (event) => {
   if (request.method !== 'GET') return
   const url = new URL(request.url)
   const sameOrigin = url.origin === self.location.origin
-  if ((!sameOrigin && !isFont(url)) || url.pathname.startsWith('/api')) return
+  if ((!sameOrigin && !isFont(url)) || url.pathname.startsWith('/api') || url.pathname === '/version.json') return
 
   // Page navigations: try the network, fall back to the app shell offline
   if (request.mode === 'navigate') {

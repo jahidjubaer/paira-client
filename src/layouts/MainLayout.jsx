@@ -6,6 +6,7 @@ import BackToTop from '../components/BackToTop.jsx'
 import NavProgress from '../components/NavProgress.jsx'
 import MobileTabBar from '../components/MobileTabBar.jsx'
 import SearchDialog from '../components/SearchDialog.jsx'
+import InstallPrompt from '../components/InstallPrompt.jsx'
 import AnnouncementBar from '../components/AnnouncementBar.jsx'
 import SiteIntro from '../components/SiteIntro.jsx'
 import useReveal from '../utils/useReveal.js'
@@ -31,6 +32,7 @@ const MainLayout = () => {
       <BackToTop />
       <MobileTabBar />
       <SearchDialog />
+      <InstallPrompt />
     </div>
   )
 }

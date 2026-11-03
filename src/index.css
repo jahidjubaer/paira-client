@@ -155,6 +155,16 @@
     background: var(--color-secondary);
     color: var(--color-secondary-content);
   }
+  /* No grey flash when tapping links on phones */
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* Installed app: no pull-to-refresh bounce of the whole page */
+  @media (display-mode: standalone) {
+    body {
+      overscroll-behavior-y: none;
+    }
+  }
   :focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 3px;
