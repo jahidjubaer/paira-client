@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import toast from 'react-hot-toast'
-import { FaArrowUpRightFromSquare, FaCircleInfo, FaClockRotateLeft, FaCircleQuestion, FaFileLines, FaMountainSun } from 'react-icons/fa6'
+import { FaArrowUpRightFromSquare, FaCircleInfo, FaClockRotateLeft, FaCircleQuestion, FaCalendarWeek, FaFileLines, FaMountainSun } from 'react-icons/fa6'
 import useLanguage from '../../i18n/useLanguage.js'
 import api from '../../api/axiosInstance.js'
 import apiError from '../../api/apiError.js'
@@ -10,14 +10,17 @@ import ConfirmDialog from '../../components/ConfirmDialog.jsx'
 import { faqGroups } from '../../data/faq.js'
 import * as builtInAbout from '../../data/about.js'
 import { areaPlaces } from '../../data/area.js'
+import * as builtInPrograms from '../../data/programs.js'
 import FaqEditor from './content/FaqEditor.jsx'
 import AboutEditor from './content/AboutEditor.jsx'
 import AreaEditor from './content/AreaEditor.jsx'
+import ProgramsEditor from './content/ProgramsEditor.jsx'
 
 // Editable pages: built-in text (used until the admin saves) and the editor for it
 const pages = [
   { id: 'about', path: '/about', icon: FaCircleInfo, builtIn: { ...builtInAbout }, Editor: AboutEditor },
   { id: 'area', path: '/about', icon: FaMountainSun, builtIn: { places: areaPlaces }, Editor: AreaEditor },
+  { id: 'programs', path: '/programs', icon: FaCalendarWeek, builtIn: { ...builtInPrograms }, Editor: ProgramsEditor },
   { id: 'faq', path: '/faq', icon: FaCircleQuestion, builtIn: { groups: faqGroups }, Editor: FaqEditor },
 ]
 

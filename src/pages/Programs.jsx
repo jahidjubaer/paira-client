@@ -4,23 +4,15 @@ import useLanguage from '../i18n/useLanguage.js'
 import PageHeader from '../components/PageHeader.jsx'
 import SectionTitle from '../components/SectionTitle.jsx'
 import CheckList from '../components/CheckList.jsx'
-import {
-  calendarEvents,
-  clubs,
-  eidCultural,
-  eidSports,
-  monthlyActivities,
-  outreach,
-  podcast,
-  specialInitiatives,
-  weeklyActivities,
-  yearlyPrograms,
-} from '../data/programs.js'
+import * as builtInPrograms from '../data/programs.js'
+import usePageContent from '../utils/usePageContent.js'
 
 const initiativeColors = ['bg-secondary/25', 'bg-primary/10', 'bg-accent/10', 'bg-base-200', 'bg-primary/10', 'bg-secondary/25']
 
 const Programs = () => {
   const { t, pick, num } = useLanguage()
+  const { calendarEvents, clubs, eidCultural, eidSports, monthlyActivities, outreach, podcast, specialInitiatives, weeklyActivities, yearlyPrograms } =
+    usePageContent('programs', builtInPrograms)
 
   return (
     <>
@@ -131,7 +123,7 @@ const Programs = () => {
                 <div key={i} className="rounded-[1.5rem] bg-base-100 p-5">
                   <p className="font-bold">
                     {pick(s.group)}
-                    {s.note && <span className="ml-2 text-sm font-normal text-base-content/60">({pick(s.note)})</span>}
+                    {pick(s.note) && <span className="ml-2 text-sm font-normal text-base-content/60">({pick(s.note)})</span>}
                   </p>
                   <p className="mt-1 text-base-content/70">{pick(s.items)}</p>
                 </div>

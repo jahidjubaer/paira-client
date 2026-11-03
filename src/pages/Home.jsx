@@ -15,7 +15,7 @@ import useLanguage from '../i18n/useLanguage.js'
 import * as builtInAbout from '../data/about.js'
 import usePageContent from '../utils/usePageContent.js'
 import { subCommittees } from '../data/organization.js'
-import { clubs, weeklyActivities, yearlyPrograms } from '../data/programs.js'
+import * as builtInPrograms from '../data/programs.js'
 import { memberTypes } from '../data/policies.js'
 import HomeEvents from '../components/HomeEvents.jsx'
 import NewBooksShelf from '../components/NewBooksShelf.jsx'
@@ -36,6 +36,8 @@ const Home = () => {
   const { t, pick, num } = useLanguage()
   // The vision line comes from the About page text (Dashboard → Page content)
   const { vision } = usePageContent('about', builtInAbout)
+  // Programs ticker, weekly schedule and clubs come from the Programs page text
+  const { clubs, weeklyActivities, yearlyPrograms } = usePageContent('programs', builtInPrograms)
   usePageTitle(null)
 
   const stats = [
