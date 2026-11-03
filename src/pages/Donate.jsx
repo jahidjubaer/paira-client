@@ -9,10 +9,12 @@ import PageHeader from '../components/PageHeader.jsx'
 import SectionTitle from '../components/SectionTitle.jsx'
 import CopyButton from '../components/CopyButton.jsx'
 import { fundName, funds, paymentMethods } from '../data/funds.js'
-import { paymentInfo } from '../data/site.js'
+import useSite from '../context/useSite.js'
+import { WALLET_KEYS } from '../data/site.js'
 
 const Donate = () => {
   const { t, pick, num, date, money } = useLanguage()
+  const { payment } = useSite().site
   const [stats, setStats] = useState(null)
   const [fund, setFund] = useState('scholarship')
   const [method, setMethod] = useState('bkash')
@@ -38,10 +40,14 @@ const Donate = () => {
     }
   }
 
-  const mobileWallets = [
-    { id: 'bkash', label: t('donate.bkash'), info: paymentInfo.bkash, className: 'bg-[#e2136e] text-white' },
-    { id: 'nagad', label: t('donate.nagad'), info: paymentInfo.nagad, className: 'bg-[#f6921e] text-white' },
-  ]
+  const walletStyle = { bkash: 'bg-[#e2136e] text-white', nagad: 'bg-[#f6921e] text-white', rocket: 'bg-[#8c3494] text-white' }
+  const mobileWallets = WALLET_KEYS.filter((id) => payment[id].enabled && payment[id].number).map((id) => ({
+    id,
+    label: t(`donate.${id}`),
+    info: payment[id],
+    className: walletStyle[id],
+  }))
+  const bank = payment.bank
 
   return (
     <>
@@ -92,18 +98,18 @@ const Donate = () => {
                 </div>
               ))}
 
-              <div className="rounded-[1.75rem] bg-neutral p-5 text-neutral-content">
+              {bank.enabled && <div className="rounded-[1.75rem] bg-neutral p-5 text-neutral-content">
                 <p className="flex items-center gap-2 font-semibold"><FaBuildingColumns className="text-secondary" /> {t('donate.bank')}</p>
                 <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-2">
-                  <div><dt className="text-neutral-content/60">{t('donate.accountName')}</dt><dd className="font-medium">{paymentInfo.bank.accountName}</dd></div>
+                  <div><dt className="text-neutral-content/60">{t('donate.accountName')}</dt><dd className="font-medium">{bank.accountName}</dd></div>
                   <div>
                     <dt className="text-neutral-content/60">{t('donate.accountNumber')}</dt>
-                    <dd className="flex items-center gap-1 font-medium">{paymentInfo.bank.accountNumber} <CopyButton text={paymentInfo.bank.accountNumber} light /></dd>
+                    <dd className="flex items-center gap-1 font-medium">{bank.accountNumber} {bank.accountNumber && <CopyButton text={bank.accountNumber} light />}</dd>
                   </div>
-                  <div><dt className="text-neutral-content/60">{pick(paymentInfo.bank.bankName)}</dt><dd className="font-medium">{pick(paymentInfo.bank.branch)}</dd></div>
-                  <div><dt className="text-neutral-content/60">{t('donate.routing')}</dt><dd className="font-medium">{paymentInfo.bank.routing}</dd></div>
+                  <div><dt className="text-neutral-content/60">{pick(bank.bankName)}</dt><dd className="font-medium">{pick(bank.branch)}</dd></div>
+                  {bank.routing && <div><dt className="text-neutral-content/60">{t('donate.routing')}</dt><dd className="font-medium">{bank.routing}</dd></div>}
                 </dl>
-              </div>
+              </div>}
               <p className="text-sm text-base-content/70">
                 {t('donate.otherWays')} <Link to="/contact" className="link link-primary">{t('nav.contact')}</Link>
               </p>

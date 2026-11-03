@@ -1,22 +1,17 @@
 import { Link } from 'react-router'
-import { FaArrowRight, FaEnvelope, FaFacebook, FaInstagram, FaLinkedin, FaLocationDot, FaPhone, FaWhatsapp, FaYoutube } from 'react-icons/fa6'
+import { FaArrowRight, FaEnvelope, FaLocationDot, FaPhone } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
 import Logo from './Logo.jsx'
 import { mainLinks, moreLinks } from './navLinks.js'
-import { contactInfo, openingHours, socialLinks } from '../data/site.js'
-
-const socials = [
-  { href: socialLinks.facebook, label: 'Facebook', icon: FaFacebook },
-  { href: socialLinks.youtube, label: 'YouTube', icon: FaYoutube },
-  { href: socialLinks.instagram, label: 'Instagram', icon: FaInstagram },
-  { href: socialLinks.linkedin, label: 'LinkedIn', icon: FaLinkedin },
-  { href: socialLinks.whatsapp, label: 'WhatsApp', icon: FaWhatsapp },
-]
+import useSite from '../context/useSite.js'
+import { socialLinks } from './socialLinks.js'
 
 const year = new Date().getFullYear()
 
 const Footer = () => {
   const { t, pick, num } = useLanguage()
+  const { contact, hours, social } = useSite().site
+  const socials = socialLinks(social)
 
   return (
     <footer className="grain relative overflow-hidden bg-neutral text-neutral-content">
@@ -38,7 +33,7 @@ const Footer = () => {
             <p className="max-w-sm text-neutral-content/70">{t('footer.about')}</p>
             <div className="flex gap-2">
               {socials.map(({ href, label, icon: Icon }) => (
-                <a key={label} href={href} aria-label={label} className="grid size-10 place-items-center rounded-full bg-neutral-content/10 transition hover:bg-secondary hover:text-secondary-content">
+                <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="grid size-10 place-items-center rounded-full bg-neutral-content/10 transition hover:bg-secondary hover:text-secondary-content">
                   <Icon className="size-4" />
                 </a>
               ))}
@@ -59,14 +54,14 @@ const Footer = () => {
           <div>
             <h3 className="mb-4 font-display text-lg font-bold">{t('footer.contact')}</h3>
             <ul className="space-y-3 text-neutral-content/70">
-              <li className="flex items-center gap-3"><FaLocationDot className="text-secondary" /> {pick(contactInfo.address)}</li>
-              <li className="flex items-center gap-3"><FaPhone className="text-secondary" /> {contactInfo.phone}</li>
-              <li className="flex items-center gap-3"><FaEnvelope className="text-secondary" /> {contactInfo.email}</li>
+              {pick(contact.address) && <li className="flex items-center gap-3"><FaLocationDot className="text-secondary" /> {pick(contact.address)}</li>}
+              {contact.phone && <li className="flex items-center gap-3"><FaPhone className="text-secondary" /> {contact.phone}</li>}
+              {contact.email && <li className="flex items-center gap-3"><FaEnvelope className="text-secondary" /> {contact.email}</li>}
             </ul>
             <h3 className="mt-6 mb-2 font-display text-lg font-bold">{t('home.hoursTitle')}</h3>
             <ul className="space-y-1 text-sm text-neutral-content/70">
-              {openingHours.map((h) => (
-                <li key={h.days.en}><span className="font-medium text-neutral-content">{pick(h.days)}:</span> {pick(h.time)}</li>
+              {hours.map((h, i) => (
+                <li key={i}><span className="font-medium text-neutral-content">{pick(h.days)}:</span> {pick(h.time)}</li>
               ))}
             </ul>
           </div>

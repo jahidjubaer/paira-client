@@ -1,22 +1,17 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-import { FaEnvelope, FaFacebook, FaInstagram, FaLinkedin, FaLocationDot, FaPaperPlane, FaPhone, FaWhatsapp, FaYoutube } from 'react-icons/fa6'
+import { FaEnvelope, FaLocationDot, FaMapLocationDot, FaPaperPlane, FaPhone } from 'react-icons/fa6'
 import { GiDove } from 'react-icons/gi'
 import useLanguage from '../i18n/useLanguage.js'
 import PageHeader from '../components/PageHeader.jsx'
 import api from '../api/axiosInstance.js'
-import { contactInfo, openingHours, socialLinks } from '../data/site.js'
-
-const socials = [
-  { href: socialLinks.facebook, label: 'Facebook', icon: FaFacebook },
-  { href: socialLinks.youtube, label: 'YouTube', icon: FaYoutube },
-  { href: socialLinks.instagram, label: 'Instagram', icon: FaInstagram },
-  { href: socialLinks.linkedin, label: 'LinkedIn', icon: FaLinkedin },
-  { href: socialLinks.whatsapp, label: 'WhatsApp', icon: FaWhatsapp },
-]
+import useSite from '../context/useSite.js'
+import { socialLinks } from '../components/socialLinks.js'
 
 const Contact = () => {
   const { t, pick } = useLanguage()
+  const { contact, hours, social } = useSite().site
+  const socials = socialLinks(social)
   const [sending, setSending] = useState(false)
 
   const handleSubmit = async (e) => {
@@ -36,10 +31,10 @@ const Contact = () => {
   }
 
   const infoRows = [
-    { icon: FaLocationDot, label: t('contact.address'), value: pick(contactInfo.address) },
-    { icon: FaPhone, label: t('contact.phone'), value: contactInfo.phone, href: `tel:${contactInfo.phone.replace(/[^\d+]/g, '')}` },
-    { icon: FaEnvelope, label: t('contact.email'), value: contactInfo.email, href: `mailto:${contactInfo.email}` },
-  ]
+    { icon: FaLocationDot, label: t('contact.address'), value: pick(contact.address), href: contact.mapUrl || undefined, external: true },
+    { icon: FaPhone, label: t('contact.phone'), value: contact.phone, href: `tel:${contact.phone.replace(/[^\d+]/g, '')}` },
+    { icon: FaEnvelope, label: t('contact.email'), value: contact.email, href: `mailto:${contact.email}` },
+  ].filter((row) => row.value)
 
   return (
     <>
@@ -51,7 +46,7 @@ const Contact = () => {
           <GiDove className="pointer-events-none absolute -right-8 -bottom-8 size-56 opacity-10" />
           <h2 className="text-3xl font-bold">{t('contact.infoTitle')}</h2>
           <ul className="relative mt-8 space-y-6">
-            {infoRows.map(({ icon: Icon, label, value, href }) => (
+            {infoRows.map(({ icon: Icon, label, value, href, external }) => (
               <li key={label} className="flex items-center gap-4">
                 <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-primary-content/10">
                   <Icon className="size-5 text-secondary" />
@@ -59,7 +54,9 @@ const Contact = () => {
                 <div className="min-w-0">
                   <p className="text-sm text-primary-content/60">{label}</p>
                   {href ? (
-                    <a href={href} className="font-semibold break-all hover:underline">{value}</a>
+                    <a href={href} {...(external && { target: '_blank', rel: 'noopener noreferrer' })} className="font-semibold break-all hover:underline">
+                      {value} {external && <FaMapLocationDot className="ml-1 inline size-4 text-secondary" title={t('contact.openMap')} />}
+                    </a>
                   ) : (
                     <p className="font-semibold">{value}</p>
                   )}
@@ -67,25 +64,25 @@ const Contact = () => {
               </li>
             ))}
           </ul>
-          <div className="relative mt-8 rounded-2xl bg-primary-content/10 p-5">
+          {hours.length > 0 && <div className="relative mt-8 rounded-2xl bg-primary-content/10 p-5">
             <p className="text-sm text-primary-content/60">{t('contact.hours')}</p>
-            {openingHours.map((h) => (
-              <p key={h.days.en} className="mt-1 flex flex-wrap justify-between gap-x-4">
+            {hours.map((h, i) => (
+              <p key={i} className="mt-1 flex flex-wrap justify-between gap-x-4">
                 <span className="font-semibold">{pick(h.days)}</span>
                 <span>{pick(h.time)}</span>
               </p>
             ))}
-          </div>
-          <div className="relative mt-auto pt-10">
+          </div>}
+          {socials.length > 0 && <div className="relative mt-auto pt-10">
             <p className="text-sm text-primary-content/60">{t('footer.follow')}</p>
             <div className="mt-3 flex gap-2">
               {socials.map(({ href, label, icon: Icon }) => (
-                <a key={label} href={href} aria-label={label} className="grid size-11 place-items-center rounded-full bg-primary-content/10 transition hover:bg-secondary hover:text-secondary-content">
+                <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="grid size-11 place-items-center rounded-full bg-primary-content/10 transition hover:bg-secondary hover:text-secondary-content">
                   <Icon className="size-5" />
                 </a>
               ))}
             </div>
-          </div>
+          </div>}
         </aside>
 
         {/* Form */}

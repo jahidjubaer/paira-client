@@ -6,15 +6,18 @@ import './index.css'
 import router from './routes/router.jsx'
 import LanguageProvider from './context/LanguageContext.jsx'
 import AuthProvider from './context/AuthProvider.jsx'
+import SiteSettingsProvider from './context/SiteSettingsProvider.jsx'
 import OfflineBanner from './components/OfflineBanner.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <LanguageProvider>
       <AuthProvider>
-        <RouterProvider router={router} />
-        <OfflineBanner />
-        <Toaster position="top-center" toastOptions={{ style: { borderRadius: '999px' } }} />
+        <SiteSettingsProvider>
+          <RouterProvider router={router} />
+          <OfflineBanner />
+          <Toaster position="top-center" toastOptions={{ style: { borderRadius: '999px' } }} />
+        </SiteSettingsProvider>
       </AuthProvider>
     </LanguageProvider>
   </StrictMode>,

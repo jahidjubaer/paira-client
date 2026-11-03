@@ -1,6 +1,6 @@
 import { Link, NavLink, Outlet, useNavigate } from 'react-router'
 import toast from 'react-hot-toast'
-import { FaArrowLeft, FaArrowRightArrowLeft, FaBars, FaBell, FaBook, FaBookmark, FaBookOpen, FaCalendarDays, FaCamera, FaChartPie, FaHandHoldingHeart, FaHandshake, FaIdCard, FaImages, FaClipboardList, FaEnvelope, FaFileLines, FaGraduationCap, FaKey, FaMicrophoneLines, FaRightFromBracket, FaStar, FaTrophy, FaUser, FaUserPen, FaUsers } from 'react-icons/fa6'
+import { FaArrowLeft, FaArrowRightArrowLeft, FaBars, FaBell, FaBook, FaBookmark, FaBookOpen, FaCalendarDays, FaCamera, FaChartPie, FaHandHoldingHeart, FaHandshake, FaIdCard, FaImages, FaClipboardList, FaEnvelope, FaFileLines, FaGear, FaGraduationCap, FaKey, FaMicrophoneLines, FaRightFromBracket, FaStar, FaTrophy, FaUser, FaUserPen, FaUsers } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
 import useAuth from '../context/useAuth.js'
 import Logo from '../components/Logo.jsx'
@@ -52,6 +52,7 @@ const staffSections = [
     area: 'admin',
     title: 'dash.adminArea',
     links: [
+      { to: '/dashboard/site-settings', key: 'siteSettings', icon: FaGear },
       { to: '/dashboard/scholarships', key: 'scholarships', icon: FaGraduationCap },
       { to: '/dashboard/donations', key: 'donations', icon: FaHandHoldingHeart },
       { to: '/dashboard/finance', key: 'finance', icon: FaChartPie },

@@ -85,6 +85,7 @@ const router = createBrowserRouter([
       {
         element: <AdminRoute><Outlet /></AdminRoute>,
         children: [
+          { path: 'site-settings', lazy: lazyPage(() => import('../pages/dashboard/SiteSettings.jsx')) },
           { path: 'scholarships', lazy: lazyPage(() => import('../pages/dashboard/Scholarships.jsx')) },
           { path: 'donations', lazy: lazyPage(() => import('../pages/dashboard/Donations.jsx')) },
           { path: 'finance', lazy: lazyPage(() => import('../pages/dashboard/FinanceReports.jsx')) },
