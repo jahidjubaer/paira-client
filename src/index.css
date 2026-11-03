@@ -296,14 +296,14 @@
   inset: 0;
   opacity: 0;
   visibility: hidden;
-  animation: scene-night 4.4s ease-in-out 2.6s both;
+  animation: scene-night 4.4s ease-in-out 1.8s both;
 }
 .scene-night-veil {
   --from: 0.78;
   background: linear-gradient(#081226, #12233f 60%, #0d1a2c);
 }
 .scene-sun {
-  animation: scene-sunrise 5s cubic-bezier(0.2, 0.6, 0.3, 1) 3s both;
+  animation: scene-sunrise 5s cubic-bezier(0.2, 0.6, 0.3, 1) 2.2s both;
 }
 .scene-clouds {
   animation: scene-clouds 50s ease-in-out infinite alternate;
@@ -315,14 +315,14 @@
 .scene-glow {
   border-radius: 9999px;
   background: radial-gradient(closest-side, rgb(255 251 230 / 0.95), rgb(255 233 168 / 0.75) 25%, rgb(255 210 122 / 0.25) 60%, transparent);
-  animation: scene-glow-in 2.6s ease-out 2.4s both, scene-glow-pulse 5s ease-in-out 5s infinite;
+  animation: scene-glow-in 2.6s ease-out 1.6s both, scene-glow-pulse 5s ease-in-out 4.2s infinite;
 }
 .scene-beams {
   transform-origin: 50% 100%;
-  animation: scene-fade-in 2s ease-out 3s both, scene-beam-sway 9s ease-in-out 5s infinite alternate;
+  animation: scene-fade-in 2s ease-out 2.2s both, scene-beam-sway 9s ease-in-out 4.2s infinite alternate;
 }
 .scene-shimmer {
-  animation: scene-fade-in 2s ease-out 4s both, scene-shimmer 3s ease-in-out 6s infinite alternate;
+  animation: scene-fade-in 2s ease-out 3.2s both, scene-shimmer 3s ease-in-out 5.2s infinite alternate;
 }
 .scene-ripples {
   animation: scene-ripple 7s ease-in-out infinite alternate;
@@ -418,7 +418,7 @@
   color: #fffbea;
   pointer-events: none;
   transform: translateX(-50%);
-  animation: scene-fade-in 1.5s ease-out 8s both, scene-hint 2.4s ease-in-out 9.5s infinite alternate;
+  animation: scene-fade-in 1.5s ease-out 7.2s both, scene-hint 2.4s ease-in-out 8.7s infinite alternate;
 }
 @keyframes scene-flash {
   0% { opacity: 0; transform: scale(0.6); }
@@ -441,10 +441,10 @@
     font-size: calc(24 * var(--u));
   }
   .scene-glow {
-    animation: scene-glow-in 2.6s ease-out 2.4s both;
+    animation: scene-glow-in 2.6s ease-out 1.6s both;
   }
   .scene-beams {
-    animation: scene-fade-in 2s ease-out 3s both;
+    animation: scene-fade-in 2s ease-out 2.2s both;
   }
   .scene-mote {
     display: none;
@@ -524,11 +524,11 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    animation: hero-light-in 1.8s ease-out 2.6s both;
+    animation: hero-light-in 1.8s ease-out 1.8s both;
   }
   .hero-draw {
     stroke-dasharray: 1;
-    animation: hero-draw 1.2s ease-out 3s both;
+    animation: hero-draw 1.2s ease-out 2.2s both;
   }
 }
 @keyframes hero-rise {
@@ -559,17 +559,17 @@
 /* Opening animation (SiteIntro.jsx), once per visit. The curtain slides up (transform, not clip-path). */
 .site-intro {
   will-change: transform;
-  animation: intro-lift 0.9s cubic-bezier(0.7, 0, 0.2, 1) 2.3s both;
+  animation: intro-lift 0.8s cubic-bezier(0.7, 0, 0.2, 1) 1.4s both;
 }
 .site-intro-mark {
-  animation: intro-mark 1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.1s both;
+  animation: intro-mark 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.05s both;
 }
 .site-intro-ring {
-  animation: intro-ring 1.6s ease-out 0.3s both;
+  animation: intro-ring 1.3s ease-out 0.2s both;
 }
 .site-intro-line {
   transform-origin: center;
-  animation: intro-line 0.8s ease-out 1.3s both;
+  animation: intro-line 0.6s ease-out 0.75s both;
 }
 @keyframes intro-lift {
   to { transform: translateY(-100%); }

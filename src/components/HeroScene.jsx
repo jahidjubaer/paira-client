@@ -40,8 +40,8 @@ const wordPaths = [
 
 // Small lights rising from the pages: start position, sideways drift, delay
 const motes = [
-  [1100, 720, -50, 4.2], [1140, 710, 40, 4.9], [1120, 700, -15, 5.6], [1075, 730, -90, 6.3],
-  [1165, 725, 80, 7.0], [1115, 715, 25, 7.7], [1135, 705, -40, 8.4], [1085, 710, 60, 9.1],
+  [1100, 720, -50, 3.4], [1140, 710, 40, 4.1], [1120, 700, -15, 4.8], [1075, 730, -90, 5.5],
+  [1165, 725, 80, 6.2], [1115, 715, 25, 6.9], [1135, 705, -40, 7.6], [1085, 710, 60, 8.3],
 ]
 
 const stars = [[120, 80], [300, 150], [470, 60], [640, 200], [820, 90], [960, 170], [1140, 70], [1310, 140], [1480, 60], [1540, 220], [220, 260], [760, 280], [40, 190], [560, 120], [1050, 240], [1240, 40], [1400, 300], [880, 30]]
@@ -324,17 +324,17 @@ const HeroScene = ({ className = '' }) => {
               <path d="M262 892 C300 886 355 888 400 902 C445 888 500 886 538 892 L536 902 C498 896 445 898 400 912 C355 898 302 896 264 902 Z" fill="#e8dcc0" />
               <path d={RIGHT_PAGE} fill="#fffaf0" />
               <g>{pageLines(1)}</g>
-              <g className="scene-unfold" style={{ animationDelay: '1.9s' }}>
+              <g className="scene-unfold" style={{ animationDelay: '1.1s' }}>
                 <path d={LEFT_PAGE} fill="#fffaf0" />
                 {pageLines(-1)}
               </g>
-              <path className="scene-fold" style={{ animationDelay: '3s' }} d={RIGHT_PAGE} fill="#f6efdd" />
-              <g className="scene-unfold" style={{ animationDelay: '3.5s' }}>
+              <path className="scene-fold" style={{ animationDelay: '2.2s' }} d={RIGHT_PAGE} fill="#f6efdd" />
+              <g className="scene-unfold" style={{ animationDelay: '2.7s' }}>
                 <path d={LEFT_PAGE} fill="#f6efdd" />
                 {pageLines(-1)}
               </g>
               <path d="M400 838 L400 900" stroke="#d8c9a4" strokeWidth="2" />
-              <g className="scene-fold" style={{ animationDelay: '1.2s' }}>
+              <g className="scene-fold" style={{ animationDelay: '0.4s' }}>
                 <path d="M400 836 C442 818 494 816 534 826 L544 894 C502 886 446 888 400 902 Z" fill="#245e4f" />
                 <path d="M440 838 C470 830 500 829 520 833" stroke="#e7b75b" strokeWidth="3" fill="none" strokeLinecap="round" />
               </g>
@@ -347,7 +347,7 @@ const HeroScene = ({ className = '' }) => {
           {words.map((word, i) => {
             const { x1, y1, x2, y2, x3, y3 } = wordPaths[i % wordPaths.length]
             return (
-              <span key={i} className="scene-word" aria-hidden="true" style={{ animationDelay: `${3.6 + i * 1.3}s`, '--x1': x1, '--y1': y1, '--x2': x2, '--y2': y2, '--x3': x3, '--y3': y3 }}>
+              <span key={i} className="scene-word" aria-hidden="true" style={{ animationDelay: `${2.8 + i * 1.3}s`, '--x1': x1, '--y1': y1, '--x2': x2, '--y2': y2, '--x3': x3, '--y3': y3 }}>
                 {word}
               </span>
             )

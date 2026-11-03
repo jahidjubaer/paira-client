@@ -6,7 +6,7 @@ import useLanguage from '../i18n/useLanguage.js'
 // Skipped for reduced-motion visitors; a click or key press skips it. While it shows, <html data-intro>
 // holds the Home hero's own animation so it starts as the curtain lifts (see index.css).
 const SEEN_KEY = 'paira-intro-seen'
-const LIFT_AT = 2300
+const LIFT_AT = 1400
 
 const shouldShow = () => sessionStorage.getItem(SEEN_KEY) !== '1' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -55,11 +55,11 @@ const SiteIntro = () => {
             <GiDove className="size-14" />
           </span>
         </div>
-        <p className="site-intro-mark mt-8 font-display text-5xl font-extrabold sm:text-6xl" style={{ animationDelay: '0.5s' }}>
+        <p className="site-intro-mark mt-8 font-display text-5xl font-extrabold sm:text-6xl" style={{ animationDelay: '0.3s' }}>
           {t('site.name')}
         </p>
         <span className="site-intro-line mt-4 block h-1 w-24 rounded-full bg-secondary" />
-        <p className="site-intro-mark mt-4 text-neutral-content/75" style={{ animationDelay: '0.9s' }}>
+        <p className="site-intro-mark mt-4 text-neutral-content/75" style={{ animationDelay: '0.55s' }}>
           {t('site.slogan')}
         </p>
       </div>

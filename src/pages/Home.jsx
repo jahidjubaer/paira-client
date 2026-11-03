@@ -72,8 +72,12 @@ const Home = () => {
       started = true
       requestAnimationFrame(() => requestAnimationFrame(() => setHeroReady(true)))
     }
-    document.fonts.ready.then(start)
-    const cap = setTimeout(start, 1500)
+    // The font stylesheet loads without blocking the page (index.html), so wait for it before asking for the fonts
+    const sheet = document.getElementById('fonts')
+    const sheetIn = new Promise((done) => (!sheet || sheet.rel === 'stylesheet' ? done() : sheet.addEventListener('load', done, { once: true })))
+    sheetIn.then(() => document.fonts.ready).then(start)
+    // On a slow connection don't hold the hero for long; the text swaps to the web fonts when they arrive
+    const cap = setTimeout(start, 800)
     return () => clearTimeout(cap)
   }, [])
 
@@ -215,7 +219,7 @@ const Home = () => {
             )}
 
             <h1 className="mt-6 text-5xl leading-[1.05] font-extrabold [text-shadow:0_2px_24px_rgb(0_0_0/0.35)] sm:text-6xl xl:text-7xl">
-              <span className="hero-rise block [animation-delay:1.2s]">{pick(hero.title1)}</span>
+              <span className="hero-rise block [animation-delay:0.5s]">{pick(hero.title1)}</span>
               {pick(hero.title2) && (
                 <span className="hero-light relative inline-block pb-1">
                   {pick(hero.title2)}
@@ -226,7 +230,7 @@ const Home = () => {
               )}
             </h1>
 
-            <p className="hero-rise mt-8 max-w-xl text-lg leading-relaxed text-neutral-content/80 [animation-delay:3.6s]">
+            <p className="hero-rise mt-8 max-w-xl text-lg leading-relaxed text-neutral-content/80 [animation-delay:2.8s]">
               <strong className="block font-semibold text-neutral-content">
                 {t('site.name')} · {t('site.tagline')}
               </strong>
@@ -234,14 +238,14 @@ const Home = () => {
             </p>
 
             {hero.buttons.length > 0 && (
-              <div className="hero-rise mt-8 flex flex-wrap gap-3 [animation-delay:4.3s]">
+              <div className="hero-rise mt-8 flex flex-wrap gap-3 [animation-delay:3.5s]">
                 {hero.buttons.map((b, i) => <HeroButton key={i} button={b} primary={i === 0} />)}
               </div>
             )}
 
             <dl className="mt-12 flex flex-wrap gap-x-10 gap-y-4">
               {stats.map((s, i) => (
-                <div key={s.label} className="hero-rise" style={{ animationDelay: `${5 + i * 0.2}s` }}>
+                <div key={s.label} className="hero-rise" style={{ animationDelay: `${4.2 + i * 0.2}s` }}>
                   <dt className="sr-only">{s.label}</dt>
                   <dd className="font-display text-4xl font-bold text-secondary">{num(s.value)}</dd>
                   <dd className="text-sm text-neutral-content/75">{s.label}</dd>
@@ -254,14 +258,14 @@ const Home = () => {
         {/* Glass cards beside the book, after the doves are out */}
         <div className="pointer-events-none absolute right-6 bottom-16 hidden flex-col items-end gap-4 xl:flex">
           {pick(hero.cardTitle) && (
-            <div className="hero-rise [animation-delay:5.6s]">
+            <div className="hero-rise [animation-delay:4.8s]">
               <div className="animate-float rounded-2xl border border-white/25 bg-neutral/70 px-4 py-3 text-white shadow-xl">
                 <p className="text-xs font-medium text-white/75">{pick(hero.cardSmall)}</p>
                 <p className="font-display text-lg font-bold">{pick(hero.cardTitle)}</p>
               </div>
             </div>
           )}
-          <div className="hero-rise [animation-delay:6.2s]">
+          <div className="hero-rise [animation-delay:5.4s]">
             <div className="max-w-[15rem] animate-float rounded-2xl border border-white/10 bg-neutral/85 px-5 py-4 shadow-xl [animation-delay:-3s]">
               <FaQuoteLeft className="size-4 text-secondary" />
               <p className="mt-1 font-display text-lg leading-snug font-semibold">{t('site.slogan2')}</p>
