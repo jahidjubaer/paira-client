@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Secrets and Vercel link (keep .env.example and .env.production)
+.env
+.vercel
