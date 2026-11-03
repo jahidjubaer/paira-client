@@ -47,7 +47,7 @@ const ActivityLog = () => {
     setBackingUp(true)
     try {
       const { data, headers } = await api.get('/admin/backup', { responseType: 'blob' })
-      const name = /filename="([^"]+)"/.exec(headers['content-disposition'] ?? '')?.[1] ?? 'paira-backup.json'
+      const name = /filename="([^"]+)"/.exec(headers['content-disposition'] ?? '')?.[1] ?? 'paira-backup.zip'
       const url = URL.createObjectURL(data)
       const link = Object.assign(document.createElement('a'), { href: url, download: name })
       link.click()
@@ -57,7 +57,8 @@ const ActivityLog = () => {
       setLoading(true)
       setReloadKey((k) => k + 1)
     } catch (err) {
-      toast.error(apiError(err, t))
+      // The answer was requested as a file, so the server's message can't be read here
+      toast.error(err?.response?.status === 413 ? t('activity.backupTooBig') : apiError(err, t))
     } finally {
       setBackingUp(false)
     }
