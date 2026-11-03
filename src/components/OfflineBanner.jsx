@@ -20,7 +20,7 @@ const OfflineBanner = () => {
 
   if (online) return null
   return (
-    <div role="status" className="fixed inset-x-0 bottom-0 z-[70] flex items-center justify-center gap-2 bg-warning px-4 py-2 text-sm font-medium text-warning-content">
+    <div role="status" className="fixed inset-x-0 bottom-[var(--tabbar,0px)] lg:bottom-0 z-[70] flex items-center justify-center gap-2 bg-warning px-4 py-2 text-sm font-medium text-warning-content">
       <FaWifi /> {t('common.offline')}
     </div>
   )

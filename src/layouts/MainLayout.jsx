@@ -4,6 +4,7 @@ import Footer from '../components/Footer.jsx'
 import ScrollToTop from '../components/ScrollToTop.jsx'
 import BackToTop from '../components/BackToTop.jsx'
 import NavProgress from '../components/NavProgress.jsx'
+import MobileTabBar from '../components/MobileTabBar.jsx'
 import AnnouncementBar from '../components/AnnouncementBar.jsx'
 import SiteIntro from '../components/SiteIntro.jsx'
 import useReveal from '../utils/useReveal.js'
@@ -24,7 +25,10 @@ const MainLayout = () => {
         <Outlet />
       </main>
       <Footer />
+      {/* Room under the footer for the phone tab bar */}
+      <div className="h-[var(--tabbar)] bg-neutral lg:hidden" />
       <BackToTop />
+      <MobileTabBar />
     </div>
   )
 }

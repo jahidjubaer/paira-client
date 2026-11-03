@@ -45,6 +45,69 @@
   --radius-selector: 2rem;
 }
 
+/* Paper: warm sepia for long reading */
+@plugin "daisyui/theme" {
+  name: "paira-paper";
+  color-scheme: light;
+  --color-base-100: oklch(94.5% 0.025 80);
+  --color-base-200: oklch(91% 0.032 78);
+  --color-base-300: oklch(85% 0.04 75);
+  --color-base-content: oklch(30% 0.04 55);
+  --color-primary: oklch(42% 0.08 55);
+  --color-primary-content: oklch(97% 0.015 80);
+  --color-secondary: oklch(68% 0.12 75);
+  --color-secondary-content: oklch(22% 0.04 60);
+  --color-accent: oklch(50% 0.13 35);
+  --color-accent-content: oklch(97% 0.01 35);
+  --color-neutral: oklch(28% 0.035 55);
+  --color-neutral-content: oklch(94% 0.02 80);
+  --radius-box: 1.25rem;
+  --radius-field: 0.75rem;
+  --radius-selector: 2rem;
+}
+
+/* Haor: lake blue and teal */
+@plugin "daisyui/theme" {
+  name: "paira-haor";
+  color-scheme: light;
+  --color-base-100: oklch(98% 0.008 230);
+  --color-base-200: oklch(95% 0.015 230);
+  --color-base-300: oklch(89% 0.025 230);
+  --color-base-content: oklch(26% 0.04 240);
+  --color-primary: oklch(48% 0.11 240);
+  --color-primary-content: oklch(98% 0.01 230);
+  --color-secondary: oklch(64% 0.1 185);
+  --color-secondary-content: oklch(20% 0.04 200);
+  --color-accent: oklch(70% 0.14 75);
+  --color-accent-content: oklch(22% 0.05 60);
+  --color-neutral: oklch(25% 0.05 245);
+  --color-neutral-content: oklch(95% 0.01 230);
+  --radius-box: 1.25rem;
+  --radius-field: 0.75rem;
+  --radius-selector: 2rem;
+}
+
+/* Dusk: deep indigo night with gold */
+@plugin "daisyui/theme" {
+  name: "paira-dusk";
+  color-scheme: dark;
+  --color-base-100: oklch(20% 0.035 285);
+  --color-base-200: oklch(24% 0.04 285);
+  --color-base-300: oklch(31% 0.045 285);
+  --color-base-content: oklch(93% 0.015 285);
+  --color-primary: oklch(74% 0.12 285);
+  --color-primary-content: oklch(18% 0.04 285);
+  --color-secondary: oklch(82% 0.14 80);
+  --color-secondary-content: oklch(22% 0.05 60);
+  --color-accent: oklch(72% 0.14 15);
+  --color-accent-content: oklch(18% 0.03 15);
+  --color-neutral: oklch(15% 0.03 285);
+  --color-neutral-content: oklch(94% 0.01 285);
+  --radius-box: 1.25rem;
+  --radius-field: 0.75rem;
+  --radius-selector: 2rem;
+}
+
 @theme {
   /* Latin glyphs come from the first font; Bangla falls through to the Bangla font */
   --font-sans: "Plus Jakarta Sans", "Hind Siliguri", ui-sans-serif, system-ui, sans-serif;
