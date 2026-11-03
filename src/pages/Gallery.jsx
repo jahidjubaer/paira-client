@@ -4,6 +4,7 @@ import { FaCamera, FaImages } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
 import api from '../api/axiosInstance.js'
 import PageHeader from '../components/PageHeader.jsx'
+import { sized, srcSet } from '../utils/imageSize.js'
 
 const Gallery = () => {
   const { t, pick, num } = useLanguage()
@@ -43,7 +44,15 @@ const Gallery = () => {
               >
                 <div className={`w-full ${i === 0 ? 'aspect-[4/3] sm:aspect-auto sm:h-full sm:min-h-[28rem]' : 'aspect-[4/3]'}`}>
                   {a.cover ? (
-                    <img src={a.cover} alt="" loading="lazy" className="size-full object-cover transition duration-500 group-hover:scale-105" />
+                    <img
+                      src={sized(a.cover, 500)}
+                      srcSet={srcSet(a.cover, [500, 960])}
+                      sizes={i === 0 ? '(min-width: 640px) 66vw, 100vw' : '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw'}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      className="size-full object-cover transition duration-500 group-hover:scale-105"
+                    />
                   ) : (
                     <div className="size-full bg-[url(/hero-takerghat.svg)] bg-cover bg-center opacity-70 transition duration-500 group-hover:scale-105" />
                   )}

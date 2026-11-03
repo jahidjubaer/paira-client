@@ -2,6 +2,7 @@ import { Link } from 'react-router'
 import { FaFileLines, FaFilm, FaFeather, FaImage, FaPlay, FaVolumeHigh } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
 import { toEmbed } from '../utils/embed.js'
+import { sized, srcSet } from '../utils/imageSize.js'
 
 const typeIcons = { video: FaFilm, audio: FaVolumeHigh, photo: FaImage, story: FaFeather, document: FaFileLines }
 
@@ -16,7 +17,7 @@ const MediaCard = ({ item }) => {
     <Link to={`/${item.collectionName}/${item._id}`} className="group block overflow-hidden rounded-[2rem] border border-base-300 bg-base-100 transition hover:-translate-y-1 hover:shadow-lg">
       <div className="relative aspect-video overflow-hidden bg-neutral">
         {thumb ? (
-          <img src={thumb} alt="" loading="lazy" className="size-full object-cover transition duration-500 group-hover:scale-105" />
+          <img src={sized(thumb, 500)} srcSet={srcSet(thumb, [500, 960])} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" alt="" loading="lazy" decoding="async" className="size-full object-cover transition duration-500 group-hover:scale-105" />
         ) : (
           <div className="grid size-full place-items-center bg-[url(/hero-takerghat.svg)] bg-cover bg-center opacity-60">
             <Icon className="size-10 text-neutral-content" />

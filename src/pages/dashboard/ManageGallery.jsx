@@ -9,6 +9,7 @@ import BiField from '../../components/BiField.jsx'
 import ImageUrlField from '../../components/ImageUrlField.jsx'
 import ConfirmDialog from '../../components/ConfirmDialog.jsx'
 import { nestedFormData } from '../../utils/formData.js'
+import { sized } from '../../utils/imageSize.js'
 
 const ManageGallery = () => {
   const { t, pick, num } = useLanguage()
@@ -141,7 +142,7 @@ const ManageGallery = () => {
                 onClick={() => selectAlbum(a._id)}
                 className={`flex w-full items-center gap-3 rounded-2xl p-3 text-left transition ${a._id === selectedId ? 'bg-primary text-primary-content' : 'bg-base-100 hover:bg-base-300'}`}
               >
-                {a.cover ? <img src={a.cover} alt="" className="size-12 shrink-0 rounded-xl object-cover" /> : <span className="size-12 shrink-0 rounded-xl bg-base-300" />}
+                {a.cover ? <img src={sized(a.cover, 330)} alt="" className="size-12 shrink-0 rounded-xl object-cover" /> : <span className="size-12 shrink-0 rounded-xl bg-base-300" />}
                 <span className="min-w-0 flex-1">
                   <span className="block truncate font-semibold">{pick(a.title)}</span>
                   <span className="flex items-center gap-1 text-xs opacity-70">
@@ -195,7 +196,7 @@ const ManageGallery = () => {
                   <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 xl:grid-cols-5">
                     {photos.map((p) => (
                       <div key={p._id} className="group relative">
-                        <img src={p.imageUrl} alt="" loading="lazy" className="aspect-square w-full rounded-xl object-cover" />
+                        <img src={sized(p.imageUrl, 330)} alt="" loading="lazy" className="aspect-square w-full rounded-xl object-cover" />
                         <button
                           onClick={() => askDelete('photo', p)}
                           className="btn btn-circle btn-error btn-xs absolute top-1 right-1 opacity-0 transition group-hover:opacity-100 focus:opacity-100"

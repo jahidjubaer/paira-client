@@ -2,6 +2,7 @@ import { Link } from 'react-router'
 import { FaLocationDot } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
 import { eventCategory } from '../data/eventCategories.js'
+import { sized, srcSet } from '../utils/imageSize.js'
 
 // Event card with a calendar-style date block; `past` events are shown muted
 const EventCard = ({ event, past = false }) => {
@@ -15,7 +16,7 @@ const EventCard = ({ event, past = false }) => {
       className={`group flex flex-col overflow-hidden rounded-[2rem] border border-base-300 bg-base-100 transition hover:-translate-y-1 hover:shadow-lg ${past ? 'opacity-80 hover:opacity-100' : ''}`}
     >
       {event.image ? (
-        <img src={event.image} alt="" loading="lazy" className="aspect-[16/9] w-full object-cover" />
+        <img src={sized(event.image, 500)} srcSet={srcSet(event.image, [500, 960])} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" alt="" loading="lazy" decoding="async" className="aspect-[16/9] w-full object-cover" />
       ) : (
         <div className="aspect-[16/9] w-full bg-[url(/hero-takerghat.svg)] bg-cover bg-[center_70%] opacity-90" />
       )}

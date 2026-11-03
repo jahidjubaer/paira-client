@@ -4,6 +4,7 @@ import { FaArrowRight, FaQuoteLeft } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
 import api from '../api/axiosInstance.js'
 import Stars from './Stars.jsx'
+import { sized, srcSet } from '../utils/imageSize.js'
 
 // Live numbers from the library (hidden until there is something to show)
 export const HomeNumbers = () => {
@@ -109,7 +110,15 @@ export const HomePhotos = () => {
               to={`/gallery/${p.album}`}
               className={`group relative overflow-hidden rounded-[1.5rem] ${i === 0 ? 'col-span-2 row-span-2' : ''} ${i === 5 ? 'md:col-span-2' : ''}`}
             >
-              <img src={p.imageUrl} alt={pick(p.caption) || ''} loading="lazy" className="size-full object-cover transition duration-500 group-hover:scale-105" />
+              <img
+                src={sized(p.imageUrl, 500)}
+                srcSet={srcSet(p.imageUrl, [500, 960])}
+                sizes={i === 0 ? '(min-width: 768px) 50vw, 100vw' : '(min-width: 768px) 25vw, 50vw'}
+                alt={pick(p.caption) || ''}
+                loading="lazy"
+                decoding="async"
+                className="size-full object-cover transition duration-500 group-hover:scale-105"
+              />
               <span className="absolute inset-x-0 bottom-0 truncate bg-gradient-to-t from-black/70 to-transparent px-3 pt-6 pb-2 text-xs text-white opacity-0 transition group-hover:opacity-100">
                 {p.credit}
               </span>

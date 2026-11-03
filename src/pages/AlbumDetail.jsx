@@ -12,6 +12,7 @@ import ImageUrlField from '../components/ImageUrlField.jsx'
 import ErrorPage from './ErrorPage.jsx'
 import { nestedFormData } from '../utils/formData.js'
 import usePageTitle from '../utils/usePageTitle.js'
+import { sized, srcSet } from '../utils/imageSize.js'
 
 const statusStyle = { pending: 'badge-warning', approved: 'badge-success', rejected: 'badge-error' }
 
@@ -76,7 +77,7 @@ const ContestPanel = ({ album }) => {
           <div className="flex flex-wrap gap-3">
             {mine.map((p) => (
               <div key={p._id} className="relative">
-                <img src={p.imageUrl} alt="" className="size-20 rounded-xl object-cover" />
+                <img src={sized(p.imageUrl, 330)} alt="" className="size-20 rounded-xl object-cover" />
                 <span className={`badge badge-xs absolute bottom-1 left-1 ${statusStyle[p.status]}`}>
                   {t(`gallery.status${p.status[0].toUpperCase()}${p.status.slice(1)}`)}
                 </span>
@@ -149,7 +150,15 @@ const AlbumDetail = () => {
         <div className="columns-2 gap-4 md:columns-3 lg:columns-4">
           {photos.map((p, i) => (
             <button key={p._id} onClick={() => setOpen(i)} className="group relative mb-4 block w-full break-inside-avoid overflow-hidden rounded-2xl">
-              <img src={p.imageUrl} alt={pick(p.caption) || ''} loading="lazy" className="w-full transition duration-500 group-hover:scale-105" />
+              <img
+                src={sized(p.imageUrl, 500)}
+                srcSet={srcSet(p.imageUrl, [330, 500, 960])}
+                sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+                alt={pick(p.caption) || ''}
+                loading="lazy"
+                decoding="async"
+                className="w-full transition duration-500 group-hover:scale-105"
+              />
               {(pick(p.caption) || p.credit) && (
                 <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 pt-8 text-left text-sm text-white opacity-0 transition group-hover:opacity-100">
                   {pick(p.caption) || `${t('gallery.by')}: ${p.credit}`}

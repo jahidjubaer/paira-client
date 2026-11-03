@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { FaChevronLeft, FaChevronRight, FaXmark } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
+import { sized } from '../utils/imageSize.js'
 
 // Full-screen photo viewer. `index` is the open photo (null = closed).
 const Lightbox = ({ photos, index, onChange }) => {
@@ -48,7 +49,7 @@ const Lightbox = ({ photos, index, onChange }) => {
           </div>
 
           <div className="relative flex min-h-0 flex-1 items-center justify-center px-4">
-            <img src={photo.imageUrl} alt={caption || ''} className="max-h-full max-w-full rounded-2xl object-contain" />
+            <img src={sized(photo.imageUrl, 1920)} alt={caption || ''} className="max-h-full max-w-full rounded-2xl object-contain" />
             {photos.length > 1 && (
               <>
                 <button onClick={() => go(-1)} className="btn btn-circle absolute left-4 border-0 bg-neutral-content/10 text-neutral-content hover:bg-neutral-content/20" aria-label={t('gallery.prev')}>

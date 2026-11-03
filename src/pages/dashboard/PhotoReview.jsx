@@ -5,6 +5,7 @@ import useLanguage from '../../i18n/useLanguage.js'
 import api from '../../api/axiosInstance.js'
 import apiError from '../../api/apiError.js'
 import Loader from '../../components/Loader.jsx'
+import { sized } from '../../utils/imageSize.js'
 
 // Admin queue for contest photos waiting for approval
 const PhotoReview = () => {
@@ -40,7 +41,7 @@ const PhotoReview = () => {
           {photos.map((p) => (
             <article key={p._id} className="overflow-hidden rounded-[1.5rem] bg-base-100 shadow-sm">
               <a href={p.imageUrl} target="_blank" rel="noopener noreferrer">
-                <img src={p.imageUrl} alt="" className="aspect-[4/3] w-full object-cover" />
+                <img src={sized(p.imageUrl, 500)} alt="" className="aspect-[4/3] w-full object-cover" />
               </a>
               <div className="p-4">
                 <p className="text-xs text-base-content/50">{pick(p.album?.title)} · {date(p.createdAt)}</p>

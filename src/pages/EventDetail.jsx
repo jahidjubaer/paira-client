@@ -8,6 +8,7 @@ import ErrorPage from './ErrorPage.jsx'
 import { eventCategory } from '../data/eventCategories.js'
 import usePageTitle from '../utils/usePageTitle.js'
 import EventRegistration from '../components/EventRegistration.jsx'
+import { sized } from '../utils/imageSize.js'
 
 const HOUR = 60 * 60 * 1000
 
@@ -66,7 +67,7 @@ const EventDetail = () => {
     <article>
       <header className="relative overflow-hidden bg-neutral text-neutral-content">
         {event.image ? (
-          <img src={event.image} alt="" className="absolute inset-0 size-full object-cover opacity-30" />
+          <img src={sized(event.image, 1920)} alt="" className="absolute inset-0 size-full object-cover opacity-30" />
         ) : (
           <div className="absolute inset-0 bg-[url(/hero-takerghat.svg)] bg-cover bg-center opacity-20" />
         )}
