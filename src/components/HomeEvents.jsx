@@ -33,8 +33,13 @@ const HomeEvents = () => {
 
       <div className={`grid gap-5 ${notices.length && events.length ? 'lg:grid-cols-[1fr_22rem]' : ''}`}>
         {events.length > 0 && (
-          <div className={`grid gap-5 ${notices.length ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3'}`}>
-            {events.slice(0, notices.length ? 2 : 3).map((e) => <EventCard key={e._id} event={e} />)}
+          // Swipe row on phones, grid from sm
+          <div className={`-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:mx-0 sm:grid sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 ${notices.length ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3'}`}>
+            {events.slice(0, notices.length ? 2 : 3).map((e) => (
+              <div key={e._id} className="flex w-[85%] shrink-0 snap-start sm:w-auto [&>a]:flex-1">
+                <EventCard event={e} />
+              </div>
+            ))}
           </div>
         )}
         {notices.length > 0 && (

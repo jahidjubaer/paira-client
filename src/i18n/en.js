@@ -557,6 +557,8 @@ const en = {
     donatedBy: 'Donated by',
     howToBorrow: 'How to borrow',
     howSteps: ['Register as a member and wait for approval', 'Visit the library with your member ID', 'Take the book for {days} days and return it on time'],
+    filters: 'Filters',
+    showResults: 'Show results',
     backToCatalog: 'All books',
     readOnline: 'Read online',
     readOnlineNote: 'This book is in the public domain — free to read on Bangla Wikisource.',

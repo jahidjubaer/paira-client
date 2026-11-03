@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router'
-import { FaMagnifyingGlass, FaXmark } from 'react-icons/fa6'
+import { FaBookOpen, FaMagnifyingGlass, FaSliders, FaXmark } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
 import api from '../api/axiosInstance.js'
 import BookCard from '../components/BookCard.jsx'
 import { bookCategories, bookLanguages } from '../data/bookCategories.js'
 import TopReaders from '../components/TopReaders.jsx'
 import usePageTitle from '../utils/usePageTitle.js'
+import BottomSheet from '../components/BottomSheet.jsx'
+import EmptyState from '../components/EmptyState.jsx'
 
 const Skeleton = () => (
   <div>
@@ -23,6 +25,7 @@ const Books = () => {
   const [data, setData] = useState({ books: [], total: 0, pages: 1 })
   const [stats, setStats] = useState(null)
   const [state, setState] = useState('loading') // loading | ready | error
+  const [filtersOpen, setFiltersOpen] = useState(false)
 
   const search = params.get('search') ?? ''
   const category = params.get('category') ?? ''
@@ -70,6 +73,30 @@ const Books = () => {
   }
 
   const hasFilters = search || category || language || available
+  const sheetFilters = [language, sort !== 'newest', available].filter(Boolean).length
+
+  const clearAll = () => {
+    setState('loading')
+    setParams({})
+  }
+
+  const moreFilters = (
+    <>
+      <select value={language} onChange={(e) => setFilter({ language: e.target.value })} className="select select-sm w-auto rounded-full" aria-label={t('books.language')}>
+        <option value="">{t('books.allLanguages')}</option>
+        {bookLanguages.map((l) => <option key={l.id} value={l.id}>{pick(l.name)}</option>)}
+      </select>
+      <select value={sort} onChange={(e) => setFilter({ sort: e.target.value === 'newest' ? '' : e.target.value })} className="select select-sm w-auto rounded-full" aria-label={t('books.sort')}>
+        <option value="newest">{t('books.sortNewest')}</option>
+        <option value="title">{t('books.sortTitle')}</option>
+        <option value="author">{t('books.sortAuthor')}</option>
+      </select>
+      <label className="flex cursor-pointer items-center gap-2 text-sm">
+        <input type="checkbox" checked={available} onChange={(e) => setFilter({ available: e.target.checked })} className="toggle toggle-sm toggle-primary" />
+        {t('books.availableOnly')}
+      </label>
+    </>
+  )
 
   return (
     <>
@@ -99,8 +126,12 @@ const Books = () => {
       </div>
 
       <div className="mx-auto max-w-7xl px-4 py-10">
-        {/* Category chips */}
-        <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-2">
+        {/* Category chips: stay under the top bar while scrolling */}
+        <div className="sticky top-14 z-20 -mx-4 flex gap-2 overflow-x-auto bg-base-100/90 px-4 py-2 backdrop-blur-xl [scrollbar-width:none]">
+          <button onClick={() => setFiltersOpen(true)} className="btn btn-sm btn-outline shrink-0 rounded-full md:hidden">
+            <FaSliders /> {t('books.filters')}
+            {sheetFilters > 0 && <span className="badge badge-primary badge-sm">{num(sheetFilters)}</span>}
+          </button>
           {[{ id: '', name: null }, ...bookCategories].map((c) => {
             const active = category === c.id
             const count = c.id ? stats?.categories?.[c.id] : stats?.totals.titles
@@ -120,31 +151,26 @@ const Books = () => {
           })}
         </div>
 
-        {/* Secondary filters */}
-        <div className="mt-4 flex flex-wrap items-center gap-3">
-          <select value={language} onChange={(e) => setFilter({ language: e.target.value })} className="select select-sm w-auto rounded-full" aria-label={t('books.language')}>
-            <option value="">{t('books.allLanguages')}</option>
-            {bookLanguages.map((l) => <option key={l.id} value={l.id}>{pick(l.name)}</option>)}
-          </select>
-          <select value={sort} onChange={(e) => setFilter({ sort: e.target.value === 'newest' ? '' : e.target.value })} className="select select-sm w-auto rounded-full" aria-label={t('books.sort')}>
-            <option value="newest">{t('books.sortNewest')}</option>
-            <option value="title">{t('books.sortTitle')}</option>
-            <option value="author">{t('books.sortAuthor')}</option>
-          </select>
-          <label className="flex cursor-pointer items-center gap-2 text-sm">
-            <input type="checkbox" checked={available} onChange={(e) => setFilter({ available: e.target.checked })} className="toggle toggle-sm toggle-primary" />
-            {t('books.availableOnly')}
-          </label>
+        {/* Language, sort, available: a row from md, a bottom sheet on phones */}
+        <div className="mt-4 hidden flex-wrap items-center gap-3 md:flex">
+          {moreFilters}
           {hasFilters && (
-            <button onClick={() => {
-                setState('loading')
-                setParams({})
-              }} className="btn btn-ghost btn-sm rounded-full">
+            <button onClick={clearAll} className="btn btn-ghost btn-sm rounded-full">
               <FaXmark /> {t('books.clear')}
             </button>
           )}
           <span className="ml-auto text-sm text-base-content/60">{state === 'ready' && `${num(data.total)} ${t('books.titles')}`}</span>
         </div>
+        <p className="mt-3 text-sm text-base-content/60 md:hidden">{state === 'ready' && `${num(data.total)} ${t('books.titles')}`}</p>
+
+        <BottomSheet open={filtersOpen} onClose={() => setFiltersOpen(false)} label={t('books.filters')}>
+          <h2 className="text-xl font-bold">{t('books.filters')}</h2>
+          <div className="flex flex-col items-start gap-4 [&_select]:w-full">{moreFilters}</div>
+          <div className="grid grid-cols-2 gap-2">
+            <button onClick={clearAll} disabled={!hasFilters} className="btn btn-ghost rounded-full"><FaXmark /> {t('books.clear')}</button>
+            <button onClick={() => setFiltersOpen(false)} className="btn btn-primary rounded-full">{t('books.showResults')}</button>
+          </div>
+        </BottomSheet>
 
         {/* Results */}
         <div className="mt-8">
@@ -155,7 +181,7 @@ const Books = () => {
               {Array.from({ length: 12 }, (_, i) => <Skeleton key={i} />)}
             </div>
           ) : data.books.length === 0 ? (
-            <p className="rounded-3xl bg-base-200 p-16 text-center text-base-content/60">{t('books.noResults')}</p>
+            <EmptyState icon={FaBookOpen} text={t('books.noResults')} action={hasFilters ? { label: t('books.clear'), onClick: clearAll } : null} />
           ) : (
             <div className="grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
               {data.books.map((b) => <BookCard key={b._id} book={b} />)}

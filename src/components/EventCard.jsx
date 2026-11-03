@@ -4,9 +4,21 @@ import useLanguage from '../i18n/useLanguage.js'
 import { eventCategory } from '../data/eventCategories.js'
 import { sized, srcSet } from '../utils/imageSize.js'
 
+const DAY = 24 * 60 * 60 * 1000
+const dayStart = (d) => new Date(d).setHours(0, 0, 0, 0)
+
+// "today" / "tomorrow" / "in 3 days" for events in the coming week, otherwise null
+const countdown = (startsAt, lang) => {
+  if (new Date(startsAt) < Date.now()) return null
+  const days = Math.round((dayStart(startsAt) - dayStart(Date.now())) / DAY)
+  if (days > 7) return null
+  return new Intl.RelativeTimeFormat(lang === 'bn' ? 'bn-BD' : 'en', { numeric: 'auto' }).format(days, 'day')
+}
+
 // Event card with a calendar-style date block; `past` events are shown muted
 const EventCard = ({ event, past = false }) => {
-  const { pick, date } = useLanguage()
+  const { pick, date, lang } = useLanguage()
+  const soon = !past && countdown(event.startsAt, lang)
   const category = eventCategory(event.category)
   const location = pick(event.location)
 
@@ -16,11 +28,18 @@ const EventCard = ({ event, past = false }) => {
       viewTransition
       className={`group flex flex-col overflow-hidden rounded-[2rem] border border-base-300 bg-base-100 transition hover:-translate-y-1 hover:shadow-lg active:scale-[0.98] ${past ? 'opacity-80 hover:opacity-100' : ''}`}
     >
-      {event.image ? (
-        <img src={sized(event.image, 500)} srcSet={srcSet(event.image, [500, 960])} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" alt="" loading="lazy" decoding="async" className="aspect-[16/9] w-full object-cover" />
-      ) : (
-        <div className="aspect-[16/9] w-full bg-[url(/hero-takerghat.svg)] bg-cover bg-[center_70%] opacity-90" />
-      )}
+      <div className="relative">
+        {soon && (
+          <span className="absolute top-3 left-3 z-10 flex items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-xs font-semibold text-accent-content shadow">
+            <span className="size-1.5 animate-pulse rounded-full bg-accent-content" /> {soon}
+          </span>
+        )}
+        {event.image ? (
+          <img src={sized(event.image, 500)} srcSet={srcSet(event.image, [500, 960])} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" alt="" loading="lazy" decoding="async" className="aspect-[16/9] w-full object-cover" />
+        ) : (
+          <div className="aspect-[16/9] w-full bg-[url(/hero-takerghat.svg)] bg-cover bg-[center_70%] opacity-90" />
+        )}
+      </div>
       <div className="flex flex-1 gap-4 p-5">
         <div className={`flex w-16 shrink-0 flex-col items-center justify-center self-start rounded-2xl py-2 ${past ? 'bg-base-200' : 'bg-primary text-primary-content'}`}>
           <span className="font-display text-2xl leading-none font-bold">{date(event.startsAt, { day: 'numeric' })}</span>

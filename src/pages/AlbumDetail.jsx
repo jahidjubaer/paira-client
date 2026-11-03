@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import toast from 'react-hot-toast'
 import { FaArrowLeft, FaCamera, FaImages } from 'react-icons/fa6'
+import EmptyState from '../components/EmptyState.jsx'
 import useLanguage from '../i18n/useLanguage.js'
 import useAuth from '../context/useAuth.js'
 import api from '../api/axiosInstance.js'
@@ -142,10 +143,7 @@ const AlbumDetail = () => {
       {album.isContest && <ContestPanel album={album} />}
 
       {photos.length === 0 ? (
-        <div className="rounded-[2rem] bg-base-200 p-16 text-center">
-          <FaImages className="mx-auto size-12 text-primary/40" />
-          <p className="mt-4 text-base-content/60">{t('gallery.emptyAlbum')}</p>
-        </div>
+        <EmptyState icon={FaImages} text={t('gallery.emptyAlbum')} action={{ label: t('gallery.backToGallery'), to: '/gallery' }} />
       ) : (
         <div className="columns-2 gap-4 md:columns-3 lg:columns-4">
           {photos.map((p, i) => (

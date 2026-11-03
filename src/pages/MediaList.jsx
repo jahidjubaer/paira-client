@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
-import { FaArrowRight, FaMagnifyingGlass } from 'react-icons/fa6'
+import { FaArrowRight, FaLandmark, FaMagnifyingGlass, FaMicrophoneLines } from 'react-icons/fa6'
+import EmptyState from '../components/EmptyState.jsx'
 import useLanguage from '../i18n/useLanguage.js'
 import api from '../api/axiosInstance.js'
 import PageHeader from '../components/PageHeader.jsx'
@@ -99,7 +100,7 @@ const MediaList = ({ collection }) => {
             {[0, 1, 2].map((i) => <div key={i} className="skeleton aspect-[4/3] rounded-[2rem]" />)}
           </div>
         ) : data.items.length === 0 ? (
-          <p className="mt-8 rounded-[2rem] bg-base-200 p-14 text-center text-lg text-base-content/60">{t('media.empty')}</p>
+          <EmptyState icon={isPodcast ? FaMicrophoneLines : FaLandmark} text={t('media.empty')} className="mt-8" />
         ) : (
           <>
             {featured && (

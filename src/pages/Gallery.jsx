@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 import { FaCamera, FaImages } from 'react-icons/fa6'
+import EmptyState from '../components/EmptyState.jsx'
 import useLanguage from '../i18n/useLanguage.js'
 import api from '../api/axiosInstance.js'
 import PageHeader from '../components/PageHeader.jsx'
@@ -30,10 +31,7 @@ const Gallery = () => {
             {[0, 1, 2].map((i) => <div key={i} className="skeleton aspect-[4/3] rounded-[2rem]" />)}
           </div>
         ) : albums.length === 0 ? (
-          <div className="rounded-[2rem] bg-base-200 p-16 text-center">
-            <FaImages className="mx-auto size-12 text-primary/40" />
-            <p className="mt-4 text-lg text-base-content/60">{t('gallery.empty')}</p>
-          </div>
+          <EmptyState icon={FaImages} text={t('gallery.empty')} />
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {sorted.map((a, i) => (

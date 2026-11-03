@@ -15,6 +15,8 @@ const BookCard = ({ book }) => {
     <Link to={to} state={{ book }} viewTransition className="group block transition active:scale-[0.97]">
       <div className="relative transition duration-300 group-hover:-translate-y-1.5 group-hover:rotate-[-1deg]" style={{ viewTransitionName: opening ? 'book-cover' : undefined }}>
         <BookCover book={book} />
+        {/* Spine shading so the cover reads as a book */}
+        <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-4 rounded-l-2xl bg-gradient-to-r from-black/30 via-white/10 to-transparent" />
         {book.readUrl && (
           <span className="absolute top-2 right-2 grid size-7 place-items-center rounded-full bg-base-100/90 text-primary shadow" title={t('books.freeToRead')}>
             <FaGlobe className="size-3.5" />

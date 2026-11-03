@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router'
-import { FaClipboardList } from 'react-icons/fa6'
+import { FaCalendarDays, FaClipboardList } from 'react-icons/fa6'
+import EmptyState from '../components/EmptyState.jsx'
 import useLanguage from '../i18n/useLanguage.js'
 import api from '../api/axiosInstance.js'
 import PageHeader from '../components/PageHeader.jsx'
@@ -78,9 +79,11 @@ const Events = () => {
             ) : state === 'error' ? (
               <p className="rounded-3xl bg-error/10 p-10 text-center text-error">{t('auth.failed')}</p>
             ) : data.events.length === 0 ? (
-              <p className="rounded-[2rem] bg-base-200 p-14 text-center text-lg text-base-content/60">
-                {when === 'upcoming' ? t('events.noUpcoming') : t('events.noPast')}
-              </p>
+              <EmptyState
+                icon={FaCalendarDays}
+                text={when === 'upcoming' ? t('events.noUpcoming') : t('events.noPast')}
+                action={when === 'upcoming' ? { label: t('events.past'), onClick: () => setFilter({ when: 'past' }) } : null}
+              />
             ) : (
               <div className="grid gap-5 sm:grid-cols-2">
                 {data.events.map((e) => <EventCard key={e._id} event={e} past={when === 'past'} />)}
