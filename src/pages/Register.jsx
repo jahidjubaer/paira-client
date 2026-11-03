@@ -5,9 +5,11 @@ import { FaArrowRight } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
 import useAuth from '../context/useAuth.js'
 import AuthShell from '../components/AuthShell.jsx'
+import GoogleButton from '../components/GoogleButton.jsx'
 import apiError from '../api/apiError.js'
 import useSite from '../context/useSite.js'
 import { memberTypes } from '../data/policies.js'
+import { googleEnabled } from '../utils/googleSignIn.js'
 
 const Field = ({ label, hint, className = '', ...props }) => (
   <label className={`block ${className}`}>
@@ -65,14 +67,6 @@ const Register = () => {
   return (
     <AuthShell title={t('auth.registerTitle')} text={t('auth.registerText')}>
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Field label={t('auth.name')} name="name" required maxLength={100} autoComplete="name" className="sm:col-span-2" />
-          <Field label={t('auth.email')} name="email" type="email" required maxLength={150} autoComplete="email" />
-          <Field label={t('auth.phone')} name="phone" type="tel" maxLength={20} autoComplete="tel" />
-          <Field label={t('auth.institution')} name="institution" maxLength={150} />
-          <Field label={t('auth.address')} name="address" maxLength={250} />
-        </div>
-
         <fieldset>
           <legend className="mb-2 text-sm font-medium">{t('auth.memberType')}</legend>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -97,6 +91,21 @@ const Register = () => {
             ))}
           </div>
         </fieldset>
+
+        {/* Comes after the type choice so a Google sign-up gets the chosen type */}
+        {googleEnabled && (
+          <div>
+            <GoogleButton memberType={chosenType} onBusy={setBusy} />
+          </div>
+        )}
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label={t('auth.name')} name="name" required maxLength={100} autoComplete="name" className="sm:col-span-2" />
+          <Field label={t('auth.email')} name="email" type="email" required maxLength={150} autoComplete="email" />
+          <Field label={t('auth.phone')} name="phone" type="tel" maxLength={20} autoComplete="tel" />
+          <Field label={t('auth.institution')} name="institution" maxLength={150} />
+          <Field label={t('auth.address')} name="address" maxLength={250} />
+        </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label={t('auth.password')} hint={t('auth.passwordHint')} name="password" type="password" required minLength={6} autoComplete="new-password" />

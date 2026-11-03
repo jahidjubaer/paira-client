@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import api from '../api/axiosInstance.js'
 import { AuthContext } from './authContext.js'
 import { canAccess, STAFF_ROLES } from '../utils/roles.js'
+import { loadFirebase } from '../utils/googleSignIn.js'
 
 const TOKEN_KEY = 'paira-token'
 
@@ -46,6 +47,14 @@ const AuthProvider = ({ children }) => {
 
   const register = async (form) => handleAuth((await api.post('/auth/register', form)).data)
 
+  // Returns { user, created } — created is true for a brand-new account
+  const loginWithGoogle = async (memberType) => {
+    const { googleIdToken } = await loadFirebase()
+    const idToken = await googleIdToken()
+    const { data } = await api.post('/auth/google', { idToken, memberType })
+    return { user: handleAuth(data), created: Boolean(data.created) }
+  }
+
   const logout = useCallback(() => {
     saveToken(null)
     setUser(null)
@@ -63,7 +72,7 @@ const AuthProvider = ({ children }) => {
   const can = (area) => Boolean(user) && (area === 'admin' ? isAdmin : area === 'staff' ? isStaff : canAccess(user.role, area))
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading, login, register, logout, refreshUser, isAdmin, isStaff, can }}>
+    <AuthContext.Provider value={{ user, setUser, loading, login, register, loginWithGoogle, logout, refreshUser, isAdmin, isStaff, can }}>
       {children}
     </AuthContext.Provider>
   )

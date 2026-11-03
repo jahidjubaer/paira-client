@@ -5,6 +5,7 @@ import { FaArrowRight, FaEye, FaEyeSlash } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
 import useAuth from '../context/useAuth.js'
 import AuthShell from '../components/AuthShell.jsx'
+import GoogleButton from '../components/GoogleButton.jsx'
 import apiError from '../api/apiError.js'
 
 const Login = () => {
@@ -17,6 +18,7 @@ const Login = () => {
 
   const goTo = location.state?.from || '/dashboard'
 
+  // busy also covers Google sign-in, so the page doesn't jump away before its welcome toast
   if (user && !busy) return <Navigate to={goTo} replace />
 
   const handleSubmit = async (e) => {
@@ -35,6 +37,7 @@ const Login = () => {
 
   return (
     <AuthShell title={t('auth.loginTitle')} text={t('auth.loginText')}>
+      <GoogleButton goTo={goTo} onBusy={setBusy} />
       <form onSubmit={handleSubmit} className="space-y-5">
         <label className="block">
           <span className="mb-1.5 block text-sm font-medium">{t('auth.email')}</span>

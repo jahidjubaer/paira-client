@@ -13,6 +13,7 @@
     "@tailwindcss/vite": "^4.3.3",
     "axios": "^1.20.0",
     "daisyui": "^5.7.47",
+    "firebase": "^13.2.0",
     "papaparse": "^5.7.0",
     "qrcode": "^1.5.4",
     "react": "^19.2.8",
