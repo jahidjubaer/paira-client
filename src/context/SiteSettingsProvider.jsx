@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react'
 import { SiteContext } from './siteContext.js'
 import api from '../api/axiosInstance.js'
-import { mergeSite } from '../data/site.js'
+import { defaultRules, mergeSite } from '../data/site.js'
 
 const CACHE_KEY = 'paira-site'
 
-// Last settings seen, so repeat visits show real details at once (refreshed in the background)
+// Last settings seen ({ site, rules }), so repeat visits show real details at once (refreshed in the background)
 const readCache = () => {
   try {
-    return JSON.parse(localStorage.getItem(CACHE_KEY)) ?? {}
+    const cached = JSON.parse(localStorage.getItem(CACHE_KEY))
+    return cached?.site ? cached : { site: {}, rules: {} }
   } catch {
-    return {}
+    return { site: {}, rules: {} }
   }
 }
 
@@ -20,7 +21,7 @@ const SiteSettingsProvider = ({ children }) => {
   useEffect(() => {
     api
       .get('/settings/public')
-      .then(({ data }) => setSaved(data.site ?? {}))
+      .then(({ data }) => setSaved({ site: data.site ?? {}, rules: data.rules ?? {} }))
       .catch(() => {}) // keep cached / default details
   }, [])
 
@@ -32,8 +33,14 @@ const SiteSettingsProvider = ({ children }) => {
     }
   }, [saved])
 
-  // setSite lets the settings page update the whole site right after saving
-  return <SiteContext.Provider value={{ site: mergeSite(saved), setSite: setSaved }}>{children}</SiteContext.Provider>
+  // setSite / setRules let the settings pages update the whole site right after saving
+  const value = {
+    site: mergeSite(saved.site),
+    rules: { ...defaultRules, ...saved.rules },
+    setSite: (site) => setSaved((s) => ({ ...s, site })),
+    setRules: (rules) => setSaved((s) => ({ ...s, rules })),
+  }
+  return <SiteContext.Provider value={value}>{children}</SiteContext.Provider>
 }
 
 export default SiteSettingsProvider

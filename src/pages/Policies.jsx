@@ -4,11 +4,16 @@ import useLanguage from '../i18n/useLanguage.js'
 import PageHeader from '../components/PageHeader.jsx'
 import SectionTitle from '../components/SectionTitle.jsx'
 import { awards, libraryRules, memberTypes, scholarshipFund, volunteerBenefits } from '../data/policies.js'
+import useSite from '../context/useSite.js'
+import fill from '../utils/fill.js'
 
 const benefitIcons = [FaIdBadge, FaChalkboardUser, FaCertificate, FaMedal]
 
 const Policies = () => {
   const { t, pick, num } = useLanguage()
+  const { rules } = useSite()
+  // First rule shows the live loan limits from Dashboard → Rules
+  const rulesList = [fill(t('policies.ruleLoan'), { max: num(rules.maxLoans), days: num(rules.loanDays) }), ...libraryRules.map(pick)]
 
   return (
     <>
@@ -51,10 +56,10 @@ const Policies = () => {
         <div className="mx-auto grid max-w-7xl gap-10 px-4 lg:grid-cols-[1fr_1.4fr]">
           <SectionTitle eyebrow={t('policies.library')} title={t('policies.libraryTitle')} />
           <ol className="space-y-3">
-            {libraryRules.map((r, i) => (
+            {rulesList.map((r, i) => (
               <li key={i} className="flex items-center gap-5 rounded-[1.5rem] bg-base-100 p-5">
                 <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-primary font-display text-xl font-bold text-primary-content">{num(i + 1)}</span>
-                <p className="text-lg font-medium">{pick(r)}</p>
+                <p className="text-lg font-medium">{r}</p>
               </li>
             ))}
           </ol>

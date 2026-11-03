@@ -46,3 +46,17 @@ export const mergeSite = (saved = {}) => {
     announcement: { ...d.announcement, ...saved.announcement },
   }
 }
+
+// Library & membership rules (server keeps the real values; these are only used before they load)
+export const defaultRules = {
+  loanDays: 14,
+  maxLoans: 3,
+  holdDays: 3,
+  maxReservations: 3,
+  remindDaysBefore: 2,
+  remindOverdueEvery: 3,
+  contestMaxPending: 5,
+  registrationOpen: true,
+  registrationClosedNote: { bn: '', en: '' },
+  signupTypes: ['general', 'active', 'lifetime', 'donor', 'patron'],
+}

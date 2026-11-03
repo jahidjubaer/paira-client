@@ -6,10 +6,8 @@ import useLanguage from '../i18n/useLanguage.js'
 import useAuth from '../context/useAuth.js'
 import AuthShell from '../components/AuthShell.jsx'
 import apiError from '../api/apiError.js'
+import useSite from '../context/useSite.js'
 import { memberTypes } from '../data/policies.js'
-
-// Honorary membership is nominated by the committee, so it is not offered here
-const selectableTypes = memberTypes.filter((m) => m.id !== 'honorary')
 
 const Field = ({ label, hint, className = '', ...props }) => (
   <label className={`block ${className}`}>
@@ -22,11 +20,30 @@ const Field = ({ label, hint, className = '', ...props }) => (
 const Register = () => {
   const { t, pick } = useLanguage()
   const { user, register } = useAuth()
+  const { rules } = useSite()
   const navigate = useNavigate()
   const [busy, setBusy] = useState(false)
   const [memberType, setMemberType] = useState('general')
 
   if (user && !busy) return <Navigate to="/dashboard" replace />
+
+  if (!rules.registrationOpen) {
+    const note = pick(rules.registrationClosedNote) || t('auth.registrationClosed')
+    return (
+      <AuthShell title={t('auth.registerTitle')} text={t('auth.registerText')}>
+        <p className="rounded-2xl bg-warning/15 p-4">{note}</p>
+        <p className="mt-6 text-center text-sm">
+          <Link to="/contact" className="link font-semibold link-primary">{t('nav.contact')}</Link>
+          {' · '}
+          <Link to="/login" className="link font-semibold link-primary">{t('nav.login')}</Link>
+        </p>
+      </AuthShell>
+    )
+  }
+
+  // Types the committee allows at sign-up (honorary is never offered — it's nominated)
+  const selectableTypes = memberTypes.filter((m) => m.id !== 'honorary' && rules.signupTypes.includes(m.id))
+  const chosenType = selectableTypes.some((m) => m.id === memberType) ? memberType : selectableTypes[0]?.id
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -36,7 +53,7 @@ const Register = () => {
 
     setBusy(true)
     try {
-      await register({ ...form, memberType })
+      await register({ ...form, memberType: chosenType })
       toast.success(t('auth.registered'))
       navigate('/dashboard', { replace: true })
     } catch (err) {
@@ -63,14 +80,14 @@ const Register = () => {
               <label
                 key={m.id}
                 className={`cursor-pointer rounded-2xl border-2 p-4 transition ${
-                  memberType === m.id ? 'border-primary bg-primary/5' : 'border-base-300 hover:border-primary/40'
+                  chosenType === m.id ? 'border-primary bg-primary/5' : 'border-base-300 hover:border-primary/40'
                 }`}
               >
                 <input
                   type="radio"
                   name="memberTypeChoice"
                   value={m.id}
-                  checked={memberType === m.id}
+                  checked={chosenType === m.id}
                   onChange={() => setMemberType(m.id)}
                   className="radio radio-primary radio-sm float-right"
                 />

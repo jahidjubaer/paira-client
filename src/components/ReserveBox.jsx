@@ -6,11 +6,14 @@ import useLanguage from '../i18n/useLanguage.js'
 import useAuth from '../context/useAuth.js'
 import api from '../api/axiosInstance.js'
 import apiError from '../api/apiError.js'
+import useSite from '../context/useSite.js'
+import fill from '../utils/fill.js'
 
 // Book page: reserve / hold a copy, or show the member's existing reservation
 const ReserveBox = ({ book, queue }) => {
   const { t, num, date } = useLanguage()
   const { user, isStaff } = useAuth()
+  const { rules } = useSite()
   const [mine, setMine] = useState(null)
   const [busy, setBusy] = useState(false)
 
@@ -47,6 +50,8 @@ const ReserveBox = ({ book, queue }) => {
     }
   }
 
+  if (!rules.maxReservations) return null // reservations turned off in Dashboard → Rules
+
   return (
     <div className="mt-6 max-w-2xl rounded-[1.5rem] border border-base-300 p-5">
       {(queue?.waiting > 0 || queue?.held > 0) && (
@@ -79,7 +84,7 @@ const ReserveBox = ({ book, queue }) => {
           <button onClick={reserve} disabled={busy} className="btn btn-secondary rounded-full">
             {busy ? <span className="loading loading-spinner loading-sm" /> : <FaBookmark />} {freeCopies > 0 ? t('res.hold') : t('res.reserve')}
           </button>
-          <p className="flex-1 text-sm text-base-content/60">{freeCopies > 0 ? t('res.holdHint') : t('res.reserveHint')}</p>
+          <p className="flex-1 text-sm text-base-content/60">{freeCopies > 0 ? fill(t('res.holdHint'), { days: num(rules.holdDays) }) : t('res.reserveHint')}</p>
         </div>
       )}
     </div>

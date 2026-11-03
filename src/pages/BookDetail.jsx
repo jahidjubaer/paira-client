@@ -11,11 +11,14 @@ import { categoryName, languageName } from '../data/bookCategories.js'
 import usePageTitle from '../utils/usePageTitle.js'
 import ReserveBox from '../components/ReserveBox.jsx'
 import BookReviews from '../components/BookReviews.jsx'
+import useSite from '../context/useSite.js'
+import fill from '../utils/fill.js'
 
 const BookDetail = () => {
   const { id } = useParams()
   const { t, pick, num } = useLanguage()
   const { user } = useAuth()
+  const { rules } = useSite()
   const [book, setBook] = useState(null)
   const [queue, setQueue] = useState(null)
   const [state, setState] = useState('loading')
@@ -100,7 +103,7 @@ const BookDetail = () => {
           <div className="mt-10 max-w-2xl rounded-[2rem] bg-neutral p-6 text-neutral-content sm:p-8">
             <h2 className="text-2xl font-bold">{t('books.howToBorrow')}</h2>
             <ol className="mt-4 space-y-3">
-              {t('books.howSteps').map((step, i) => (
+              {t('books.howSteps').map((text) => fill(text, { days: num(rules.loanDays) })).map((step, i) => (
                 <li key={step} className="flex gap-3">
                   <span className="grid size-7 shrink-0 place-items-center rounded-full bg-secondary font-bold text-secondary-content">{num(i + 1)}</span>
                   <span className="pt-0.5">{step}</span>

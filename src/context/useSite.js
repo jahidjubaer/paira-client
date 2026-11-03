@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { SiteContext } from './siteContext.js'
 
-// { site, setSite } — contact, hours, social, payment, announcement (see data/site.js)
+// { site, rules, setSite, setRules } — see data/site.js for the shape
 const useSite = () => useContext(SiteContext)
 
 export default useSite
