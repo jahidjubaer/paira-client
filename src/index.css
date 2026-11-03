@@ -147,38 +147,17 @@
 
 /* Home hero scene (HeroScene.jsx). The landscape is one still picture; everything that moves is its own
    small layer animated only with transform and opacity, so the graphics card moves it without repainting.
-   Resting styles are the finished, lit picture; the animations start from the dark, closed-book moment.
+   Resting styles are the finished, sunlit picture; the animations start from the night, closed-book moment.
    The stage is the 1600×900 drawing, covering the hero like a cover image (book centred on phones);
-   --u is one drawing unit in screen pixels. */
+   --u is one drawing unit in screen pixels. Phones get a lighter version: still planes, no light motes and
+   no endless pulse on the big glow, so the graphics card holds a few small layers instead of many screen-sized ones. */
 .hero-scene {
   container-type: size;
   overflow: hidden;
-  /* Dawn colours; data-time swaps them for day, evening and night */
-  --sky-1: #fbe6bd;
-  --sky-2: #f8cf8f;
-  --sky-3: #f3b36a;
-  --hill-far: #b3bccb;
-  --hill-back: #8da0b0;
-  --hill-front: #5f8290;
-  --trees: #3f6470;
-  --mist: #fff1d6;
-  --cloud: #fff3dc;
-  --lake-1: #6cc7c0;
-  --lake-2: #2f9a9b;
-  --lake-3: #1b6f74;
-  --shore-1: #4c7a42;
-  --shore-2: #24432a;
-  --tree-crown: #3d6a3a;
-  --sun: 0;
-  --moon: 0;
-  --stars-end: 0;
-  --dim-end: 0;
-  --dim-vis: hidden;
-}
-.hero-scene[data-time="day"] {
-  --sky-1: #a9d8ec;
-  --sky-2: #d4ecef;
-  --sky-3: #f5ead2;
+  /* Bright day colours; the night is a veil over them that lifts as the book opens (.scene-night) */
+  --sky-1: #8fcbea;
+  --sky-2: #c9e8f2;
+  --sky-3: #fbf1d8;
   --hill-far: #a8c0cf;
   --hill-back: #7f9fb2;
   --hill-front: #4f7f8c;
@@ -191,47 +170,6 @@
   --shore-1: #5b8a47;
   --shore-2: #2c4d2d;
   --tree-crown: #467a3e;
-}
-.hero-scene[data-time="evening"] {
-  --sky-1: #6d5a8c;
-  --sky-2: #e98b62;
-  --sky-3: #fbc06a;
-  --hill-far: #9b8ea8;
-  --hill-back: #7a7393;
-  --hill-front: #4f5d7a;
-  --trees: #34405a;
-  --mist: #ffd2a8;
-  --cloud: #f7b99a;
-  --lake-1: #5b9fb0;
-  --lake-2: #2c6f82;
-  --lake-3: #1a4f63;
-  --shore-1: #46623c;
-  --shore-2: #20352a;
-  --tree-crown: #34502f;
-  --sun: 1;
-  --dim-end: 0.1;
-  --dim-vis: visible;
-}
-.hero-scene[data-time="night"] {
-  --sky-1: #0b1428;
-  --sky-2: #172a4a;
-  --sky-3: #2c4468;
-  --hill-far: #2b3a55;
-  --hill-back: #24344d;
-  --hill-front: #1b2a40;
-  --trees: #13202f;
-  --mist: #4a5f86;
-  --cloud: #3a4a66;
-  --lake-1: #2a5f72;
-  --lake-2: #1a4458;
-  --lake-3: #10303f;
-  --shore-1: #22372e;
-  --shore-2: #121f1b;
-  --tree-crown: #1a2c22;
-  --moon: 1;
-  --stars-end: 1;
-  --dim-end: 0.2;
-  --dim-vis: visible;
 }
 .scene-stage {
   position: absolute;
@@ -253,17 +191,21 @@
 .scene-plane > * {
   --u: calc(100cqw / 1600);
   position: absolute;
-  will-change: transform, opacity;
 }
-/* Depth planes: far ones follow the mouse less and lag behind when scrolling (--mx, --my, --sy set by HeroScene) */
 .scene-stage > .scene-plane {
   inset: 0;
-  will-change: transform;
-  transform: translate3d(
-    calc(var(--mx, 0) * var(--depth) * -24 * var(--u)),
-    calc((var(--my, 0) * var(--depth) * -14 + var(--sy, 0) * (1 - var(--depth)) * 160) * var(--u)),
-    0
-  );
+}
+/* Depth planes, computers only: far ones follow the mouse less and lag behind when scrolling (--mx, --my, --sy set
+   by HeroScene). Same query as useParallax. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .scene-stage > .scene-plane {
+    will-change: transform;
+    transform: translate3d(
+      calc(var(--mx, 0) * var(--depth) * -24 * var(--u)),
+      calc((var(--my, 0) * var(--depth) * -14 + var(--sy, 0) * (1 - var(--depth)) * 160) * var(--u)),
+      0
+    );
+  }
 }
 .scene-stage svg {
   display: block;
@@ -276,21 +218,19 @@
   animation-play-state: paused !important;
 }
 
-.scene-dawn,
-.scene-stars {
-  inset: 0;
-  animation: scene-dawn 4.4s ease-in-out 2.6s both;
-}
-.scene-dawn {
-  --from: 0.62;
-  --to: var(--dim-end);
-  opacity: var(--dim-end);
-  visibility: var(--dim-vis);
-}
-.scene-stars {
+.scene-night {
   --from: 1;
-  --to: var(--stars-end);
-  opacity: var(--stars-end);
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  animation: scene-night 4.4s ease-in-out 2.6s both;
+}
+.scene-night-veil {
+  --from: 0.78;
+  background: linear-gradient(#081226, #12233f 60%, #0d1a2c);
+}
+.scene-sun {
+  animation: scene-sunrise 5s cubic-bezier(0.2, 0.6, 0.3, 1) 3s both;
 }
 .scene-clouds {
   animation: scene-clouds 50s ease-in-out infinite alternate;
@@ -420,11 +360,21 @@
 @keyframes scene-hint {
   to { opacity: 0.55; }
 }
-/* On phones the text covers the whole scene: words stay a soft glow behind it */
+/* On phones the text covers the whole scene: words stay a soft glow behind it. The light settles after it spreads
+   instead of pulsing and swaying forever, and the light motes are left out. */
 @media (max-width: 1023px) {
   .scene-word {
     --peak: 0.35;
     font-size: calc(24 * var(--u));
+  }
+  .scene-glow {
+    animation: scene-glow-in 2.6s ease-out 2.4s both;
+  }
+  .scene-beams {
+    animation: scene-fade-in 2s ease-out 3s both;
+  }
+  .scene-mote {
+    display: none;
   }
 }
 @keyframes scene-fold {
@@ -435,9 +385,13 @@
   from { transform: scaleX(0); }
   to { transform: scaleX(1); }
 }
-@keyframes scene-dawn {
+@keyframes scene-night {
   from { opacity: var(--from); visibility: visible; }
-  to { opacity: var(--to); visibility: var(--dim-vis, visible); }
+  to { opacity: 0; visibility: hidden; }
+}
+@keyframes scene-sunrise {
+  from { opacity: 0; transform: translateY(calc(260 * var(--u))); }
+  30% { opacity: 1; }
 }
 @keyframes scene-clouds {
   to { transform: translateX(calc(-120 * var(--u))); }

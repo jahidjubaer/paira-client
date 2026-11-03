@@ -5,9 +5,10 @@ import { startLakeSound } from '../utils/lakeSound.js'
 
 // Home hero background: Niladri Lake — a book opens on the shore, its light wakes the lake and words rise from its pages.
 // Drawn on a 1600×900 stage in three depth planes (far hills, the lake, the near shore) that drift apart as the
-// visitor scrolls or moves the mouse. Still parts are drawn once; every moving part is its own small layer that only
-// changes transform/opacity, so it animates on the graphics card without repainting (index.css, scene-*).
-// The sky follows the visitor's clock (dawn, day, evening, night). Tapping the book sends out a burst of words.
+// visitor scrolls or moves the mouse (computers only). Still parts are drawn once; every moving part is its own small
+// layer that only changes transform/opacity, so it animates on the graphics card without repainting (index.css, scene-*).
+// It starts at night; as the book opens the night lifts and the sun rises into a bright day. Tapping the book sends
+// out a burst of words.
 // Resting styles are the finished picture, so reduced-motion visitors see the lit scene without movement.
 
 const W = 1600
@@ -23,18 +24,6 @@ const Layer = ({ box, className = '', style, children }) => (
     <svg viewBox={box.join(' ')}>{children}</svg>
   </div>
 )
-
-// Visitor's local time picks the sky; ?scene=dawn|day|evening|night shows one on purpose
-const TIMES = ['dawn', 'day', 'evening', 'night']
-const timeOfDay = () => {
-  const asked = new URLSearchParams(window.location.search).get('scene')
-  if (TIMES.includes(asked)) return asked
-  const hour = new Date().getHours()
-  if (hour >= 5 && hour < 10) return 'dawn'
-  if (hour >= 10 && hour < 16) return 'day'
-  if (hour >= 16 && hour < 19) return 'evening'
-  return 'night'
-}
 
 // Words rise from the pages and dissolve into the light: through three points; the middle one is where
 // each rests without motion. Eight words, 1.3 s apart, on a 10.4 s loop, so one leaves the book steadily.
@@ -98,10 +87,11 @@ const stop = (name) => ({ stopColor: `var(--${name})` })
 
 const rand = (min, max) => min + Math.random() * (max - min)
 
-// Scroll and mouse move the depth planes; eased, and only while something is changing
+// Scroll and mouse move the depth planes; eased, and only while something is changing. Computers only (same query
+// as index.css): on phones the planes stay still, so they aren't kept as huge graphics layers or restyled while scrolling.
 const useParallax = (sceneRef, stageRef) => {
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (!window.matchMedia('(min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches) return
     const scene = sceneRef.current
     const stage = stageRef.current
     const target = { x: 0, y: 0 }
@@ -126,8 +116,7 @@ const useParallax = (sceneRef, stageRef) => {
       target.y = (e.clientY / window.innerHeight) * 2 - 1
       kick()
     }
-    const mouse = window.matchMedia('(pointer: fine)').matches
-    if (mouse) window.addEventListener('pointermove', onMove, { passive: true })
+    window.addEventListener('pointermove', onMove, { passive: true })
     window.addEventListener('scroll', kick, { passive: true })
     kick()
     return () => {
@@ -142,7 +131,6 @@ const HeroScene = ({ className = '' }) => {
   const { t } = useLanguage()
   const ref = useRef(null)
   const stageRef = useRef(null)
-  const [time] = useState(timeOfDay)
   const [bursts, setBursts] = useState([])
   const [tapped, setTapped] = useState(false)
   const burstCount = useRef(0)
@@ -175,9 +163,9 @@ const HeroScene = ({ className = '' }) => {
   }
 
   return (
-    <div ref={ref} className={`hero-scene ${className}`} data-time={time} role="img" aria-label={t('home.sceneLabel')}>
+    <div ref={ref} className={`hero-scene ${className}`} role="img" aria-label={t('home.sceneLabel')}>
       <div ref={stageRef} className="scene-stage">
-        {/* Far: sky, sun or moon, clouds, three hill ranges, the tree line and mist on the far shore */}
+        {/* Far: sky, the rising sun, clouds, three hill ranges, the tree line and mist on the far shore */}
         <div className="scene-plane" style={{ '--depth': 0.2 }}>
           <svg viewBox={`0 0 ${W} ${H}`} style={{ inset: 0 }}>
             <defs>
@@ -190,21 +178,22 @@ const HeroScene = ({ className = '' }) => {
                 <stop offset="0" stopColor="#fff1c9" stopOpacity="0.8" />
                 <stop offset="1" stopColor="#fff1c9" stopOpacity="0" />
               </radialGradient>
+            </defs>
+            <rect x="-100" y="-260" width="1800" height="820" fill="url(#scene-sky)" />
+          </svg>
+          {/* The sun climbs from behind the hills, so its layer sits between the sky and the hills */}
+          <Layer box={[1070, 30, 320, 320]} className="scene-sun">
+            <circle cx="1230" cy="190" r="160" fill="url(#scene-halo)" />
+            <circle cx="1230" cy="190" r="44" fill="#ffe7a3" />
+          </Layer>
+          <svg viewBox={`0 0 ${W} ${H}`} style={{ inset: 0 }}>
+            <defs>
               <linearGradient id="scene-mist" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0" style={stop('mist')} stopOpacity="0" />
                 <stop offset="0.7" style={stop('mist')} stopOpacity="0.55" />
                 <stop offset="1" style={stop('mist')} stopOpacity="0" />
               </linearGradient>
             </defs>
-            <rect x="-100" y="-260" width="1800" height="820" fill="url(#scene-sky)" />
-            <g style={{ opacity: 'var(--sun)' }}>
-              <circle cx="760" cy="330" r="160" fill="url(#scene-halo)" />
-              <circle cx="760" cy="330" r="46" fill="#ffb066" />
-            </g>
-            <g style={{ opacity: 'var(--moon)' }}>
-              <circle cx="330" cy="150" r="90" fill="url(#scene-halo)" opacity="0.5" />
-              <path d="M330 120 A30 30 0 1 0 330 180 A38 38 0 0 1 330 120 Z" fill="#fdf3d8" />
-            </g>
             <path d="M-100 430 C100 360 260 340 420 380 C560 410 700 330 860 320 C1020 310 1140 380 1300 350 C1440 325 1560 360 1700 340 L1700 552 L-100 552 Z" style={v('hill-far')} />
             <path d="M-100 480 C0 440 150 400 280 395 C330 393 380 405 420 420 C560 455 640 380 800 360 C960 340 1060 420 1200 395 C1320 375 1440 420 1700 400 L1700 552 L-100 552 Z" style={v('hill-back')} />
             <path d={FRONT_HILLS} style={v('hill-front')} />
@@ -290,10 +279,12 @@ const HeroScene = ({ className = '' }) => {
           </Layer>
         </div>
 
-        {/* Night before the light: dims everything, then lifts (stays a little at evening and night) */}
-        <div className="scene-dawn" style={{ background: '#0f1d33' }} />
-        <div className="scene-stars">
+        {/* Night before the book opens: a dark veil with moon and stars over the day scene; it lifts as the light spreads */}
+        <div className="scene-night scene-night-veil" />
+        <div className="scene-night">
           <svg viewBox={`0 0 ${W} ${H}`}>
+            <circle cx="330" cy="150" r="90" fill="url(#scene-halo)" opacity="0.5" />
+            <path d="M330 120 A30 30 0 1 0 330 180 A38 38 0 0 1 330 120 Z" fill="#fdf3d8" />
             <g fill="#fdf6e6">
               {stars.map(([x, y]) => <circle key={x} cx={x} cy={y} r="2.2" />)}
             </g>

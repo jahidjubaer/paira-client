@@ -200,7 +200,7 @@ const Home = () => {
       <section data-waiting={heroReady ? undefined : ''} className="relative isolate flex min-h-[calc(100svh-4rem)] items-center overflow-hidden bg-neutral text-neutral-content">
         <HeroScene className="absolute inset-0 -z-10" />
         {/* Shade behind the text: from the top on phones, from the left on wide screens; fades into the strip below */}
-        <div className="pointer-events-none absolute inset-0 -z-10 bg-linear-to-b from-neutral/90 via-neutral/55 to-transparent lg:bg-linear-to-r lg:via-neutral/45" />
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-linear-to-b from-neutral/85 via-neutral/45 to-transparent lg:bg-linear-to-r lg:via-neutral/35" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-32 bg-linear-to-b from-transparent to-neutral" />
 
         <LakeSoundToggle className="hero-rise btn btn-circle absolute top-5 right-5 z-10 border-white/25 bg-neutral/55 text-white hover:bg-neutral/65 [animation-delay:0.4s]" />
