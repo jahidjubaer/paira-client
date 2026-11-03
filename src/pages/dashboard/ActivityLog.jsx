@@ -6,7 +6,7 @@ import api from '../../api/axiosInstance.js'
 import apiError from '../../api/apiError.js'
 import Loader from '../../components/Loader.jsx'
 
-const groups = ['', 'member', 'donation', 'settings', 'backup']
+const groups = ['', 'member', 'donation', 'person', 'settings', 'backup']
 
 // Admin: who did what in the dashboard, plus a one-click backup of the database
 const ActivityLog = () => {

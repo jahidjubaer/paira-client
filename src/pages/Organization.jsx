@@ -1,5 +1,10 @@
-import { FaArrowDown, FaBuildingColumns, FaCalendarCheck, FaLayerGroup, FaPeopleGroup, FaSitemap, FaUserTie } from 'react-icons/fa6'
+import { useEffect, useState } from 'react'
+import { FaArrowDown, FaBuildingColumns, FaCalendarCheck, FaClockRotateLeft, FaLayerGroup, FaPeopleGroup, FaSitemap, FaUserTie } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
+import api from '../api/axiosInstance.js'
+import PersonCard from '../components/PersonCard.jsx'
+import { committees } from '../data/committees.js'
+import { isCurrent, pastTerms, termLabel } from '../utils/people.js'
 import PageHeader from '../components/PageHeader.jsx'
 import SectionTitle from '../components/SectionTitle.jsx'
 import CheckList from '../components/CheckList.jsx'
@@ -19,6 +24,23 @@ const tileColors = ['bg-secondary/25', 'bg-primary/10', 'bg-accent/10', 'bg-base
 
 const Organization = () => {
   const { t, pick, num } = useLanguage()
+  // Real committee members from Dashboard → Committee & people; the page falls back to the constitution's posts
+  const [people, setPeople] = useState([])
+
+  useEffect(() => {
+    api
+      .get('/people')
+      .then(({ data }) => setPeople(data.people))
+      .catch(() => {})
+  }, [])
+
+  const now = people.filter((p) => isCurrent(p))
+  const serving = (body, committee) => now.filter((p) => p.body === body && (!committee || p.committee === committee))
+  const core = serving('core')
+  const advisers = serving('advisory')
+  const executive = serving('executive')
+  // Past executive and advisory members, grouped by term
+  const history = pastTerms(people.filter((p) => !isCurrent(p) && ['executive', 'advisory'].includes(p.body)), num)
 
   const tiers = [
     { icon: FaPeopleGroup, title: t('org.generalCouncil'), text: pick(generalCouncil) },
@@ -48,9 +70,16 @@ const Organization = () => {
 
         <div className="mt-6 flex flex-wrap items-center gap-3 rounded-[2rem] bg-base-200 p-6">
           <span className="mr-2 font-display text-lg font-bold">{t('org.coreTeam')}</span>
-          {coreTeam.map((c, i) => (
-            <span key={i} className="rounded-full bg-base-100 px-4 py-2 text-sm font-medium">{pick(c)}</span>
-          ))}
+          {core.length > 0
+            ? core.map((p) => (
+                <span key={p._id} className="rounded-full bg-base-100 px-4 py-2 text-sm">
+                  <span className="font-semibold">{pick(p.name)}</span>
+                  {pick(p.post) && <span className="text-base-content/60"> · {pick(p.post)}</span>}
+                </span>
+              ))
+            : coreTeam.map((c, i) => (
+                <span key={i} className="rounded-full bg-base-100 px-4 py-2 text-sm font-medium">{pick(c)}</span>
+              ))}
         </div>
       </section>
 
@@ -75,20 +104,57 @@ const Organization = () => {
               <CheckList items={advisory.duties} light />
             </div>
           </div>
+          {advisers.length > 0 && (
+            <div className="relative mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+              {advisers.map((p) => <PersonCard key={p._id} person={p} light />)}
+            </div>
+          )}
         </div>
       </section>
 
       {/* Executive committee */}
       <section className="mx-auto max-w-7xl px-4 py-20">
-        <SectionTitle eyebrow={t('org.executive')} title={t('org.executiveTitle')} />
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          {executivePosts.map((p, i) => (
-            <div key={i} className={`flex items-end justify-between gap-3 rounded-2xl p-5 ${i === 0 ? 'bg-primary text-primary-content' : 'bg-base-200'}`}>
-              <p className="font-medium leading-snug">{pick(p.title)}</p>
-              <p className={`font-display text-3xl font-bold ${i === 0 ? 'text-secondary' : 'text-primary/40'}`}>{pick(p.count)}</p>
+        {executive.length > 0 ? (
+          <>
+            <SectionTitle eyebrow={`${t('org.executive')} · ${termLabel(executive[0], num)}`} title={t('org.currentTitle')} />
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+              {executive.map((p, i) => <PersonCard key={p._id} person={p} highlight={i === 0} />)}
             </div>
-          ))}
-        </div>
+          </>
+        ) : (
+          <>
+            <SectionTitle eyebrow={t('org.executive')} title={t('org.executiveTitle')} />
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+              {executivePosts.map((p, i) => (
+                <div key={i} className={`flex items-end justify-between gap-3 rounded-2xl p-5 ${i === 0 ? 'bg-primary text-primary-content' : 'bg-base-200'}`}>
+                  <p className="font-medium leading-snug">{pick(p.title)}</p>
+                  <p className={`font-display text-3xl font-bold ${i === 0 ? 'text-secondary' : 'text-primary/40'}`}>{pick(p.count)}</p>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
+        {history.length > 0 && (
+          <div className="mt-12">
+            <h3 className="mb-4 flex items-center gap-2 text-xl font-bold"><FaClockRotateLeft className="text-accent" /> {t('org.pastCommittees')}</h3>
+            <div className="space-y-3">
+              {history.map(({ label, people: members }) => (
+                <details key={label} className="collapse-arrow collapse rounded-2xl bg-base-200">
+                  <summary className="collapse-title font-semibold">{label}</summary>
+                  <ul className="collapse-content grid gap-x-6 gap-y-1 text-sm sm:grid-cols-2 lg:grid-cols-3">
+                    {members.map((p) => (
+                      <li key={p._id}>
+                        <span className="font-medium">{pick(p.name)}</span>
+                        {pick(p.post) && <span className="text-base-content/60"> · {pick(p.post)}</span>}
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              ))}
+            </div>
+          </div>
+        )}
       </section>
 
       {/* Sub-committees */}
@@ -105,6 +171,16 @@ const Organization = () => {
                     <span key={j} className="rounded-full bg-base-200 px-3 py-1 text-sm">{pick(task)}</span>
                   ))}
                 </div>
+                {serving('subcommittee', committees[i]?.id).length > 0 && (
+                  <ul className="mt-5 space-y-1 border-t border-base-300 pt-4 text-sm">
+                    {serving('subcommittee', committees[i].id).map((p) => (
+                      <li key={p._id}>
+                        <span className="font-semibold">{pick(p.name)}</span>
+                        {pick(p.post) && <span className="text-base-content/60"> · {pick(p.post)}</span>}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             ))}
           </div>

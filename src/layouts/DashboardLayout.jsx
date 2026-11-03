@@ -1,6 +1,6 @@
 import { Link, NavLink, Outlet, useNavigate } from 'react-router'
 import toast from 'react-hot-toast'
-import { FaArrowLeft, FaArrowRightArrowLeft, FaBars, FaBell, FaBook, FaBookmark, FaBookOpen, FaCalendarDays, FaCamera, FaChartPie, FaClockRotateLeft, FaHandHoldingHeart, FaHandshake, FaIdCard, FaImages, FaClipboardList, FaEnvelope, FaFileLines, FaGear, FaGraduationCap, FaKey, FaMicrophoneLines, FaRightFromBracket, FaSliders, FaStar, FaTrophy, FaUser, FaUserPen, FaUsers } from 'react-icons/fa6'
+import { FaArrowLeft, FaArrowRightArrowLeft, FaBars, FaBell, FaBook, FaBookmark, FaBookOpen, FaCalendarDays, FaCamera, FaChartPie, FaClockRotateLeft, FaHandHoldingHeart, FaHandshake, FaIdCard, FaImages, FaClipboardList, FaEnvelope, FaFileLines, FaGear, FaGraduationCap, FaKey, FaMicrophoneLines, FaPeopleGroup, FaRightFromBracket, FaSliders, FaStar, FaTrophy, FaUser, FaUserPen, FaUsers } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
 import useAuth from '../context/useAuth.js'
 import Logo from '../components/Logo.jsx'
@@ -54,6 +54,7 @@ const staffSections = [
     links: [
       { to: '/dashboard/site-settings', key: 'siteSettings', icon: FaGear },
       { to: '/dashboard/rules', key: 'rules', icon: FaSliders },
+      { to: '/dashboard/people', key: 'people', icon: FaPeopleGroup },
       { to: '/dashboard/activity', key: 'activity', icon: FaClockRotateLeft },
       { to: '/dashboard/scholarships', key: 'scholarships', icon: FaGraduationCap },
       { to: '/dashboard/donations', key: 'donations', icon: FaHandHoldingHeart },
