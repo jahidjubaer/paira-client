@@ -36,6 +36,18 @@ const en = {
     address: 'Takerghat, Bangladesh',
     rights: 'All rights reserved.',
   },
+  search: {
+    title: 'Search',
+    placeholder: 'Search books, events, notices or pages…',
+    pages: 'Pages',
+    books: 'Books',
+    events: 'Events',
+    notices: 'Notices',
+    recent: 'Recent searches',
+    nothing: 'Nothing found. Try another word.',
+    hint: 'Type a book title, author, event or page name.',
+    keys: '↑ ↓ choose · Enter open · Esc close',
+  },
   dashTab: {
     overview: 'Home',
     myBooks: 'My books',

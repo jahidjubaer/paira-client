@@ -1,6 +1,6 @@
 import { Link, NavLink, useNavigate } from 'react-router'
 import toast from 'react-hot-toast'
-import { FaArrowRight, FaHandHoldingHeart, FaRightFromBracket } from 'react-icons/fa6'
+import { FaArrowRight, FaHandHoldingHeart, FaMagnifyingGlass, FaRightFromBracket } from 'react-icons/fa6'
 import { MdDashboard } from 'react-icons/md'
 import useLanguage from '../i18n/useLanguage.js'
 import useAuth from '../context/useAuth.js'
@@ -9,6 +9,7 @@ import Logo from './Logo.jsx'
 import LanguageToggle from './LanguageToggle.jsx'
 import ThemeToggle from './ThemeToggle.jsx'
 import { mainLinks, moreLinks } from './navLinks.js'
+import openSearch from '../utils/openSearch.js'
 
 const linkClass = ({ isActive }) => (isActive ? 'menu-active font-semibold' : '')
 
@@ -70,6 +71,9 @@ const Navbar = () => {
           </div>
 
           <div className="navbar-end w-auto gap-1 sm:gap-2 lg:w-1/4">
+            <button onClick={openSearch} className="btn btn-sm btn-ghost btn-circle" aria-label={t('search.title')} title={`${t('search.title')} (Ctrl+K)`}>
+              <FaMagnifyingGlass className="size-4" />
+            </button>
             <ThemeToggle className="hidden lg:inline-block" />
             <LanguageToggle />
             <Link to="/donate" className="btn btn-sm btn-accent rounded-full max-sm:btn-circle" aria-label={t('nav.donate')}>
