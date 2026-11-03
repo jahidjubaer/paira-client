@@ -274,7 +274,7 @@ const en = {
     what: 'What',
     empty: 'Nothing recorded yet',
     kept: 'kept for 2 years',
-    member: { create: 'Added member', approve: 'Approved member', reject: 'Rejected member', pending: 'Set member back to pending', type: 'Changed membership type', role: 'Changed role', delete: 'Deleted member', resetPassword: 'Reset password' },
+    member: { create: 'Added member', approve: 'Approved member', reject: 'Rejected member', pending: 'Set member back to pending', type: 'Changed membership type', role: 'Changed role', delete: 'Deleted member', resetPassword: 'Reset password', contact: 'Changed email / phone' },
     donation: { record: 'Recorded donation', verify: 'Verified donation', reject: 'Rejected donation', pending: 'Set donation back to pending', delete: 'Deleted donation' },
     settings: { site: 'Changed site settings', rules: 'Changed rules' },
     backup: { download: 'Downloaded backup' },
@@ -400,6 +400,8 @@ const en = {
     unsavedShort: 'Unsaved changes',
   },
   dash: {
+    editContact: 'Email & phone',
+    contactHint: 'The member logs in with the email. Without an email, the mobile number (01XXXXXXXXX) becomes the login — tell the member. Their password stays the same.',
     emailOptional: 'Email (optional)',
     noEmailHint: 'No email? Then the mobile number (01XXXXXXXXX) is required — the member logs in with it.',
     logsInWith: 'logs in with',

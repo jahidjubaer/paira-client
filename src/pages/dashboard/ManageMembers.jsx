@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { Link } from 'react-router'
-import { FaCheck, FaIdCard, FaKey, FaMagnifyingGlass, FaTrash, FaUserPlus, FaXmark } from 'react-icons/fa6'
+import { FaAddressCard, FaCheck, FaIdCard, FaKey, FaMagnifyingGlass, FaTrash, FaUserPlus, FaXmark } from 'react-icons/fa6'
 import useLanguage from '../../i18n/useLanguage.js'
 import useAuth from '../../context/useAuth.js'
 import api from '../../api/axiosInstance.js'
@@ -32,6 +32,7 @@ const ManageMembers = () => {
   const [reloadKey, setReloadKey] = useState(0)
   const [selected, setSelected] = useState([])
   const [toReset, setToReset] = useState(null)
+  const [editing, setEditing] = useState(null)
   // { name, email, password } — shown once after adding a member or resetting a password
   const [handover, setHandover] = useState(null)
   const [saving, setSaving] = useState(false)
@@ -39,6 +40,7 @@ const ManageMembers = () => {
   const addRef = useRef(null)
   const resetRef = useRef(null)
   const handoverRef = useRef(null)
+  const contactRef = useRef(null)
 
   // Fetch whenever filters change; handlers set `loading` before changing them
   useEffect(() => {
@@ -68,6 +70,28 @@ const ManageMembers = () => {
       toast.success(t('dash.updated'))
     } catch (err) {
       toast.error(apiError(err, t))
+    }
+  }
+
+  const askContact = (user) => {
+    setEditing(user)
+    contactRef.current?.showModal()
+  }
+
+  // Email and phone; an empty email makes the mobile number the member's login
+  const saveContact = async (e) => {
+    e.preventDefault()
+    const { email, phone } = Object.fromEntries(new FormData(e.currentTarget))
+    setSaving(true)
+    try {
+      const { data } = await api.patch(`/users/${editing._id}`, { email, phone })
+      setResult((r) => ({ ...r, users: r.users.map((u) => (u._id === editing._id ? data.user : u)) }))
+      contactRef.current?.close()
+      toast.success(t('dash.updated'))
+    } catch (err) {
+      toast.error(apiError(err, t))
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -278,6 +302,11 @@ const ManageMembers = () => {
                             <FaXmark /> <span className="hidden xl:inline">{t('dash.reject')}</span>
                           </button>
                         )}
+                        {isAdmin && (
+                          <button onClick={() => askContact(u)} className="btn btn-sm btn-ghost" title={t('dash.editContact')} aria-label={t('dash.editContact')}>
+                            <FaAddressCard />
+                          </button>
+                        )}
                         {isAdmin && !isMe && (
                           <button onClick={() => askReset(u)} className="btn btn-sm btn-ghost" title={t('dash.resetPassword')} aria-label={t('dash.resetPassword')}>
                             <FaKey />
@@ -318,6 +347,26 @@ const ManageMembers = () => {
             <button className="btn btn-error rounded-full" onClick={confirmDelete}>{t('dash.delete')}</button>
           </div>
         </div>
+        <form method="dialog" className="modal-backdrop"><button>close</button></form>
+      </dialog>
+
+      {/* key: fresh default values for each member */}
+      <dialog ref={contactRef} className="modal" onClose={() => setEditing(null)}>
+        <form key={editing?._id} onSubmit={saveContact} className="modal-box space-y-4">
+          <h3 className="text-lg font-bold">{t('dash.editContact')}</h3>
+          <p className="font-medium">{editing?.name}</p>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label={t('dash.emailOptional')} name="email" type="email" maxLength={150} defaultValue={editing?.email ?? ''} />
+            <Field label={t('auth.phone')} name="phone" type="tel" maxLength={20} defaultValue={editing?.phone ?? ''} />
+          </div>
+          <p className="text-sm text-base-content/60">{t('dash.contactHint')}</p>
+          <div className="modal-action">
+            <button type="button" className="btn rounded-full" onClick={() => contactRef.current?.close()}>{t('dash.cancel')}</button>
+            <button disabled={saving} className="btn btn-primary rounded-full">
+              {saving && <span className="loading loading-spinner loading-sm" />} {t('dash.save')}
+            </button>
+          </div>
+        </form>
         <form method="dialog" className="modal-backdrop"><button>close</button></form>
       </dialog>
 
