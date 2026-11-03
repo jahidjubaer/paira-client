@@ -40,8 +40,8 @@ const Login = () => {
       <GoogleButton goTo={goTo} onBusy={setBusy} />
       <form onSubmit={handleSubmit} className="space-y-5">
         <label className="block">
-          <span className="mb-1.5 block text-sm font-medium">{t('auth.email')}</span>
-          <input name="email" type="email" required autoComplete="email" className="input input-lg w-full" />
+          <span className="mb-1.5 block text-sm font-medium">{t('auth.emailOrPhone')}</span>
+          <input name="email" type="text" required autoComplete="username" className="input input-lg w-full" />
         </label>
         <label className="block">
           <span className="mb-1.5 block text-sm font-medium">{t('auth.password')}</span>

@@ -101,7 +101,7 @@ const ManageMembers = () => {
       const { data } = await api.post('/users', { ...body, approve: body.approve === 'on' })
       addRef.current?.close()
       form.reset()
-      showHandover({ name: data.user.name, email: data.user.email, password: data.password })
+      showHandover({ name: data.user.name, login: data.user.email ?? data.user.phone, password: data.password })
       refetch(() => {})
     } catch (err) {
       toast.error(apiError(err, t))
@@ -119,7 +119,7 @@ const ManageMembers = () => {
     resetRef.current?.close()
     try {
       const { data } = await api.post(`/users/${toReset._id}/reset-password`)
-      showHandover({ name: toReset.name, email: toReset.email, password: data.password })
+      showHandover({ name: toReset.name, login: toReset.email ?? toReset.phone, password: data.password })
     } catch (err) {
       toast.error(apiError(err, t))
     }
@@ -235,7 +235,7 @@ const ManageMembers = () => {
                     )}
                     <td>
                       <p className="font-semibold">{u.name} {u.memberNo && <span className="ml-1 font-mono text-xs text-base-content/50">{u.memberNo}</span>}</p>
-                      <p className="text-xs text-base-content/60">{u.email}{u.phone && ` · ${u.phone}`}</p>
+                      <p className="text-xs text-base-content/60">{[u.email, u.phone].filter(Boolean).join(' · ')}</p>
                       <p className="text-xs text-base-content/50">{date(u.createdAt)}{u.institution && ` · ${u.institution}`}</p>
                     </td>
                     <td>
@@ -312,7 +312,7 @@ const ManageMembers = () => {
       <dialog ref={dialogRef} className="modal">
         <div className="modal-box">
           <h3 className="text-lg font-bold">{t('dash.confirmDelete')}</h3>
-          <p className="py-3">{toDelete?.name} — {toDelete?.email}</p>
+          <p className="py-3">{toDelete?.name} — {toDelete?.email ?? toDelete?.phone}</p>
           <div className="modal-action">
             <button className="btn rounded-full" onClick={() => dialogRef.current?.close()}>{t('dash.cancel')}</button>
             <button className="btn btn-error rounded-full" onClick={confirmDelete}>{t('dash.delete')}</button>
@@ -327,8 +327,9 @@ const ManageMembers = () => {
           <p className="text-sm text-base-content/70">{t('dash.addMemberHint')}</p>
           <Field label={t('auth.name')} name="name" required maxLength={100} />
           <div className="grid gap-4 sm:grid-cols-2">
-            <Field label={t('auth.email')} name="email" type="email" required maxLength={150} />
+            <Field label={t('dash.emailOptional')} name="email" type="email" maxLength={150} />
             <Field label={t('auth.phone')} name="phone" type="tel" maxLength={20} />
+            <p className="-mt-2 text-xs text-base-content/60 sm:col-span-2">{t('dash.noEmailHint')}</p>
             <Field label={t('auth.institution')} name="institution" maxLength={150} />
             <Field label={t('auth.address')} name="address" maxLength={250} />
           </div>
@@ -355,7 +356,7 @@ const ManageMembers = () => {
       <dialog ref={resetRef} className="modal">
         <div className="modal-box">
           <h3 className="text-lg font-bold">{t('dash.resetPassword')}</h3>
-          <p className="py-3">{toReset?.name} — {toReset?.email}</p>
+          <p className="py-3">{toReset?.name} — {toReset?.email ?? toReset?.phone}</p>
           <p className="text-sm text-base-content/70">{t('dash.resetPasswordHint')}</p>
           <div className="modal-action">
             <button className="btn rounded-full" onClick={() => resetRef.current?.close()}>{t('dash.cancel')}</button>
@@ -369,7 +370,7 @@ const ManageMembers = () => {
       <dialog ref={handoverRef} className="modal" onClose={() => setHandover(null)}>
         <div className="modal-box">
           <h3 className="text-lg font-bold">{t('dash.tempPassword')}</h3>
-          <p className="py-2">{handover?.name} — {handover?.email}</p>
+          <p className="py-2">{handover?.name} — {t('dash.logsInWith')}: <span className="font-semibold">{handover?.login}</span></p>
           <div className="flex items-center justify-between gap-3 rounded-2xl bg-base-200 p-4">
             <span className="font-mono text-2xl tracking-wider select-all">{handover?.password}</span>
             {handover && <CopyButton text={handover.password} />}

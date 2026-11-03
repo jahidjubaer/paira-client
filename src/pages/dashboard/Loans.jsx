@@ -112,7 +112,7 @@ const Loans = () => {
     (u) => (
       <>
         <p className="truncate font-medium">{u.name}</p>
-        <p className="truncate text-xs text-base-content/60">{u.memberNo && `${u.memberNo} · `}{u.email}{u.phone && ` · ${u.phone}`}</p>
+        <p className="truncate text-xs text-base-content/60">{[u.memberNo, u.email, u.phone].filter(Boolean).join(' · ')}</p>
       </>
     ),
     [],

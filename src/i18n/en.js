@@ -208,6 +208,7 @@ const en = {
     error: 'Sorry, the message could not be sent. Please try again later.',
   },
   auth: {
+    emailOrPhone: 'Email or mobile number',
     registrationClosed: 'New member sign-up is closed right now.',
     loginTitle: 'Welcome back',
     loginText: 'Log in to your member account',
@@ -227,7 +228,7 @@ const en = {
     noAccount: "Don't have an account?",
     haveAccount: 'Already a member?',
     passwordMismatch: 'Passwords do not match',
-    wrongCredentials: 'Wrong email or password',
+    wrongCredentials: 'Wrong email / mobile number or password',
     emailTaken: 'This email is already registered',
     tooMany: 'Too many attempts, please try again later',
     failed: 'Something went wrong, please try again',
@@ -397,6 +398,9 @@ const en = {
     unsavedShort: 'Unsaved changes',
   },
   dash: {
+    emailOptional: 'Email (optional)',
+    noEmailHint: 'No email? Then the mobile number (01XXXXXXXXX) is required — the member logs in with it.',
+    logsInWith: 'logs in with',
     pageContent: 'Page content',
     people: 'Committee & people',
     activity: 'Activity log & backup',
