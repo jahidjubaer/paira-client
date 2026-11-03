@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import toast from 'react-hot-toast'
-import { FaArrowUpRightFromSquare, FaCircleInfo, FaClockRotateLeft, FaCircleQuestion, FaCalendarWeek, FaFileLines, FaMountainSun, FaScaleBalanced, FaSitemap } from 'react-icons/fa6'
+import { FaArrowUpRightFromSquare, FaCircleInfo, FaClockRotateLeft, FaCircleQuestion, FaCalendarWeek, FaFileLines, FaHouse, FaMountainSun, FaScaleBalanced, FaSitemap } from 'react-icons/fa6'
 import useLanguage from '../../i18n/useLanguage.js'
 import api from '../../api/axiosInstance.js'
 import apiError from '../../api/apiError.js'
@@ -11,17 +11,19 @@ import { faqGroups } from '../../data/faq.js'
 import * as builtInAbout from '../../data/about.js'
 import { areaPlaces } from '../../data/area.js'
 import * as builtInPrograms from '../../data/programs.js'
-import { builtInOrganization, builtInPolicies, withCommitteeNames, withPolicyNames } from '../../data/editablePages.js'
+import { builtInHome, builtInOrganization, builtInPolicies, withCommitteeNames, withHomeSections, withPolicyNames } from '../../data/editablePages.js'
 import FaqEditor from './content/FaqEditor.jsx'
 import AboutEditor from './content/AboutEditor.jsx'
 import AreaEditor from './content/AreaEditor.jsx'
 import ProgramsEditor from './content/ProgramsEditor.jsx'
 import PoliciesEditor from './content/PoliciesEditor.jsx'
 import OrganizationEditor from './content/OrganizationEditor.jsx'
+import HomeEditor from './content/HomeEditor.jsx'
 
 // Editable pages: built-in text (used until the admin saves) and the editor for it.
 // `merge` adds back fixed parts (names) that saved text doesn't carry.
 const pages = [
+  { id: 'home', path: '/', icon: FaHouse, builtIn: builtInHome, merge: withHomeSections, Editor: HomeEditor },
   { id: 'about', path: '/about', icon: FaCircleInfo, builtIn: { ...builtInAbout }, Editor: AboutEditor },
   { id: 'area', path: '/about', icon: FaMountainSun, builtIn: { places: areaPlaces }, Editor: AreaEditor },
   { id: 'programs', path: '/programs', icon: FaCalendarWeek, builtIn: { ...builtInPrograms }, Editor: ProgramsEditor },

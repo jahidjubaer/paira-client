@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { Link } from 'react-router'
 import {
   FaArrowRight,
@@ -17,10 +18,13 @@ import usePageContent from '../utils/usePageContent.js'
 import { subCommittees } from '../data/organization.js'
 import * as builtInPrograms from '../data/programs.js'
 import { memberTypes } from '../data/policies.js'
+import { builtInHome, withHomeSections } from '../data/editablePages.js'
 import HomeEvents from '../components/HomeEvents.jsx'
+import HomeFeatured from '../components/HomeFeatured.jsx'
 import NewBooksShelf from '../components/NewBooksShelf.jsx'
 import { HomeNumbers, HomePhotos, HomeVoices } from '../components/HomeHighlights.jsx'
 import usePageTitle from '../utils/usePageTitle.js'
+import { sized } from '../utils/imageSize.js'
 
 // Bento layout: the first two features are tall, the last two are wide
 const features = [
@@ -32,12 +36,31 @@ const features = [
   { icon: FaLandmark, key: 'Heritage', className: 'bg-primary/10 md:col-span-2' },
 ]
 
+// Hero buttons may point inside the site or to another website
+const HeroButton = ({ button, primary }) => {
+  const { pick } = useLanguage()
+  const className = primary ? 'btn btn-primary btn-lg rounded-full px-8 shadow-lg shadow-primary/25' : 'btn btn-ghost btn-lg rounded-full'
+  const content = (
+    <>
+      {pick(button.label)} {primary && <FaArrowRight />}
+    </>
+  )
+  return button.link.startsWith('/') ? (
+    <Link to={button.link} className={className}>{content}</Link>
+  ) : (
+    <a href={button.link} target="_blank" rel="noopener noreferrer" className={className}>{content}</a>
+  )
+}
+
 const Home = () => {
   const { t, pick, num } = useLanguage()
   // The vision line comes from the About page text (Dashboard → Page content)
   const { vision } = usePageContent('about', builtInAbout)
   // Programs ticker, weekly schedule and clubs come from the Programs page text
   const { clubs, weeklyActivities, yearlyPrograms } = usePageContent('programs', builtInPrograms)
+  // Hero, section order and the pinned item come from the Home page text
+  const home = withHomeSections(usePageContent('home', builtInHome))
+  const { hero } = home
   usePageTitle(null)
 
   const stats = [
@@ -46,77 +69,10 @@ const Home = () => {
     { value: memberTypes.length, label: t('home.statMembers') },
   ]
 
-  return (
-    <>
-      {/* ---------- Hero ---------- */}
-      <section className="dots relative overflow-hidden">
-        <div className="pointer-events-none absolute -top-40 -left-40 size-[32rem] rounded-full bg-secondary/25 blur-3xl" />
-        <div className="pointer-events-none absolute top-40 -right-40 size-[28rem] rounded-full bg-primary/15 blur-3xl" />
-
-        <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 pt-10 pb-20 lg:grid-cols-[1.1fr_1fr] lg:pt-16">
-          <div>
-            <p className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-base-100/70 px-4 py-1.5 text-sm font-medium text-primary">
-              <GiDove className="size-4" /> {t('home.heroEyebrow')}
-            </p>
-
-            <h1 className="mt-6 text-5xl leading-[1.05] font-extrabold sm:text-6xl xl:text-7xl">
-              <span className="block">{t('home.heroTitle1')}</span>
-              <span className="text-gradient relative inline-block pb-1">
-                {t('home.heroTitle2')}
-                <svg className="absolute -bottom-3 left-0 h-3 w-full text-secondary" viewBox="0 0 300 12" preserveAspectRatio="none" aria-hidden="true">
-                  <path d="M2 9 C 80 2, 200 2, 298 7" stroke="currentColor" strokeWidth="5" fill="none" strokeLinecap="round" />
-                </svg>
-              </span>
-            </h1>
-
-            <p className="mt-8 max-w-xl text-lg leading-relaxed text-base-content/75">
-              <strong className="block font-semibold text-base-content">
-                {t('site.name')} · {t('site.tagline')}
-              </strong>
-              {t('home.heroText')}
-            </p>
-
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/register" className="btn btn-primary btn-lg rounded-full px-8 shadow-lg shadow-primary/25">
-                {t('home.becomeMember')} <FaArrowRight />
-              </Link>
-              <Link to="/books" className="btn btn-ghost btn-lg rounded-full">
-                <FaBookOpen /> {t('home.browseBooks')}
-              </Link>
-            </div>
-
-            <dl className="mt-12 flex flex-wrap gap-x-10 gap-y-4">
-              {stats.map((s) => (
-                <div key={s.label}>
-                  <dt className="sr-only">{s.label}</dt>
-                  <dd className="font-display text-4xl font-bold text-primary">{num(s.value)}</dd>
-                  <dd className="text-sm text-base-content/70">{s.label}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-
-          {/* Illustration with floating cards */}
-          <div className="relative mx-auto w-full max-w-md lg:max-w-none">
-            <div className="absolute inset-0 translate-x-4 translate-y-4 rounded-[2.5rem] bg-primary/15" />
-            <img
-              src="/hero-takerghat.svg"
-              alt={t('home.heroEyebrow')}
-              className="relative aspect-[4/5] w-full rounded-[2.5rem] object-cover shadow-2xl"
-            />
-            <div className="absolute top-8 -left-4 animate-float rounded-2xl border border-base-100/60 bg-base-100/85 px-4 py-3 shadow-xl backdrop-blur sm:-left-10">
-              <p className="text-xs font-medium text-base-content/60">{t('home.floatWeekly')}</p>
-              <p className="font-display text-lg font-bold">{t('home.floatWeeklyTitle')}</p>
-            </div>
-            <div className="absolute -right-2 bottom-10 max-w-[15rem] animate-float rounded-2xl bg-neutral px-5 py-4 text-neutral-content shadow-xl [animation-delay:-3s] sm:-right-8">
-              <FaQuoteLeft className="size-4 text-secondary" />
-              <p className="mt-1 font-display text-lg leading-snug font-semibold">{t('site.slogan2')}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ---------- Programs ticker ---------- */}
+  // Home sections by id; Dashboard → Page content → Home sets their order and which are shown
+  const sections = {
+    featured: <HomeFeatured featured={home.featured} />,
+    ticker: (
       <section className="overflow-hidden bg-neutral py-5 text-neutral-content" aria-label={t('home.yearlyTitle')}>
         <div className="flex w-max animate-marquee gap-10 hover:[animation-play-state:paused]">
           {[...yearlyPrograms, ...yearlyPrograms].map((p, i) => (
@@ -127,11 +83,9 @@ const Home = () => {
           ))}
         </div>
       </section>
-
-      {/* ---------- Live numbers (from the API) ---------- */}
-      <HomeNumbers />
-
-      {/* ---------- Bento: vision + what we do ---------- */}
+    ),
+    numbers: <HomeNumbers />,
+    features: (
       <section className="mx-auto max-w-7xl px-4 py-24">
         <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -164,14 +118,10 @@ const Home = () => {
           ))}
         </div>
       </section>
-
-      {/* ---------- Upcoming events + notices (from the API) ---------- */}
-      <HomeEvents />
-
-      {/* ---------- Newest books (from the API) ---------- */}
-      <NewBooksShelf />
-
-      {/* ---------- Weekly schedule ---------- */}
+    ),
+    events: <HomeEvents />,
+    books: <NewBooksShelf />,
+    weekly: (
       <section className="bg-base-200 py-24">
         <div className="mx-auto max-w-7xl px-4">
           <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
@@ -195,8 +145,8 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* ---------- Clubs strip ---------- */}
+    ),
+    clubs: (
       <section className="mx-auto max-w-7xl px-4 py-16">
         <div className="flex flex-wrap items-center justify-center gap-3">
           {clubs.map((c, i) => (
@@ -206,12 +156,10 @@ const Home = () => {
           ))}
         </div>
       </section>
-
-      {/* ---------- Reader reviews + photos (from the API) ---------- */}
-      <HomeVoices />
-      <HomePhotos />
-
-      {/* ---------- CTA ---------- */}
+    ),
+    voices: <HomeVoices />,
+    photos: <HomePhotos />,
+    cta: (
       <section className="px-4 pb-24">
         <div className="grain relative mx-auto max-w-7xl overflow-hidden rounded-[2.5rem] bg-neutral px-6 py-16 text-center text-neutral-content sm:px-12 sm:py-20">
           <div className="pointer-events-none absolute -top-24 left-1/2 size-96 -translate-x-1/2 rounded-full bg-primary/40 blur-3xl" />
@@ -229,6 +177,85 @@ const Home = () => {
           </div>
         </div>
       </section>
+    ),
+  }
+
+  return (
+    <>
+      {/* ---------- Hero ---------- */}
+      <section className="dots relative overflow-hidden">
+        <div className="pointer-events-none absolute -top-40 -left-40 size-[32rem] rounded-full bg-secondary/25 blur-3xl" />
+        <div className="pointer-events-none absolute top-40 -right-40 size-[28rem] rounded-full bg-primary/15 blur-3xl" />
+
+        <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 pt-10 pb-20 lg:grid-cols-[1.1fr_1fr] lg:pt-16">
+          <div>
+            {pick(hero.eyebrow) && (
+              <p className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-base-100/70 px-4 py-1.5 text-sm font-medium text-primary">
+                <GiDove className="size-4" /> {pick(hero.eyebrow)}
+              </p>
+            )}
+
+            <h1 className="mt-6 text-5xl leading-[1.05] font-extrabold sm:text-6xl xl:text-7xl">
+              <span className="block">{pick(hero.title1)}</span>
+              {pick(hero.title2) && (
+                <span className="text-gradient relative inline-block pb-1">
+                  {pick(hero.title2)}
+                  <svg className="absolute -bottom-3 left-0 h-3 w-full text-secondary" viewBox="0 0 300 12" preserveAspectRatio="none" aria-hidden="true">
+                    <path d="M2 9 C 80 2, 200 2, 298 7" stroke="currentColor" strokeWidth="5" fill="none" strokeLinecap="round" />
+                  </svg>
+                </span>
+              )}
+            </h1>
+
+            <p className="mt-8 max-w-xl text-lg leading-relaxed text-base-content/75">
+              <strong className="block font-semibold text-base-content">
+                {t('site.name')} · {t('site.tagline')}
+              </strong>
+              {pick(hero.text)}
+            </p>
+
+            {hero.buttons.length > 0 && (
+              <div className="mt-8 flex flex-wrap gap-3">
+                {hero.buttons.map((b, i) => <HeroButton key={i} button={b} primary={i === 0} />)}
+              </div>
+            )}
+
+            <dl className="mt-12 flex flex-wrap gap-x-10 gap-y-4">
+              {stats.map((s) => (
+                <div key={s.label}>
+                  <dt className="sr-only">{s.label}</dt>
+                  <dd className="font-display text-4xl font-bold text-primary">{num(s.value)}</dd>
+                  <dd className="text-sm text-base-content/70">{s.label}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          {/* Illustration with floating cards */}
+          <div className="relative mx-auto w-full max-w-md lg:max-w-none">
+            <div className="absolute inset-0 translate-x-4 translate-y-4 rounded-[2.5rem] bg-primary/15" />
+            <img
+              src={hero.image ? sized(hero.image, 960) : '/hero-takerghat.svg'}
+              alt={pick(hero.eyebrow)}
+              className="relative aspect-[4/5] w-full rounded-[2.5rem] object-cover shadow-2xl"
+            />
+            {pick(hero.cardTitle) && (
+              <div className="absolute top-8 -left-4 animate-float rounded-2xl border border-base-100/60 bg-base-100/85 px-4 py-3 shadow-xl backdrop-blur sm:-left-10">
+                <p className="text-xs font-medium text-base-content/60">{pick(hero.cardSmall)}</p>
+                <p className="font-display text-lg font-bold">{pick(hero.cardTitle)}</p>
+              </div>
+            )}
+            <div className="absolute -right-2 bottom-10 max-w-[15rem] animate-float rounded-2xl bg-neutral px-5 py-4 text-neutral-content shadow-xl [animation-delay:-3s] sm:-right-8">
+              <FaQuoteLeft className="size-4 text-secondary" />
+              <p className="mt-1 font-display text-lg leading-snug font-semibold">{t('site.slogan2')}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {home.sections.filter((section) => section.show).map(({ id }) => (
+        <Fragment key={id}>{sections[id]}</Fragment>
+      ))}
     </>
   )
 }
