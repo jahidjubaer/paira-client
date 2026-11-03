@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router'
 import { FaArrowLeft } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
 import api from '../api/axiosInstance.js'
-import Loader from '../components/Loader.jsx'
+import { BannerSkeleton } from '../components/Loader.jsx'
 import MediaEmbed from '../components/MediaEmbed.jsx'
 import ErrorPage from './ErrorPage.jsx'
 import usePageTitle from '../utils/usePageTitle.js'
@@ -32,7 +32,7 @@ const MediaDetail = ({ collection }) => {
     }
   }, [id, collection])
 
-  if (state === 'loading') return <Loader full />
+  if (state === 'loading') return <BannerSkeleton />
   if (state === 'error') return <ErrorPage />
 
   const facts = [

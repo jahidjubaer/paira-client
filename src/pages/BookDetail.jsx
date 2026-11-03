@@ -5,7 +5,7 @@ import useLanguage from '../i18n/useLanguage.js'
 import useAuth from '../context/useAuth.js'
 import api from '../api/axiosInstance.js'
 import BookCover from '../components/BookCover.jsx'
-import Loader from '../components/Loader.jsx'
+import { BookSkeleton } from '../components/Loader.jsx'
 import ErrorPage from './ErrorPage.jsx'
 import { categoryName, languageName } from '../data/bookCategories.js'
 import usePageTitle from '../utils/usePageTitle.js'
@@ -40,7 +40,7 @@ const BookDetail = () => {
     }
   }, [id])
 
-  if (state === 'loading') return <Loader full />
+  if (state === 'loading') return <BookSkeleton />
   if (state === 'error') return <ErrorPage />
 
   const available = book.availableCopies > 0
@@ -61,7 +61,7 @@ const BookDetail = () => {
       </Link>
 
       <div className="mt-6 grid gap-10 md:grid-cols-[minmax(0,20rem)_1fr]">
-        <div className="relative mx-auto w-full max-w-xs">
+        <div className="relative mx-auto w-full max-w-xs" style={{ viewTransitionName: 'book-cover' }}>
           <div className="absolute inset-0 translate-x-3 translate-y-3 rounded-2xl bg-primary/15" />
           <BookCover book={book} className="relative" />
         </div>

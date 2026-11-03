@@ -13,7 +13,8 @@ const EventCard = ({ event, past = false }) => {
   return (
     <Link
       to={`/events/${event._id}`}
-      className={`group flex flex-col overflow-hidden rounded-[2rem] border border-base-300 bg-base-100 transition hover:-translate-y-1 hover:shadow-lg ${past ? 'opacity-80 hover:opacity-100' : ''}`}
+      viewTransition
+      className={`group flex flex-col overflow-hidden rounded-[2rem] border border-base-300 bg-base-100 transition hover:-translate-y-1 hover:shadow-lg active:scale-[0.98] ${past ? 'opacity-80 hover:opacity-100' : ''}`}
     >
       {event.image ? (
         <img src={sized(event.image, 500)} srcSet={srcSet(event.image, [500, 960])} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" alt="" loading="lazy" decoding="async" className="aspect-[16/9] w-full object-cover" />

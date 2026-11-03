@@ -63,7 +63,7 @@ const MoreSheet = ({ open, onClose }) => {
       <ul className="grid grid-cols-4 gap-x-2 gap-y-4">
         {tiles.map(({ to, key, icon: Icon }) => (
           <li key={to}>
-            <NavLink to={to} className={({ isActive }) => `group flex flex-col items-center gap-1.5 text-center text-xs leading-tight transition active:scale-90 ${isActive ? 'font-semibold text-primary' : ''}`}>
+            <NavLink to={to} viewTransition className={({ isActive }) => `group flex flex-col items-center gap-1.5 text-center text-xs leading-tight transition active:scale-90 ${isActive ? 'font-semibold text-primary' : ''}`}>
               {({ isActive }) => (
                 <>
                   <span className={`grid size-12 place-items-center rounded-2xl transition ${isActive ? 'bg-primary text-primary-content' : key === 'donate' ? 'bg-accent/15 text-accent' : 'bg-base-200 text-primary'}`}>

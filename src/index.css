@@ -626,3 +626,41 @@
     animation: none;
   }
 }
+
+/* Page transitions: links with `viewTransition` (tab bars, menus, cards) let the browser animate the change.
+   Phones slide the page sideways, computers cross-fade. Top bars and the tab bar have their own names, so they stay still. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+@media (max-width: 1023px) {
+  html:not(.theme-switch)::view-transition-old(root) {
+    animation-name: vt-out;
+  }
+  html:not(.theme-switch)::view-transition-new(root) {
+    animation-name: vt-in;
+  }
+}
+@keyframes vt-out {
+  to { opacity: 0; transform: translateX(-6%); }
+}
+@keyframes vt-in {
+  from { opacity: 0; transform: translateX(8%); }
+}
+/* A book's cover grows from its card into the book page */
+::view-transition-group(book-cover) {
+  animation-duration: 0.4s;
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+/* The page's own fade-in would play on top of the transition */
+html:active-view-transition .animate-page {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

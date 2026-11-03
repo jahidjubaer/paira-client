@@ -34,7 +34,7 @@ const Navbar = () => {
   return (
     <>
       <header
-        className={`sticky top-0 z-50 transition-all duration-300 ${
+        className={`sticky top-0 z-50 transition-all [view-transition-name:site-header] duration-300 ${
           scrolled ? 'border-b border-base-300/60 bg-base-100/80 shadow-sm backdrop-blur-xl' : 'bg-base-100'
         }`}
       >
@@ -47,7 +47,7 @@ const Navbar = () => {
             <ul className="menu menu-horizontal gap-0.5 rounded-full border border-base-300/60 bg-base-200/60 px-2 py-1 text-[0.95rem]">
               {mainLinks.map((link) => (
                 <li key={link.to}>
-                  <NavLink to={link.to} end={link.to === '/'} className={(s) => `rounded-full ${linkClass(s)}`}>
+                  <NavLink to={link.to} end={link.to === '/'} viewTransition className={(s) => `rounded-full ${linkClass(s)}`}>
                     {t(`nav.${link.key}`)}
                   </NavLink>
                 </li>
@@ -58,7 +58,7 @@ const Navbar = () => {
                   <ul className="z-10 w-52 rounded-box bg-base-100 p-2 shadow-xl">
                     {moreLinks.map((link) => (
                       <li key={link.to}>
-                        <NavLink to={link.to} className={linkClass} onClick={closeDetails}>
+                        <NavLink to={link.to} viewTransition className={linkClass} onClick={closeDetails}>
                           {t(`nav.${link.key}`)}
                         </NavLink>
                       </li>

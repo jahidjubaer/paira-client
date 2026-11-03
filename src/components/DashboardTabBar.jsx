@@ -22,7 +22,7 @@ const allLinks = [...memberLinks, ...staffSections.flatMap((section) => section.
 
 const Tile = ({ to, end, label, icon: Icon }) => (
   <li>
-    <NavLink to={to} end={end} className={({ isActive }) => `flex flex-col items-center gap-1.5 text-center text-xs leading-tight transition active:scale-90 ${isActive ? 'font-semibold text-primary' : ''}`}>
+    <NavLink to={to} end={end} viewTransition className={({ isActive }) => `flex flex-col items-center gap-1.5 text-center text-xs leading-tight transition active:scale-90 ${isActive ? 'font-semibold text-primary' : ''}`}>
       {({ isActive }) => (
         <>
           <span className={`grid size-12 place-items-center rounded-2xl transition ${isActive ? 'bg-primary text-primary-content' : 'bg-base-200 text-primary'}`}>

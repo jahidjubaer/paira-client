@@ -19,7 +19,15 @@ createRoot(document.getElementById('root')).render(
         <SiteSettingsProvider>
           <RouterProvider router={router} />
           <OfflineBanner />
-          <Toaster position="top-center" toastOptions={{ style: { borderRadius: '999px' } }} />
+          <Toaster position="top-center" toastOptions={{
+              style: {
+                borderRadius: '999px',
+                background: 'var(--color-base-100)',
+                color: 'var(--color-base-content)',
+                border: '1px solid var(--color-base-300)',
+                boxShadow: '0 10px 30px -12px rgb(0 0 0 / 0.35)',
+              },
+            }} />
         </SiteSettingsProvider>
       </AuthProvider>
     </LanguageProvider>

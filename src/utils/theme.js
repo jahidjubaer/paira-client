@@ -79,8 +79,11 @@ export const setTheme = (id) => {
   write(THEME_KEY, id)
   update({ theme: id })
   // Cross-fade the colours where the browser can
-  if (document.startViewTransition && !reducedMotion()) document.startViewTransition(paint)
-  else paint()
+  if (!document.startViewTransition || reducedMotion()) return paint()
+  // Marked so the phone page-slide (index.css) doesn't play for a colour change
+  const root = document.documentElement
+  root.classList.add('theme-switch')
+  document.startViewTransition(paint).finished.finally(() => root.classList.remove('theme-switch'))
 }
 
 export const setTextSize = (id) => {

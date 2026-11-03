@@ -1,4 +1,4 @@
-import { Link } from 'react-router'
+import { Link, useViewTransitionState } from 'react-router'
 import { FaGlobe } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
 import BookCover from './BookCover.jsx'
@@ -7,10 +7,13 @@ import { categoryName } from '../data/bookCategories.js'
 const BookCard = ({ book }) => {
   const { t, pick, num } = useLanguage()
   const available = book.availableCopies > 0
+  const to = `/books/${book._id}`
+  // Only the card being opened carries the name, so its cover grows into the book page
+  const opening = useViewTransitionState(to)
 
   return (
-    <Link to={`/books/${book._id}`} className="group block">
-      <div className="relative transition duration-300 group-hover:-translate-y-1.5 group-hover:rotate-[-1deg]">
+    <Link to={to} state={{ book }} viewTransition className="group block transition active:scale-[0.97]">
+      <div className="relative transition duration-300 group-hover:-translate-y-1.5 group-hover:rotate-[-1deg]" style={{ viewTransitionName: opening ? 'book-cover' : undefined }}>
         <BookCover book={book} />
         {book.readUrl && (
           <span className="absolute top-2 right-2 grid size-7 place-items-center rounded-full bg-base-100/90 text-primary shadow" title={t('books.freeToRead')}>

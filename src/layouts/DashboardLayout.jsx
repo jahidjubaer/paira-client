@@ -31,7 +31,7 @@ const DashboardLayout = () => {
   const renderLinks = (links) =>
     links.map(({ to, key, icon: Icon, end }) => (
       <li key={to}>
-        <NavLink to={to} end={end} onClick={closeDrawer} className={({ isActive }) => `rounded-xl ${isActive ? 'menu-active' : ''}`}>
+        <NavLink to={to} end={end} viewTransition onClick={closeDrawer} className={({ isActive }) => `rounded-xl ${isActive ? 'menu-active' : ''}`}>
           <Icon /> {t(`dash.${key}`)}
         </NavLink>
       </li>
@@ -43,7 +43,7 @@ const DashboardLayout = () => {
       <input id="dash-drawer" type="checkbox" className="drawer-toggle" />
 
       <div className="drawer-content flex min-h-screen flex-col bg-base-200">
-        <header className="sticky top-0 z-30 flex items-center gap-2 border-b border-base-300 bg-base-100/80 px-4 py-3 backdrop-blur">
+        <header className="sticky top-0 z-30 flex [view-transition-name:dash-header] items-center gap-2 border-b border-base-300 bg-base-100/80 px-4 py-3 backdrop-blur">
           <p className="flex-1 truncate font-display text-lg font-semibold">
             {t('dash.hello')}, {user?.name}
           </p>

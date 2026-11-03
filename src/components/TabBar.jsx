@@ -44,7 +44,7 @@ const TabBar = ({ tabs, label, menuLabel, menuOpen, onMenu }) => {
   return (
     <nav
       aria-label={label}
-      className={`fixed inset-x-0 bottom-0 z-40 border-t border-base-300/70 bg-base-100/90 pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_24px_-12px_rgb(0_0_0/0.25)] backdrop-blur-xl transition-transform duration-300 lg:hidden ${
+      className={`fixed inset-x-0 bottom-0 z-40 [view-transition-name:tabbar] border-t border-base-300/70 bg-base-100/90 pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_24px_-12px_rgb(0_0_0/0.25)] backdrop-blur-xl transition-transform duration-300 lg:hidden ${
         hidden ? 'translate-y-full' : 'translate-y-0'
       }`}
     >
@@ -61,7 +61,7 @@ const TabBar = ({ tabs, label, menuLabel, menuOpen, onMenu }) => {
         {tabs.map(({ to, label: tabLabel, icon: Icon, activeIcon: ActiveIcon, image }, i) => {
           const isActive = active === i
           return (
-            <Link key={to} to={to} aria-current={isActive ? 'page' : undefined} className={tabClass(isActive)}>
+            <Link key={to} to={to} viewTransition aria-current={isActive ? 'page' : undefined} className={tabClass(isActive)}>
               {image ? (
                 <img src={image} alt="" className={`size-6 rounded-full object-cover ${isActive ? 'ring-2 ring-primary' : ''}`} />
               ) : isActive ? (

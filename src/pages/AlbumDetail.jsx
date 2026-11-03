@@ -6,7 +6,7 @@ import useLanguage from '../i18n/useLanguage.js'
 import useAuth from '../context/useAuth.js'
 import api from '../api/axiosInstance.js'
 import apiError from '../api/apiError.js'
-import Loader from '../components/Loader.jsx'
+import { GridSkeleton } from '../components/Loader.jsx'
 import Lightbox from '../components/Lightbox.jsx'
 import ImageUrlField from '../components/ImageUrlField.jsx'
 import ErrorPage from './ErrorPage.jsx'
@@ -113,7 +113,7 @@ const AlbumDetail = () => {
     }
   }, [id])
 
-  if (state === 'loading') return <Loader full />
+  if (state === 'loading') return <GridSkeleton />
   if (state === 'error') return <ErrorPage />
 
   const { album, photos } = data
