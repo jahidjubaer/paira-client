@@ -6,6 +6,7 @@ import useSite from '../../context/useSite.js'
 import api from '../../api/axiosInstance.js'
 import apiError from '../../api/apiError.js'
 import Loader from '../../components/Loader.jsx'
+import BiInput from '../../components/BiInput.jsx'
 import { mergeSite, SOCIAL_KEYS, WALLET_KEYS } from '../../data/site.js'
 import { fromLocalInput, toLocalInput } from '../../utils/formData.js'
 
@@ -38,24 +39,6 @@ const Field = ({ label, children, wide }) => (
     {children}
   </label>
 )
-
-// Bangla + English inputs side by side for one { bn, en } value
-const BiInput = ({ label, value, onChange, maxLength = 200 }) => {
-  const { t } = useLanguage()
-  return (
-    <fieldset className="sm:col-span-2">
-      <legend className="mb-1 text-sm font-medium">{label}</legend>
-      <div className="grid gap-2 sm:grid-cols-2">
-        {['bn', 'en'].map((lang) => (
-          <label key={lang} className="block">
-            <span className="mb-0.5 block text-xs text-base-content/50">{t(lang === 'bn' ? 'events.bangla' : 'events.english')}</span>
-            <input value={value?.[lang] ?? ''} onChange={(e) => onChange({ ...value, [lang]: e.target.value })} maxLength={maxLength} lang={lang} className="input w-full" />
-          </label>
-        ))}
-      </div>
-    </fieldset>
-  )
-}
 
 // Admin: contact details, opening hours, social links, donation accounts, announcement bar
 const SiteSettings = () => {

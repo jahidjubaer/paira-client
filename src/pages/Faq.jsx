@@ -3,9 +3,11 @@ import { FaArrowRight } from 'react-icons/fa6'
 import useLanguage from '../i18n/useLanguage.js'
 import PageHeader from '../components/PageHeader.jsx'
 import { faqGroups } from '../data/faq.js'
+import usePageContent from '../utils/usePageContent.js'
 
 const Faq = () => {
   const { t, pick } = useLanguage()
+  const { groups } = usePageContent('faq', { groups: faqGroups })
 
   return (
     <>
@@ -15,7 +17,7 @@ const Faq = () => {
         {/* Topic list */}
         <nav className="h-fit lg:sticky lg:top-24">
           <ul className="flex flex-wrap gap-2 lg:flex-col">
-            {faqGroups.map((g, i) => (
+            {groups.map((g, i) => (
               <li key={i}>
                 <a href={`#faq-${i}`} className="block rounded-full border border-base-300 px-4 py-2 text-sm font-medium hover:border-primary hover:text-primary lg:rounded-2xl">
                   {pick(g.title)}
@@ -26,7 +28,7 @@ const Faq = () => {
         </nav>
 
         <div className="space-y-12">
-          {faqGroups.map((g, i) => (
+          {groups.map((g, i) => (
             <div key={i} id={`faq-${i}`} className="scroll-mt-24">
               <h2 className="mb-4 text-2xl font-bold">{pick(g.title)}</h2>
               <div className="space-y-3">

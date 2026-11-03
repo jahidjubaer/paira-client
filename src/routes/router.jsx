@@ -89,6 +89,7 @@ const router = createBrowserRouter([
           { path: 'rules', lazy: lazyPage(() => import('../pages/dashboard/RuleSettings.jsx')) },
           { path: 'activity', lazy: lazyPage(() => import('../pages/dashboard/ActivityLog.jsx')) },
           { path: 'people', lazy: lazyPage(() => import('../pages/dashboard/ManagePeople.jsx')) },
+          { path: 'pages', lazy: lazyPage(() => import('../pages/dashboard/PageContent.jsx')) },
           { path: 'scholarships', lazy: lazyPage(() => import('../pages/dashboard/Scholarships.jsx')) },
           { path: 'donations', lazy: lazyPage(() => import('../pages/dashboard/Donations.jsx')) },
           { path: 'finance', lazy: lazyPage(() => import('../pages/dashboard/FinanceReports.jsx')) },

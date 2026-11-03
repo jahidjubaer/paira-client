@@ -55,6 +55,7 @@ const staffSections = [
       { to: '/dashboard/site-settings', key: 'siteSettings', icon: FaGear },
       { to: '/dashboard/rules', key: 'rules', icon: FaSliders },
       { to: '/dashboard/people', key: 'people', icon: FaPeopleGroup },
+      { to: '/dashboard/pages', key: 'pageContent', icon: FaFileLines },
       { to: '/dashboard/activity', key: 'activity', icon: FaClockRotateLeft },
       { to: '/dashboard/scholarships', key: 'scholarships', icon: FaGraduationCap },
       { to: '/dashboard/donations', key: 'donations', icon: FaHandHoldingHeart },
