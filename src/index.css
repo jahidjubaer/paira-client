@@ -78,8 +78,8 @@
   --color-primary-content: oklch(98% 0.01 230);
   --color-secondary: oklch(64% 0.1 185);
   --color-secondary-content: oklch(20% 0.04 200);
-  --color-accent: oklch(70% 0.14 75);
-  --color-accent-content: oklch(22% 0.05 60);
+  --color-accent: oklch(55% 0.15 55);
+  --color-accent-content: oklch(98% 0.01 60);
   --color-neutral: oklch(25% 0.05 245);
   --color-neutral-content: oklch(95% 0.01 230);
   --radius-box: 1.25rem;

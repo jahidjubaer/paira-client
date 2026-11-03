@@ -20,11 +20,11 @@ const NewBooksShelf = () => {
   const scroll = (dir) => track.current?.scrollBy({ left: dir * track.current.clientWidth * 0.8 })
 
   return (
-    <section className="mx-auto max-w-7xl px-4 pb-24">
+    <section className="mx-auto max-w-7xl px-4 pb-16 sm:pb-24">
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-sm font-semibold tracking-widest text-accent uppercase">{t('books.eyebrow')}</p>
-          <h2 className="mt-2 text-4xl font-bold sm:text-5xl">{t('home.newBooks')}</h2>
+          <h2 className="mt-2 text-3xl leading-tight font-bold sm:text-5xl">{t('home.newBooks')}</h2>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => scroll(-1)} className="btn btn-circle btn-outline btn-sm" aria-label={t('gallery.prev')}><FaChevronLeft /></button>

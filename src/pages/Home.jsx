@@ -100,10 +100,10 @@ const Home = () => {
     ),
     numbers: <HomeNumbers />,
     features: (
-      <section className="mx-auto max-w-7xl px-4 py-24">
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:py-24">
         <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h2 className="text-4xl font-bold sm:text-5xl">{t('home.whatWeDo')}</h2>
+            <h2 className="text-3xl leading-tight font-bold sm:text-5xl">{t('home.whatWeDo')}</h2>
             <p className="mt-3 max-w-xl text-lg text-base-content/70">{t('home.whatWeDoText')}</p>
           </div>
           <Link to="/about" className="btn btn-outline rounded-full">
@@ -136,11 +136,11 @@ const Home = () => {
     events: <HomeEvents />,
     books: <NewBooksShelf />,
     weekly: (
-      <section className="bg-base-200 py-24">
+      <section className="bg-base-200 py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4">
           <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h2 className="text-4xl font-bold sm:text-5xl">{t('home.weekTitle')}</h2>
+              <h2 className="text-3xl leading-tight font-bold sm:text-5xl">{t('home.weekTitle')}</h2>
               <p className="mt-3 text-lg text-base-content/70">{t('home.weekText')}</p>
             </div>
             <Link to="/programs" className="btn btn-primary rounded-full">
@@ -174,11 +174,11 @@ const Home = () => {
     voices: <HomeVoices />,
     photos: <HomePhotos />,
     cta: (
-      <section className="px-4 pb-24">
+      <section className="px-4 pb-16 sm:pb-24">
         <div className="grain relative mx-auto max-w-7xl overflow-hidden rounded-[2.5rem] bg-neutral px-6 py-16 text-center text-neutral-content sm:px-12 sm:py-20">
           <div className="pointer-events-none absolute -top-24 left-1/2 size-96 -translate-x-1/2 rounded-full bg-primary/40 blur-3xl" />
           <GiDove className="relative mx-auto size-14 text-secondary" />
-          <h2 className="relative mt-6 text-4xl font-bold sm:text-5xl">{t('home.ctaTitle')}</h2>
+          <h2 className="relative mt-6 text-3xl leading-tight font-bold sm:text-5xl">{t('home.ctaTitle')}</h2>
           <p className="relative mx-auto mt-4 max-w-2xl text-lg text-neutral-content/80">{t('home.joinText')}</p>
           <div className="relative mt-10 flex flex-wrap justify-center gap-3">
             <Link to="/register" className="btn btn-secondary btn-lg rounded-full px-8">{t('home.becomeMember')}</Link>

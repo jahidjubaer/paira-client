@@ -54,9 +54,9 @@ export const HomeVoices = () => {
   if (reviews.length === 0) return null
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-24">
+    <section className="mx-auto max-w-7xl px-4 py-16 sm:py-24">
       <div className="mb-10 text-center">
-        <h2 className="text-4xl font-bold sm:text-5xl">{t('home.voicesTitle')}</h2>
+        <h2 className="text-3xl leading-tight font-bold sm:text-5xl">{t('home.voicesTitle')}</h2>
         <p className="mt-3 text-lg text-base-content/70">{t('home.voicesText')}</p>
       </div>
       <div className="columns-1 gap-5 sm:columns-2 lg:columns-3">
@@ -94,11 +94,11 @@ export const HomePhotos = () => {
   if (photos.length < 4) return null
 
   return (
-    <section className="bg-base-200 py-24">
+    <section className="bg-base-200 py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-4">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h2 className="text-4xl font-bold sm:text-5xl">{t('home.photosTitle')}</h2>
+            <h2 className="text-3xl leading-tight font-bold sm:text-5xl">{t('home.photosTitle')}</h2>
             <p className="mt-3 text-lg text-base-content/70">{t('home.photosText')}</p>
           </div>
           <Link to="/gallery" className="btn btn-primary rounded-full">{t('home.seeGallery')} <FaArrowRight /></Link>

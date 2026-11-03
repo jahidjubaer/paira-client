@@ -20,10 +20,10 @@ const HomeEvents = () => {
   if (events.length === 0 && notices.length === 0) return null
 
   return (
-    <section className="mx-auto max-w-7xl px-4 pb-24">
+    <section className="mx-auto max-w-7xl px-4 pb-16 sm:pb-24">
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="text-4xl font-bold sm:text-5xl">{t('events.homeTitle')}</h2>
+          <h2 className="text-3xl leading-tight font-bold sm:text-5xl">{t('events.homeTitle')}</h2>
           <p className="mt-3 text-lg text-base-content/70">{t('events.homeText')}</p>
         </div>
         <Link to="/events" className="btn btn-outline rounded-full">
