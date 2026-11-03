@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { FaBell, FaCircleCheck, FaCircleXmark, FaPaperPlane } from 'react-icons/fa6'
+import { FaBell, FaCircleCheck, FaCircleXmark, FaEnvelopeCircleCheck, FaPaperPlane } from 'react-icons/fa6'
 import useLanguage from '../../i18n/useLanguage.js'
 import api from '../../api/axiosInstance.js'
 import apiError from '../../api/apiError.js'
@@ -22,6 +22,7 @@ const Reminders = () => {
   const { t, num, date } = useLanguage()
   const [data, setData] = useState(null)
   const [running, setRunning] = useState(false)
+  const [testing, setTesting] = useState(false)
   const [reloadKey, setReloadKey] = useState(0)
 
   useEffect(() => {
@@ -39,6 +40,21 @@ const Reminders = () => {
       toast.error(apiError(err, t))
     } finally {
       setRunning(false)
+    }
+  }
+
+  // Sends one email to the logged-in staff member to check the SMTP settings
+  const testEmail = async () => {
+    setTesting(true)
+    try {
+      const { data } = await api.post('/reminders/test-email')
+      if (data.status === 'sent') toast.success(`${t('remind.testSent')} ${data.to}`)
+      else if (data.status === 'skipped') toast.error(t('remind.testNotSetup'))
+      else toast.error(`${t('remind.testFailed')}: ${data.error}`, { duration: 8000 })
+    } catch (err) {
+      toast.error(apiError(err, t))
+    } finally {
+      setTesting(false)
     }
   }
 
@@ -63,6 +79,11 @@ const Reminders = () => {
           <Channel label={t('remind.daily')} on={data.cron} />
         </div>
         {(!data.email || !data.cron) && <p className="mt-4 rounded-2xl bg-info/10 p-4 text-sm">{t('remind.setupHint')}</p>}
+        {data.email && (
+          <button onClick={testEmail} disabled={testing} className="btn btn-sm btn-outline mt-4 rounded-full">
+            {testing ? <span className="loading loading-spinner loading-xs" /> : <FaEnvelopeCircleCheck />} {t('remind.testEmail')}
+          </button>
+        )}
       </section>
 
       <section className="overflow-x-auto rounded-[2rem] bg-base-100 p-6 shadow-sm">
