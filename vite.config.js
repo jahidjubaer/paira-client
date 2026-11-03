@@ -4,6 +4,16 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  // Main chunk is ~160 kB gzipped (React + router + bilingual page content)
-  build: { chunkSizeWarningLimit: 600 },
+  build: {
+    // vendor (React, router, axios) is ~365 kB, app code ~185 kB; other pages load their own code when opened (routes/router.jsx)
+    chunkSizeWarningLimit: 400,
+    rolldownOptions: {
+      output: {
+        codeSplitting: {
+          // Libraries change rarely, so returning visitors keep them cached across site updates
+          groups: [{ name: 'vendor', test: /node_modules[\\/](react|react-dom|react-router|scheduler|axios)[\\/]/ }],
+        },
+      },
+    },
+  },
 })

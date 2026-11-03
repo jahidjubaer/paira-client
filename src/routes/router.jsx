@@ -1,71 +1,51 @@
 import { createBrowserRouter, Outlet } from 'react-router'
 import MainLayout from '../layouts/MainLayout.jsx'
 import Home from '../pages/Home.jsx'
-import About from '../pages/About.jsx'
-import Organization from '../pages/Organization.jsx'
-import Programs from '../pages/Programs.jsx'
-import Policies from '../pages/Policies.jsx'
-import Contact from '../pages/Contact.jsx'
-import Login from '../pages/Login.jsx'
-import Register from '../pages/Register.jsx'
-import Books from '../pages/Books.jsx'
-import BookDetail from '../pages/BookDetail.jsx'
-import Events from '../pages/Events.jsx'
-import EventDetail from '../pages/EventDetail.jsx'
-import Gallery from '../pages/Gallery.jsx'
-import AlbumDetail from '../pages/AlbumDetail.jsx'
-import Donate from '../pages/Donate.jsx'
-import Finance from '../pages/Finance.jsx'
-import Volunteer from '../pages/Volunteer.jsx'
-import VerifyMember from '../pages/VerifyMember.jsx'
-import Scholarship from '../pages/Scholarship.jsx'
-import MediaList from '../pages/MediaList.jsx'
-import MediaDetail from '../pages/MediaDetail.jsx'
-import Faq from '../pages/Faq.jsx'
 import ErrorPage from '../pages/ErrorPage.jsx'
 import PrivateRoute from './PrivateRoute.jsx'
 import AdminRoute from './AdminRoute.jsx'
 import DashboardShell from '../layouts/DashboardShell.jsx'
-
-// Dashboard pages are loaded only when opened
-const lazyPage = (load) => async () => ({ Component: (await load()).default })
+import Loader from '../components/Loader.jsx'
+import lazyPage from './lazyPage.jsx'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
     errorElement: <ErrorPage />,
+    hydrateFallbackElement: <Loader full />,
     children: [
       { index: true, element: <Home /> },
-      { path: 'about', element: <About /> },
-      { path: 'organization', element: <Organization /> },
-      { path: 'programs', element: <Programs /> },
-      { path: 'policies', element: <Policies /> },
-      { path: 'contact', element: <Contact /> },
-      { path: 'login', element: <Login /> },
-      { path: 'register', element: <Register /> },
-      { path: 'books', element: <Books /> },
-      { path: 'books/:id', element: <BookDetail /> },
-      { path: 'events', element: <Events /> },
-      { path: 'events/:id', element: <EventDetail /> },
-      { path: 'gallery', element: <Gallery /> },
-      { path: 'gallery/:id', element: <AlbumDetail /> },
-      { path: 'donate', element: <Donate /> },
-      { path: 'finance', element: <Finance /> },
-      { path: 'volunteer', element: <Volunteer /> },
-      { path: 'member/:memberNo', element: <VerifyMember /> },
-      { path: 'scholarship', element: <Scholarship /> },
-      { path: 'faq', element: <Faq /> },
-      { path: 'archive', element: <MediaList key="archive" collection="archive" /> },
-      { path: 'archive/:id', element: <MediaDetail collection="archive" /> },
-      { path: 'podcast', element: <MediaList key="podcast" collection="podcast" /> },
-      { path: 'podcast/:id', element: <MediaDetail collection="podcast" /> },
+      { path: 'about', lazy: lazyPage(() => import('../pages/About.jsx')) },
+      { path: 'organization', lazy: lazyPage(() => import('../pages/Organization.jsx')) },
+      { path: 'programs', lazy: lazyPage(() => import('../pages/Programs.jsx')) },
+      { path: 'policies', lazy: lazyPage(() => import('../pages/Policies.jsx')) },
+      { path: 'contact', lazy: lazyPage(() => import('../pages/Contact.jsx')) },
+      { path: 'login', lazy: lazyPage(() => import('../pages/Login.jsx')) },
+      { path: 'register', lazy: lazyPage(() => import('../pages/Register.jsx')) },
+      { path: 'books', lazy: lazyPage(() => import('../pages/Books.jsx')) },
+      { path: 'books/:id', lazy: lazyPage(() => import('../pages/BookDetail.jsx')) },
+      { path: 'events', lazy: lazyPage(() => import('../pages/Events.jsx')) },
+      { path: 'events/:id', lazy: lazyPage(() => import('../pages/EventDetail.jsx')) },
+      { path: 'gallery', lazy: lazyPage(() => import('../pages/Gallery.jsx')) },
+      { path: 'gallery/:id', lazy: lazyPage(() => import('../pages/AlbumDetail.jsx')) },
+      { path: 'donate', lazy: lazyPage(() => import('../pages/Donate.jsx')) },
+      { path: 'finance', lazy: lazyPage(() => import('../pages/Finance.jsx')) },
+      { path: 'volunteer', lazy: lazyPage(() => import('../pages/Volunteer.jsx')) },
+      { path: 'member/:memberNo', lazy: lazyPage(() => import('../pages/VerifyMember.jsx')) },
+      { path: 'scholarship', lazy: lazyPage(() => import('../pages/Scholarship.jsx')) },
+      { path: 'faq', lazy: lazyPage(() => import('../pages/Faq.jsx')) },
+      { path: 'archive', lazy: lazyPage(() => import('../pages/MediaList.jsx'), { key: 'archive', collection: 'archive' }) },
+      { path: 'archive/:id', lazy: lazyPage(() => import('../pages/MediaDetail.jsx'), { collection: 'archive' }) },
+      { path: 'podcast', lazy: lazyPage(() => import('../pages/MediaList.jsx'), { key: 'podcast', collection: 'podcast' }) },
+      { path: 'podcast/:id', lazy: lazyPage(() => import('../pages/MediaDetail.jsx'), { collection: 'podcast' }) },
     ],
   },
   {
     path: '/dashboard',
     element: <PrivateRoute><DashboardShell /></PrivateRoute>,
     errorElement: <ErrorPage />,
+    hydrateFallbackElement: <Loader full />,
     children: [
       { index: true, lazy: lazyPage(() => import('../pages/dashboard/Overview.jsx')) },
       { path: 'profile', lazy: lazyPage(() => import('../pages/dashboard/EditProfile.jsx')) },
