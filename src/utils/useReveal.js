@@ -21,12 +21,16 @@ const useReveal = (key) => {
       { rootMargin: '0px 0px -8% 0px', threshold: 0.05 },
     )
 
+    // Sections marked by an earlier run (React re-runs effects in dev StrictMode) but not yet shown
+    // must be observed again, or they stay invisible on the first visit
+    const watched = new WeakSet()
     const scan = () => {
       for (const el of main.querySelectorAll('section')) {
-        if (el.dataset.reveal !== undefined) continue
+        if (watched.has(el) || el.classList.contains('is-visible')) continue
         // Only the outermost sections animate, not sections nested inside them
         if (el.parentElement?.closest('[data-reveal]')) continue
         el.dataset.reveal = ''
+        watched.add(el)
         io.observe(el)
       }
     }
