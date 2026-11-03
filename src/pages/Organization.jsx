@@ -3,27 +3,20 @@ import { FaArrowDown, FaBuildingColumns, FaCalendarCheck, FaClockRotateLeft, FaL
 import useLanguage from '../i18n/useLanguage.js'
 import api from '../api/axiosInstance.js'
 import PersonCard from '../components/PersonCard.jsx'
-import { committees } from '../data/committees.js'
 import { isCurrent, pastTerms, termLabel } from '../utils/people.js'
 import PageHeader from '../components/PageHeader.jsx'
 import SectionTitle from '../components/SectionTitle.jsx'
 import CheckList from '../components/CheckList.jsx'
-import {
-  advisory,
-  bankRule,
-  coreTeam,
-  executivePosts,
-  generalCouncil,
-  incomeSources,
-  meetings,
-  subCommittees,
-  transparency,
-} from '../data/organization.js'
+import { builtInOrganization, withCommitteeNames } from '../data/editablePages.js'
+import usePageContent from '../utils/usePageContent.js'
 
 const tileColors = ['bg-secondary/25', 'bg-primary/10', 'bg-accent/10', 'bg-base-200', 'bg-primary/10', 'bg-secondary/25']
 
 const Organization = () => {
   const { t, pick, num } = useLanguage()
+  const { advisory, bankRule, coreTeam, executivePosts, generalCouncil, incomeSources, meetings, subCommittees, transparency } = withCommitteeNames(
+    usePageContent('organization', builtInOrganization),
+  )
   // Real committee members from Dashboard → Committee & people; the page falls back to the constitution's posts
   const [people, setPeople] = useState([])
 
@@ -163,7 +156,7 @@ const Organization = () => {
           <SectionTitle eyebrow={t('org.subCommittees')} title={t('org.subTitle')} />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {subCommittees.map((c, i) => (
-              <div key={i} className={`rounded-[2rem] bg-base-100 p-6 sm:p-8`}>
+              <div key={c.id} className="rounded-[2rem] bg-base-100 p-6 sm:p-8">
                 <span className={`inline-block rounded-full px-3 py-1 font-display text-sm font-bold ${tileColors[i]}`}>{num(String(i + 1).padStart(2, '0'))}</span>
                 <h3 className="mt-4 text-2xl font-bold">{pick(c.name)}</h3>
                 <div className="mt-4 flex flex-wrap gap-2">
@@ -171,9 +164,9 @@ const Organization = () => {
                     <span key={j} className="rounded-full bg-base-200 px-3 py-1 text-sm">{pick(task)}</span>
                   ))}
                 </div>
-                {serving('subcommittee', committees[i]?.id).length > 0 && (
+                {serving('subcommittee', c.id).length > 0 && (
                   <ul className="mt-5 space-y-1 border-t border-base-300 pt-4 text-sm">
-                    {serving('subcommittee', committees[i].id).map((p) => (
+                    {serving('subcommittee', c.id).map((p) => (
                       <li key={p._id}>
                         <span className="font-semibold">{pick(p.name)}</span>
                         {pick(p.post) && <span className="text-base-content/60"> · {pick(p.post)}</span>}

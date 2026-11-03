@@ -7,7 +7,8 @@ import api from '../api/axiosInstance.js'
 import apiError from '../api/apiError.js'
 import PageHeader from '../components/PageHeader.jsx'
 import SectionTitle from '../components/SectionTitle.jsx'
-import { scholarshipFund } from '../data/policies.js'
+import { builtInPolicies } from '../data/editablePages.js'
+import usePageContent from '../utils/usePageContent.js'
 
 const LEVELS = ['primary', 'secondary', 'ssc', 'hsc', 'university', 'other']
 
@@ -20,6 +21,7 @@ const Field = ({ label, className = '', ...props }) => (
 
 const Scholarship = () => {
   const { t, pick, num, date } = useLanguage()
+  const { scholarshipFund } = usePageContent('policies', builtInPolicies)
   const { user } = useAuth()
   const [settings, setSettings] = useState(null)
   const [winners, setWinners] = useState(null)

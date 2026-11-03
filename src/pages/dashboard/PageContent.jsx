@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import toast from 'react-hot-toast'
-import { FaArrowUpRightFromSquare, FaCircleInfo, FaClockRotateLeft, FaCircleQuestion, FaCalendarWeek, FaFileLines, FaMountainSun } from 'react-icons/fa6'
+import { FaArrowUpRightFromSquare, FaCircleInfo, FaClockRotateLeft, FaCircleQuestion, FaCalendarWeek, FaFileLines, FaMountainSun, FaScaleBalanced, FaSitemap } from 'react-icons/fa6'
 import useLanguage from '../../i18n/useLanguage.js'
 import api from '../../api/axiosInstance.js'
 import apiError from '../../api/apiError.js'
@@ -11,18 +11,26 @@ import { faqGroups } from '../../data/faq.js'
 import * as builtInAbout from '../../data/about.js'
 import { areaPlaces } from '../../data/area.js'
 import * as builtInPrograms from '../../data/programs.js'
+import { builtInOrganization, builtInPolicies, withCommitteeNames, withPolicyNames } from '../../data/editablePages.js'
 import FaqEditor from './content/FaqEditor.jsx'
 import AboutEditor from './content/AboutEditor.jsx'
 import AreaEditor from './content/AreaEditor.jsx'
 import ProgramsEditor from './content/ProgramsEditor.jsx'
+import PoliciesEditor from './content/PoliciesEditor.jsx'
+import OrganizationEditor from './content/OrganizationEditor.jsx'
 
-// Editable pages: built-in text (used until the admin saves) and the editor for it
+// Editable pages: built-in text (used until the admin saves) and the editor for it.
+// `merge` adds back fixed parts (names) that saved text doesn't carry.
 const pages = [
   { id: 'about', path: '/about', icon: FaCircleInfo, builtIn: { ...builtInAbout }, Editor: AboutEditor },
   { id: 'area', path: '/about', icon: FaMountainSun, builtIn: { places: areaPlaces }, Editor: AreaEditor },
   { id: 'programs', path: '/programs', icon: FaCalendarWeek, builtIn: { ...builtInPrograms }, Editor: ProgramsEditor },
+  { id: 'policies', path: '/policies', icon: FaScaleBalanced, builtIn: builtInPolicies, merge: withPolicyNames, Editor: PoliciesEditor },
+  { id: 'organization', path: '/organization', icon: FaSitemap, builtIn: builtInOrganization, merge: withCommitteeNames, Editor: OrganizationEditor },
   { id: 'faq', path: '/faq', icon: FaCircleQuestion, builtIn: { groups: faqGroups }, Editor: FaqEditor },
 ]
+
+const withFixed = (page, content) => (page.merge ? page.merge(content) : content)
 
 // Admin: edit the text of public pages; "restore" goes back to the built-in text
 const PageContent = () => {
@@ -42,7 +50,7 @@ const PageContent = () => {
       .then(({ data }) => {
         if (!active) return
         // Start from what the page shows today, so nothing has to be typed twice
-        setValue(data.content ?? page.builtIn)
+        setValue(data.content ? withFixed(page, data.content) : page.builtIn)
         setMeta({ saved: Boolean(data.content), updatedAt: data.updatedAt, updatedBy: data.updatedBy })
         setDirty(false)
       })
@@ -67,7 +75,7 @@ const PageContent = () => {
     setSaving(true)
     try {
       const { data } = await api.put(`/settings/pages/${page.id}`, value)
-      setValue(data.content)
+      setValue(withFixed(page, data.content))
       setMeta({ saved: true, updatedAt: data.updatedAt, updatedBy: data.updatedBy })
       setDirty(false)
       toast.success(t('dash.saved'))

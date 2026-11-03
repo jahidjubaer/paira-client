@@ -3,7 +3,8 @@ import { FaArrowRight, FaCertificate, FaChalkboardUser, FaIdBadge, FaMedal } fro
 import useLanguage from '../i18n/useLanguage.js'
 import PageHeader from '../components/PageHeader.jsx'
 import SectionTitle from '../components/SectionTitle.jsx'
-import { awards, libraryRules, memberTypes, scholarshipFund, volunteerBenefits } from '../data/policies.js'
+import { builtInPolicies, withPolicyNames } from '../data/editablePages.js'
+import usePageContent from '../utils/usePageContent.js'
 import useSite from '../context/useSite.js'
 import fill from '../utils/fill.js'
 
@@ -12,6 +13,7 @@ const benefitIcons = [FaIdBadge, FaChalkboardUser, FaCertificate, FaMedal]
 const Policies = () => {
   const { t, pick, num } = useLanguage()
   const { rules } = useSite()
+  const { awards, libraryRules, memberTypes, scholarshipFund, volunteerBenefits } = withPolicyNames(usePageContent('policies', builtInPolicies))
   // First rule shows the live loan limits from Dashboard → Rules
   const rulesList = [fill(t('policies.ruleLoan'), { max: num(rules.maxLoans), days: num(rules.loanDays) }), ...libraryRules.map(pick)]
 
@@ -71,7 +73,7 @@ const Policies = () => {
         <SectionTitle eyebrow={t('policies.volunteer')} title={t('policies.volunteerTitle')} subtitle={t('policies.volunteerText')} />
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {volunteerBenefits.map((b, i) => {
-            const Icon = benefitIcons[i]
+            const Icon = benefitIcons[i] ?? FaMedal
             return (
               <div key={i} className="rounded-[2rem] border border-base-300 p-6 sm:p-8">
                 <Icon className="size-8 text-primary" />
@@ -88,7 +90,7 @@ const Policies = () => {
           <div className="pointer-events-none absolute -right-20 -bottom-20 size-80 rounded-full bg-primary/40 blur-3xl" />
           <p className="relative text-sm font-semibold tracking-widest text-secondary uppercase">{t('policies.scholarship')}</p>
           <h2 className="relative mt-3 text-3xl font-bold sm:text-4xl">{pick(scholarshipFund.name)}</h2>
-          <p className="relative mt-4 text-lg text-neutral-content/80">{pick(scholarshipFund.note)}</p>
+          {pick(scholarshipFund.note) && <p className="relative mt-4 text-lg text-neutral-content/80">{pick(scholarshipFund.note)}</p>}
           <div className="relative mt-8 flex flex-wrap gap-2">
             <span className="mr-1 self-center text-sm text-neutral-content/60">{t('policies.sources')}:</span>
             {scholarshipFund.sources.map((s, i) => (

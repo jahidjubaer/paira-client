@@ -6,12 +6,14 @@ import api from '../api/axiosInstance.js'
 import apiError from '../api/apiError.js'
 import PageHeader from '../components/PageHeader.jsx'
 import { committees } from '../data/committees.js'
-import { volunteerBenefits } from '../data/policies.js'
+import { builtInPolicies } from '../data/editablePages.js'
+import usePageContent from '../utils/usePageContent.js'
 
 const benefitIcons = [FaIdBadge, FaChalkboardUser, FaCertificate, FaMedal]
 
 const Volunteer = () => {
   const { t, pick } = useLanguage()
+  const { volunteerBenefits } = usePageContent('policies', builtInPolicies)
   const [chosen, setChosen] = useState([])
   const [sending, setSending] = useState(false)
 
@@ -52,7 +54,7 @@ const Volunteer = () => {
           <h2 className="mt-6 text-2xl font-bold">{t('volunteer.benefits')}</h2>
           <ul className="mt-6 space-y-4">
             {volunteerBenefits.map((b, i) => {
-              const Icon = benefitIcons[i]
+              const Icon = benefitIcons[i] ?? FaMedal
               return (
                 <li key={i} className="flex items-center gap-4">
                   <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-primary-content/10">
