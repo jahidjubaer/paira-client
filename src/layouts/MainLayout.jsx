@@ -5,6 +5,7 @@ import ScrollToTop from '../components/ScrollToTop.jsx'
 import BackToTop from '../components/BackToTop.jsx'
 import NavProgress from '../components/NavProgress.jsx'
 import AnnouncementBar from '../components/AnnouncementBar.jsx'
+import SiteIntro from '../components/SiteIntro.jsx'
 import useReveal from '../utils/useReveal.js'
 
 const MainLayout = () => {
@@ -13,6 +14,7 @@ const MainLayout = () => {
 
   return (
     <div className="flex min-h-screen flex-col">
+      <SiteIntro />
       <ScrollToTop />
       <NavProgress />
       <AnnouncementBar />

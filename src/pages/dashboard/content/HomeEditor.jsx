@@ -3,8 +3,6 @@ import { FaArrowDown, FaArrowUp, FaPlus, FaTriangleExclamation } from 'react-ico
 import useLanguage from '../../../i18n/useLanguage.js'
 import api from '../../../api/axiosInstance.js'
 import BiInput from '../../../components/BiInput.jsx'
-import ImageUrlField from '../../../components/ImageUrlField.jsx'
-import { sized } from '../../../utils/imageSize.js'
 import { fromLocalInput, toLocalInput } from '../../../utils/formData.js'
 import ListControls from './ListControls.jsx'
 import { moveItem, replaceItem } from './listEdit.js'
@@ -97,18 +95,6 @@ const HomeEditor = ({ value, onChange }) => {
           <BiInput label={t('pages.heroText')} value={hero.text} onChange={(text) => setHero({ text })} maxLength={400} multiline />
           <BiInput label={t('pages.heroCardSmall')} value={hero.cardSmall} onChange={(cardSmall) => setHero({ cardSmall })} maxLength={40} />
           <BiInput label={t('pages.heroCardTitle')} value={hero.cardTitle} onChange={(cardTitle) => setHero({ cardTitle })} maxLength={60} />
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-[8rem_1fr]">
-          <img src={hero.image ? sized(hero.image, 330) : '/hero-takerghat.svg'} alt="" className="aspect-[4/5] w-full rounded-2xl object-cover" />
-          <label className="block">
-            <span className="mb-1 block text-sm font-medium">{t('pages.heroImage')}</span>
-            <div className="flex gap-2">
-              <input type="url" value={hero.image} onChange={(e) => setHero({ image: e.target.value })} maxLength={500} placeholder="https://…" className="input w-full" />
-              <ImageUrlField folder="site" onUploaded={(image) => setHero({ image })} />
-            </div>
-            <span className="mt-1 block text-xs text-base-content/50">{t('pages.heroImageHint')}</span>
-          </label>
         </div>
 
         <h3 className="pt-2 font-semibold">{t('pages.heroButtons')}</h3>

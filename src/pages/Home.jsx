@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Link } from 'react-router'
 import {
   FaArrowRight,
@@ -23,8 +23,8 @@ import HomeEvents from '../components/HomeEvents.jsx'
 import HomeFeatured from '../components/HomeFeatured.jsx'
 import NewBooksShelf from '../components/NewBooksShelf.jsx'
 import { HomeNumbers, HomePhotos, HomeVoices } from '../components/HomeHighlights.jsx'
+import HeroScene, { LakeSoundToggle } from '../components/HeroScene.jsx'
 import usePageTitle from '../utils/usePageTitle.js'
-import { sized } from '../utils/imageSize.js'
 
 // Bento layout: the first two features are tall, the last two are wide
 const features = [
@@ -39,7 +39,7 @@ const features = [
 // Hero buttons may point inside the site or to another website
 const HeroButton = ({ button, primary }) => {
   const { pick } = useLanguage()
-  const className = primary ? 'btn btn-primary btn-lg rounded-full px-8 shadow-lg shadow-primary/25' : 'btn btn-ghost btn-lg rounded-full'
+  const className = primary ? 'btn btn-primary btn-lg rounded-full px-8 shadow-lg shadow-primary/25' : 'btn btn-lg rounded-full border-white/30 bg-neutral/40 text-white hover:bg-neutral/60'
   const content = (
     <>
       {pick(button.label)} {primary && <FaArrowRight />}
@@ -62,6 +62,20 @@ const Home = () => {
   const home = withHomeSections(usePageContent('home', builtInHome))
   const { hero } = home
   usePageTitle(null)
+
+  // The hero story starts once the fonts are in and the page has settled, so its first frames don't stutter
+  const [heroReady, setHeroReady] = useState(false)
+  useEffect(() => {
+    let started = false
+    const start = () => {
+      if (started) return
+      started = true
+      requestAnimationFrame(() => requestAnimationFrame(() => setHeroReady(true)))
+    }
+    document.fonts.ready.then(start)
+    const cap = setTimeout(start, 1500)
+    return () => clearTimeout(cap)
+  }, [])
 
   const stats = [
     { value: yearlyPrograms.length, label: t('home.statPrograms') },
@@ -182,70 +196,73 @@ const Home = () => {
 
   return (
     <>
-      {/* ---------- Hero ---------- */}
-      <section className="dots relative overflow-hidden">
-        <div className="pointer-events-none absolute -top-40 -left-40 size-[32rem] rounded-full bg-secondary/25 blur-3xl" />
-        <div className="pointer-events-none absolute top-40 -right-40 size-[28rem] rounded-full bg-primary/15 blur-3xl" />
+      {/* ---------- Hero: full-width lake scene; the text arrives in step with its story (hero-* in index.css) ---------- */}
+      <section data-waiting={heroReady ? undefined : ''} className="relative isolate flex min-h-[calc(100svh-4rem)] items-center overflow-hidden bg-neutral text-neutral-content">
+        <HeroScene className="absolute inset-0 -z-10" />
+        {/* Shade behind the text: from the top on phones, from the left on wide screens; fades into the strip below */}
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-linear-to-b from-neutral/90 via-neutral/55 to-transparent lg:bg-linear-to-r lg:via-neutral/45" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-32 bg-linear-to-b from-transparent to-neutral" />
 
-        <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 pt-10 pb-20 lg:grid-cols-[1.1fr_1fr] lg:pt-16">
-          <div>
+        <LakeSoundToggle className="hero-rise btn btn-circle absolute top-5 right-5 z-10 border-white/25 bg-neutral/55 text-white hover:bg-neutral/65 [animation-delay:0.4s]" />
+
+        {/* Clicks pass through to the book except on the text itself */}
+        <div className="pointer-events-none relative mx-auto w-full max-w-7xl px-4 pt-14 pb-56 lg:py-24">
+          <div className="pointer-events-auto max-w-2xl">
             {pick(hero.eyebrow) && (
-              <p className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-base-100/70 px-4 py-1.5 text-sm font-medium text-primary">
-                <GiDove className="size-4" /> {pick(hero.eyebrow)}
+              <p className="hero-rise inline-flex items-center gap-2 rounded-full border border-white/20 bg-neutral/45 px-4 py-1.5 text-sm font-medium [animation-delay:0.3s]">
+                <GiDove className="size-4 text-secondary" /> {pick(hero.eyebrow)}
               </p>
             )}
 
-            <h1 className="mt-6 text-5xl leading-[1.05] font-extrabold sm:text-6xl xl:text-7xl">
-              <span className="block">{pick(hero.title1)}</span>
+            <h1 className="mt-6 text-5xl leading-[1.05] font-extrabold [text-shadow:0_2px_24px_rgb(0_0_0/0.35)] sm:text-6xl xl:text-7xl">
+              <span className="hero-rise block [animation-delay:1.2s]">{pick(hero.title1)}</span>
               {pick(hero.title2) && (
-                <span className="text-gradient relative inline-block pb-1">
+                <span className="hero-light relative inline-block pb-1">
                   {pick(hero.title2)}
                   <svg className="absolute -bottom-3 left-0 h-3 w-full text-secondary" viewBox="0 0 300 12" preserveAspectRatio="none" aria-hidden="true">
-                    <path d="M2 9 C 80 2, 200 2, 298 7" stroke="currentColor" strokeWidth="5" fill="none" strokeLinecap="round" />
+                    <path className="hero-draw" pathLength="1" d="M2 9 C 80 2, 200 2, 298 7" stroke="currentColor" strokeWidth="5" fill="none" strokeLinecap="round" />
                   </svg>
                 </span>
               )}
             </h1>
 
-            <p className="mt-8 max-w-xl text-lg leading-relaxed text-base-content/75">
-              <strong className="block font-semibold text-base-content">
+            <p className="hero-rise mt-8 max-w-xl text-lg leading-relaxed text-neutral-content/80 [animation-delay:3.6s]">
+              <strong className="block font-semibold text-neutral-content">
                 {t('site.name')} · {t('site.tagline')}
               </strong>
               {pick(hero.text)}
             </p>
 
             {hero.buttons.length > 0 && (
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="hero-rise mt-8 flex flex-wrap gap-3 [animation-delay:4.3s]">
                 {hero.buttons.map((b, i) => <HeroButton key={i} button={b} primary={i === 0} />)}
               </div>
             )}
 
             <dl className="mt-12 flex flex-wrap gap-x-10 gap-y-4">
-              {stats.map((s) => (
-                <div key={s.label}>
+              {stats.map((s, i) => (
+                <div key={s.label} className="hero-rise" style={{ animationDelay: `${5 + i * 0.2}s` }}>
                   <dt className="sr-only">{s.label}</dt>
-                  <dd className="font-display text-4xl font-bold text-primary">{num(s.value)}</dd>
-                  <dd className="text-sm text-base-content/70">{s.label}</dd>
+                  <dd className="font-display text-4xl font-bold text-secondary">{num(s.value)}</dd>
+                  <dd className="text-sm text-neutral-content/75">{s.label}</dd>
                 </div>
               ))}
             </dl>
           </div>
+        </div>
 
-          {/* Illustration with floating cards */}
-          <div className="relative mx-auto w-full max-w-md lg:max-w-none">
-            <div className="absolute inset-0 translate-x-4 translate-y-4 rounded-[2.5rem] bg-primary/15" />
-            <img
-              src={hero.image ? sized(hero.image, 960) : '/hero-takerghat.svg'}
-              alt={pick(hero.eyebrow)}
-              className="relative aspect-[4/5] w-full rounded-[2.5rem] object-cover shadow-2xl"
-            />
-            {pick(hero.cardTitle) && (
-              <div className="absolute top-8 -left-4 animate-float rounded-2xl border border-base-100/60 bg-base-100/85 px-4 py-3 shadow-xl backdrop-blur sm:-left-10">
-                <p className="text-xs font-medium text-base-content/60">{pick(hero.cardSmall)}</p>
+        {/* Glass cards beside the book, after the doves are out */}
+        <div className="pointer-events-none absolute right-6 bottom-16 hidden flex-col items-end gap-4 xl:flex">
+          {pick(hero.cardTitle) && (
+            <div className="hero-rise [animation-delay:5.6s]">
+              <div className="animate-float rounded-2xl border border-white/25 bg-neutral/70 px-4 py-3 text-white shadow-xl">
+                <p className="text-xs font-medium text-white/75">{pick(hero.cardSmall)}</p>
                 <p className="font-display text-lg font-bold">{pick(hero.cardTitle)}</p>
               </div>
-            )}
-            <div className="absolute -right-2 bottom-10 max-w-[15rem] animate-float rounded-2xl bg-neutral px-5 py-4 text-neutral-content shadow-xl [animation-delay:-3s] sm:-right-8">
+            </div>
+          )}
+          <div className="hero-rise [animation-delay:6.2s]">
+            <div className="max-w-[15rem] animate-float rounded-2xl border border-white/10 bg-neutral/85 px-5 py-4 shadow-xl [animation-delay:-3s]">
               <FaQuoteLeft className="size-4 text-secondary" />
               <p className="mt-1 font-display text-lg leading-snug font-semibold">{t('site.slogan2')}</p>
             </div>
