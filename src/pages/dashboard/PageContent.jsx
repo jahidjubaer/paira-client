@@ -1,17 +1,25 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import toast from 'react-hot-toast'
-import { FaArrowUpRightFromSquare, FaClockRotateLeft, FaCircleQuestion, FaFileLines } from 'react-icons/fa6'
+import { FaArrowUpRightFromSquare, FaCircleInfo, FaClockRotateLeft, FaCircleQuestion, FaFileLines, FaMountainSun } from 'react-icons/fa6'
 import useLanguage from '../../i18n/useLanguage.js'
 import api from '../../api/axiosInstance.js'
 import apiError from '../../api/apiError.js'
 import Loader from '../../components/Loader.jsx'
 import ConfirmDialog from '../../components/ConfirmDialog.jsx'
 import { faqGroups } from '../../data/faq.js'
+import * as builtInAbout from '../../data/about.js'
+import { areaPlaces } from '../../data/area.js'
 import FaqEditor from './content/FaqEditor.jsx'
+import AboutEditor from './content/AboutEditor.jsx'
+import AreaEditor from './content/AreaEditor.jsx'
 
 // Editable pages: built-in text (used until the admin saves) and the editor for it
-const pages = [{ id: 'faq', path: '/faq', icon: FaCircleQuestion, builtIn: { groups: faqGroups }, Editor: FaqEditor }]
+const pages = [
+  { id: 'about', path: '/about', icon: FaCircleInfo, builtIn: { ...builtInAbout }, Editor: AboutEditor },
+  { id: 'area', path: '/about', icon: FaMountainSun, builtIn: { places: areaPlaces }, Editor: AreaEditor },
+  { id: 'faq', path: '/faq', icon: FaCircleQuestion, builtIn: { groups: faqGroups }, Editor: FaqEditor },
+]
 
 // Admin: edit the text of public pages; "restore" goes back to the built-in text
 const PageContent = () => {

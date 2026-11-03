@@ -3,7 +3,8 @@ import { GiDove } from 'react-icons/gi'
 import useLanguage from '../i18n/useLanguage.js'
 import PageHeader from '../components/PageHeader.jsx'
 import SectionTitle from '../components/SectionTitle.jsx'
-import { dissolution, heritage, missions, nameOrigin, objectives, principles, vision } from '../data/about.js'
+import * as builtInAbout from '../data/about.js'
+import usePageContent from '../utils/usePageContent.js'
 import AreaSection from '../components/AreaSection.jsx'
 
 // One icon per core principle, in the same order as data/about.js
@@ -11,6 +12,7 @@ const principleIcons = [GiDove, FaPeopleGroup, FaEye, FaUserCheck, FaHandshake, 
 
 const About = () => {
   const { t, pick, num } = useLanguage()
+  const { dissolution, heritage, missions, nameOrigin, objectives, principles, vision } = usePageContent('about', builtInAbout)
 
   return (
     <>
@@ -86,12 +88,14 @@ const About = () => {
           <div className="p-8 sm:p-12">
             <p className="text-sm font-semibold tracking-widest text-secondary uppercase">{t('about.heritage')}</p>
             <h2 className="mt-3 text-3xl font-bold sm:text-4xl">{t('about.heritageTitle')}</h2>
-            <p className="mt-5 text-lg leading-relaxed text-neutral-content/80">{pick(heritage)}</p>
+            {pick(heritage) && <p className="mt-5 text-lg leading-relaxed text-neutral-content/80">{pick(heritage)}</p>}
           </div>
         </div>
-        <p className="mx-auto mt-10 max-w-3xl text-center text-sm text-base-content/60">
-          <span className="font-semibold">{t('about.dissolution')}:</span> {pick(dissolution)}
-        </p>
+        {pick(dissolution) && (
+          <p className="mx-auto mt-10 max-w-3xl text-center text-sm text-base-content/60">
+            <span className="font-semibold">{t('about.dissolution')}:</span> {pick(dissolution)}
+          </p>
+        )}
       </section>
     </>
   )

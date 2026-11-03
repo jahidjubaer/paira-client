@@ -12,7 +12,8 @@ import {
 } from 'react-icons/fa6'
 import { GiDove } from 'react-icons/gi'
 import useLanguage from '../i18n/useLanguage.js'
-import { vision } from '../data/about.js'
+import * as builtInAbout from '../data/about.js'
+import usePageContent from '../utils/usePageContent.js'
 import { subCommittees } from '../data/organization.js'
 import { clubs, weeklyActivities, yearlyPrograms } from '../data/programs.js'
 import { memberTypes } from '../data/policies.js'
@@ -33,6 +34,8 @@ const features = [
 
 const Home = () => {
   const { t, pick, num } = useLanguage()
+  // The vision line comes from the About page text (Dashboard → Page content)
+  const { vision } = usePageContent('about', builtInAbout)
   usePageTitle(null)
 
   const stats = [
